@@ -74,3 +74,7 @@ I had to use the `--unsafe-perm` with linux (Docker)
 ### Windows
 
 **Need help to make it work with Powershell !**
+
+It works with `git bash` 
+
+
