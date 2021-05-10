@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tommygingras/yadu.git"
+    "url": "git+https://github.com/Insyders/yadu.git"
   },
   "author": "Tommy Gingras @ Half serious 2021",
   "license": "GNU GPL 2",
   "bugs": {
-    "url": "https://github.com/tommygingras/yadu/issues"
+    "url": "https://github.com/Insyders/yadu/issues"
   },
-  "homepage": "https://github.com/tommygingras/yadu#readme",
+  "homepage": "https://github.com/Insyders/yadu#readme",
   "dependencies": {
     "aws-sdk": "2.840.0",
     "colors": "1.4.0",
