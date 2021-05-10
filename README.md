@@ -69,12 +69,16 @@ It uses the **environment variables**, **AWS Secret Manager**, **Local .env** an
 
 ### MacOs & Linux
 
-I had to use the `--unsafe-perm` with linux (Docker)
+Linux (Docker) : `npm install -g --unsafe-perm @halfserious/yadu`
+
+On MacOS : `npm install -g @halfserious/yadu`
 
 ### Windows
 
-**Need help to make it work with Powershell !**
+Tested on windows 10 using 
+- Git bash
+- Powershell
 
-It works with `git bash` 
+`npm install -g @halfserious/yadu`
 
 
