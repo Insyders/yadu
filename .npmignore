@@ -2,4 +2,4 @@
 _test
 *.jar
 __tests__
-liquibase-*/
+**/liquibase-*/
