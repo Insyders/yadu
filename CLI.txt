@@ -1,0 +1,108 @@
+Usage: yadu [--help] <command> [<args>]
+
+Dislaimer:
+- USE THESE COMMANDS CAREFULLY ! SOME OF THEM CAN BREAK THINGS IN AWS
+
+Prerequisites:
+- zip Command
+- git Command
+- npm Command 
+- serverless.json file
+- export AWS_SDK_LOAD_CONFIG=1
+
+Compatibility
+- Git Bash on Windows
+- MacOS
+- Linux
+
+Serious DevOps Toolkit - YaDU Commands:
+
+
+Common
+    > --help                                                            Print this help
+    > --region                                                          The AWS region
+    > --profile                                                         The AWS profile (By default : default)
+    > --debug                                                           Print more info
+    > --env                                                             .env path to load the environement variables (By default : ./.env)
+    > --secret                                                          Secret Key to retrieve the database information.
+
+Package and Deploy
+    > --package-only                                                    Generate only the index.zip file for the current lambda
+    > --deploy                                                          Deploy code to AWS ($LATEST)
+    > --create                                                          Create and Deploy the function to AWS
+    > --new-version                                                     Publish a new version and attach it to the specified alias, by default 'stage' 
+        --alias=<string>
+
+Parameters to override serverless.json values
+    --stage=<string>
+    --role=<string>
+    --layers="<Array<string>>
+    --layer-version=<number>                                            Override the layer version specified in the serverless.json
+    --account-id=<string>                                               Specify your AWS Account Id
+    --update-role                                                       Update the Lambda Role using the serverless.json
+    --update-vpc                                                        Update the Lambda VPC using the serverless.json
+
+Attach Latest Version to Alias
+    > --attach=<string>                                                 Specify alias to attach the new version
+
+Environment variables
+    AWS_REGION, REGION                                                  To override the AWS Region
+    AWS_PROFILE, PROFILE                                                To override the AWS Profile
+    LAYER_VERSION                                                       To override the layer version specified in the serverless.json file
+    NODE_ENV                                                            To Specify 'CI' for example
+    DEBUG                                                               To enable Debugging
+    AWS_BRANCH_NAME                                                     Branch name provided by CodePipeline
+
+Liquibase Commands
+    > --generate-main
+
+    > --create-migration
+        --name=<String>
+
+    > --deploy-migration
+        --name=<String>
+        --env=<String>
+        --[no-]dry-run=<Boolean>
+
+    > --create-version
+        --version=<String>
+
+    > --diff
+
+    > --clear
+
+    > --rollback
+        --name=<String>
+        --tag=<String>
+
+    > --sync
+        --env
+
+Override env. variables
+    > --db-url-ref=<String>
+    > --db-user-ref=<String>
+    > --db-pass-ref=<String>
+
+Environment Variables:
+
+NODE_ENV=<string>                       [development | production | stage | qa] and create the .env.[Stage name] accordingly.
+DB_USER="<DB_USER>"
+DB_PASS="<DB_PASS>"
+API_KEY="<LIQUIBASE_HUB_API_KEY>"
+DB_URL="jdbc:mysql://<DB_URL>:3306/<DB_NAME>?useUnicode=true&characterEncoding=UTF-8"
+PROJECT_ID="<LIQUIBASE_HUB_PROJECT_ID>"
+LIQUIBASE_CONF_PATH="<ABSOLUTE_PATH>/liquibase.properties"
+LIQUIBASE_BASE_PATH="<ABSOLUTE_PATH>/liquibase-4.3.3/./liquibase"
+BASE_PATH="./mysql/changelog"
+DB_USER_REF="<DB_USER_REF>"
+DB_PASS_REF="<DB_PASS_REF>"
+DB_URL_REF="jdbc:mysql://<DB_URL_REF>:3306/<DB_NAME_REF>?useUnicode=true&characterEncoding=UTF-8"
+SECRETS="<String>"
+
+Example
+
+AWS_REGION="us-east-1" LAYER_VERSION="OPTIONAL" yadu --deploy --new-version --alias='published' --profile="not_default"
+AWS_REGION="us-east-1" LAYER_VERSION="OPTIONAL" yadu --package-only
+yadu --region='us-east-1' --deploy --new-version --alias='live' --stage='test' --layers='arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:node_modules_test:1'
+
+node src/index.js --secrets="liquibase-test-dev,devops" --diff --db-url-ref="jdbc:mysql://localhost:3306/tg-qa?useUnicode=true&characterEncoding=UTF-8" --db-user-ref="admin" --db-pass-ref='yQJ*60=f9T3v.$4<' --verbose
