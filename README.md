@@ -65,3 +65,12 @@ It uses the **environment variables**, **AWS Secret Manager**, **Local .env** an
 |    3     | Load data from local `.env.environment` file            | `NODE_ENV="<String>"` or `--env="<String>"` |
 |    4     | Override using the arguments (Check the CLI commands)   | `--help`                                    |
 
+## Support
+
+### MacOs & Linux
+
+I had to use the `--unsafe-perm` with linux (Docker)
+
+### Windows
+
+**Need help to make it work with Powershell !**
