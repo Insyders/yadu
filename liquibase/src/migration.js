@@ -41,7 +41,7 @@ function deployMigration(name, environment = 'custom', liquibaseBasePath, liquib
 
   if (dryrun === true) {
     console.log(`DRY-RUN: Using '${environment}' environment with this changelog : 'db.changelog-${name}.mysql.sql'`.debug);
-    shell.exec(
+    const { code, stdout, stderr } = shell.exec(
       `${liquibaseBasePath} \
         --changeLogFile='${path.join(basePath)}db.changelog-${name}.mysql.sql' \
         --url='${process.env.DB_URL}' \
@@ -54,6 +54,15 @@ function deployMigration(name, environment = 'custom', liquibaseBasePath, liquib
         updateSQL`,
       { silent: !process.env.debug },
     );
+
+    if (code !== 0) {
+      throw new Error(stderr || stdout);
+    }
+
+    console.log(stdout);
+    console.log('DRY-RUN : Nothing has been executed.'.success);
+    console.log("To execute the migration command. Run the same command with '--no-dry-run'".action);
+
     return;
   }
 
@@ -84,6 +93,12 @@ function deployMigration(name, environment = 'custom', liquibaseBasePath, liquib
     if (response.stderr.includes('is already registered') || response.stdout.includes('is already registered')) {
       logDebug('It is safe to continue');
       console.log('WARN: Changelog already registred.'.warn);
+    } else if (
+      response.stderr.includes("'hubProjectId' has invalid value 'undefined'") ||
+      response.stdout.includes("'hubProjectId' has invalid value 'undefined'")
+    ) {
+      logDebug('It is safe to continue');
+      console.log('WARN: Liquibase hub not configured.'.warn);
     } else {
       throw new Error(response.stderr || response.stdout);
     }

@@ -1,0 +1,13 @@
+2021-05-12
+
+- Added args for db-user, db-pass and db-url
+
+2021-05-11
+
+- Added parser for RDS secrets manager.
+- Added output of for liquibase command when executing in dry-run.
+- Set liquibase hub configuration to optional
+
+2021-05-10
+
+- Migrated YaDU to this repository

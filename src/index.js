@@ -62,13 +62,25 @@ async function LoadEnv() {
     console.debug('Override DB_URL_REF');
     process.env.DB_URL_REF = args['db-url-ref'];
   }
+  if (args['db-url']) {
+    console.debug('Override DB_URL');
+    process.env.DB_URL = args['db-url'];
+  }
   if (args['db-user-ref']) {
     console.debug('Override DB_USER_REF');
     process.env.DB_USER_REF = args['db-user-ref'];
   }
+  if (args['db-user']) {
+    console.debug('Override DB_USER');
+    process.env.DB_USER = args['db-user'];
+  }
   if (args['db-pass-ref']) {
     console.debug('Override DB_PASS_REF');
     process.env.DB_PASS_REF = args['db-pass-ref'];
+  }
+  if (args['db-pass']) {
+    console.debug('Override DB_PASS');
+    process.env.DB_PASS = args['db-pass'];
   }
 
   if (args.verbose) {

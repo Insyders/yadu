@@ -82,6 +82,9 @@ Override env. variables
     > --db-url-ref=<String>
     > --db-user-ref=<String>
     > --db-pass-ref=<String>
+    > --db-url=<String>
+    > --db-user=<String>
+    > --db-pass=<String>
 
 Environment Variables:
 
