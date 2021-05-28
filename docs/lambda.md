@@ -137,3 +137,21 @@ Complete Example:
     }
 }
 ```
+
+## Promote a lambda
+
+> When using aliases with your lambdas, you might want to promote them from $LATEST to a specific alias.
+
+```
+yadu \
+  --deploy \
+  --region=<REGION> \
+  --new-version \
+  --alias=<ALIAS_NAME>
+```
+
+> It uses the `serverless.json` file.
+
+This command will **package** and **deploy** your local changes to the `$LATEST` version.
+Then the `--new-version` will create a version based on what is in `$LATEST`.
+And the `--alias` will attach the new version to the specified alias name.

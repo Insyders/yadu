@@ -4,6 +4,10 @@ Those commands simply wrapped the liquibase tool.
 
 - [Liquibase](https://www.liquibase.org)
 
+## Installation
+
+- Install Java
+
 ## Usage
 
 ### Generate main file (main.xml)

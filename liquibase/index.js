@@ -1,6 +1,7 @@
 const path = require('path');
 const colors = require('colors');
 const { generateMainFile } = require('./src/main');
+// Load env. variables from .env.NODE_ENV file.
 require('dotenv').config({
   path: path.resolve(process.cwd(), process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env'),
 });
@@ -12,6 +13,7 @@ const { sync } = require('./src/sync');
 const { diff } = require('./src/diff');
 const { clearCheckSums } = require('./src/clear');
 const { rollback } = require('./src/rollback');
+const { Validation, CheckBasePath } = require('./lib/validation');
 
 colors.setTheme({
   warn: 'yellow',
@@ -23,9 +25,7 @@ colors.setTheme({
 
 // ---
 
-const { DB_USER, DB_PASS, API_KEY, DB_URL, PROJECT_ID, NODE_ENV } = process.env;
-
-const commands = ['generate-main', 'create-migration', 'deploy-migration', 'sync', 'diff', 'clear', 'rollback', 'create-version'];
+const { NODE_ENV } = process.env;
 
 const basePath = process.env.BASE_PATH || path.join('.', 'mysql', 'changelog') + path.sep;
 const classPath = process.env.CLASS_PATH || `${path.join(__dirname, 'lib')}${path.sep}mysql-connector-java-8.0.24.jar`;
@@ -42,39 +42,11 @@ logDebug(liquibaseConfPath);
 
 // ---
 
-function Validation(args) {
-  const errors = [];
-
-  if (Object.keys(args).filter((arg) => commands.includes(arg)).length === 0) {
-    logDebug('Liquibase Handler: Nothing to do...'.debug);
-    return false;
-  }
-
-  if (!DB_USER || DB_USER === '') {
-    errors.push(`${'[ERROR]'.error} Missing Environment variable 'DB_USER'`);
-  }
-  if (!DB_PASS || DB_PASS === '') {
-    errors.push(`${'[ERROR]'.error} Missing Environment variable 'DB_PASS'`);
-  }
-  if (!DB_URL || DB_URL === '') {
-    errors.push(`${'[ERROR]'.error} Missing Environment variable 'DB_URL'`);
-  }
-  if (!API_KEY || API_KEY === '') {
-    console.log(`${'[WARN]'.warn} Missing Environment variable 'API_KEY'`);
-  }
-  if (!PROJECT_ID || PROJECT_ID === '') {
-    console.log(`${'[WARN]'.warn} Missing Environment variable 'PROJECT_ID'`);
-  }
-
-  if (errors && errors.length > 0) {
-    errors.forEach((e) => console.error(e));
-    process.exit(1337);
-  }
-  return true;
-}
-
 async function Handler(args) {
   let handled = false;
+  if (!CheckBasePath(basePath)) {
+    return;
+  }
   if (!Validation(args)) {
     return;
   }
@@ -144,6 +116,7 @@ async function Handler(args) {
   }
 
   if (args['create-version'] && args.version) {
+    console.log(`${'[WARN'.warn} This command doesn't extract a valid MySQL and will be reworked in another ticket.`);
     console.log(`Create ${args.version} version`.action);
     console.log('>>>');
     createVersion(args.version, liquibaseBasePath, liquibaseConfPath, basePath, classPath);

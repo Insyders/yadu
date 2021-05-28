@@ -17,95 +17,117 @@ Compatibility
 
 Serious DevOps Toolkit - YaDU Commands:
 
+Documentation : https://github.com/Insyders/yadu/tree/main/docs
 
 Common
-    > --help                                                            Print this help
-    > --region                                                          The AWS region
-    > --profile                                                         The AWS profile (By default : default)
-    > --debug                                                           Print more info
-    > --env                                                             .env path to load the environement variables (By default : ./.env)
-    > --secret                                                          Secret Key to retrieve the database information.
+    > --help                                       Print this help
+    > --region                                     The AWS region
+    > --profile                                    The AWS profile (By default : default)
+    > --debug                                      Print more info
+    > --verbose                                    Print the environment variables
+    > --env                                        .env path to load the environement variables
+    > --secrets                                    Secret Keys to retrieve the database information. ex. 'db1,db2:ref'
 
 Package and Deploy
-    > --package-only                                                    Generate only the index.zip file for the current lambda
-    > --deploy                                                          Deploy code to AWS ($LATEST)
-    > --create                                                          Create and Deploy the function to AWS
-    > --new-version                                                     Publish a new version and attach it to the specified alias, by default 'stage' 
+    > --package-only                               Generate only the index.zip file for the current lambda
+    > --deploy                                     Deploy code to AWS ($LATEST)
+    > --create                                     Create and Deploy the function to AWS
+    > --new-version                                Publish a new version and attach it to the specified alias, by default 'stage' 
         --alias=<string>
 
 Parameters to override serverless.json values
     --stage=<string>
     --role=<string>
     --layers="<Array<string>>
-    --layer-version=<number>                                            Override the layer version specified in the serverless.json
-    --account-id=<string>                                               Specify your AWS Account Id
-    --update-role                                                       Update the Lambda Role using the serverless.json
-    --update-vpc                                                        Update the Lambda VPC using the serverless.json
+    --layer-version=<number>                        Override the layer version specified in the serverless.json
+    --account-id=<string>                           Specify your AWS Account Id
+    --update-role                                   Update the Lambda Role using the serverless.json
+    --update-vpc                                    Update the Lambda VPC using the serverless.json
 
 Attach Latest Version to Alias
-    > --attach=<string>                                                 Specify alias to attach the new version
+    > --attach=<string>                             Specify alias to attach the new version
 
 Environment variables
-    AWS_REGION, REGION                                                  To override the AWS Region
-    AWS_PROFILE, PROFILE                                                To override the AWS Profile
-    LAYER_VERSION                                                       To override the layer version specified in the serverless.json file
-    NODE_ENV                                                            To Specify 'CI' for example
-    DEBUG                                                               To enable Debugging
-    AWS_BRANCH_NAME                                                     Branch name provided by CodePipeline
+    AWS_REGION, REGION                              To override the AWS Region
+    AWS_PROFILE, PROFILE                            To override the AWS Profile
+    LAYER_VERSION                                   To override the layer version specified in the serverless.json file
+    NODE_ENV                                        To Specify 'CI' for example
+    DEBUG                                           To enable Debugging
+    AWS_BRANCH_NAME                                 Branch name provided by CodePipeline
 
-Liquibase Commands
-    > --generate-main
+Liquibase Commands (SQL Migration)
+    > [--env="<String>"]                            Optional argument to override the NODE_ENV variable 
 
-    > --create-migration
+    > --generate-main                               Generate the main.xml file based on the local files and the targetted database
+
+    > --create-migration                            Create an empty changelog
         --name=<String>
 
-    > --deploy-migration
+    > --deploy-migration                            Execute a changelog to the targetted database
         --name=<String>
-        --env=<String>
         --[no-]dry-run=<Boolean>
 
-    > --create-version
+    > --create-version                              (DEPRECATED) 
         --version=<String>
 
-    > --diff
+    > --diff                                        Compare 2 databases and print the differences
 
-    > --clear
+    > --clear                                       Remove all checksums in the liquibase table
 
-    > --rollback
+    > --rollback                                    Rollback to a tag, it uses the changelog sepcified
         --name=<String>
         --tag=<String>
+        --[no-]dry-run=<Boolean>
 
-    > --sync
-        --env
+    > --sync                                        Sync the targetted database using the main file
+        --[no-]dry-run=<Boolean>
 
 Override env. variables
     > --db-url-ref=<String>
     > --db-user-ref=<String>
     > --db-pass-ref=<String>
+    > --db-name-ref=<String>
+    > --db-extra-ref=<String>           Default: useUnicode=true&characterEncoding=UTF-8
+    > --db-port-ref=<String>            Default: 3306
+
     > --db-url=<String>
     > --db-user=<String>
     > --db-pass=<String>
+    > --db-name=<String>
+    > --db-extra=<String>               Default: useUnicode=true&characterEncoding=UTF-8
+    > --db-port=<String>                Default: 3306
 
 Environment Variables:
 
-NODE_ENV=<string>                       [development | production | stage | qa] and create the .env.[Stage name] accordingly.
+# To use the .env.[NODE_ENV] file
+NODE_ENV=<string>                       .env.[Stage name] accordingly.
+
+# Mandatory
 DB_USER="<DB_USER>"
 DB_PASS="<DB_PASS>"
-API_KEY="<LIQUIBASE_HUB_API_KEY>"
-DB_URL="jdbc:mysql://<DB_URL>:3306/<DB_NAME>?useUnicode=true&characterEncoding=UTF-8"
-PROJECT_ID="<LIQUIBASE_HUB_PROJECT_ID>"
-LIQUIBASE_CONF_PATH="<ABSOLUTE_PATH>/liquibase.properties"
-LIQUIBASE_BASE_PATH="<ABSOLUTE_PATH>/liquibase-4.3.3/./liquibase"
-BASE_PATH="./mysql/changelog"
+DB_URL="<DB_URL>"
+DB_NAME="<DB_NAME>"
+
+# Optional
+DB_PORT="<DB_PORT>"
+DB_EXTRA="<DB_EXTRA>"
+DB_PORT_REF="<DB_PORT_REF>"
+DB_EXTRA_REF="<DB_EXTRA_REF>"
+
+# OR use the AWS secret manager
+SECRETS="<CommaDelimitedString>"
+
+# To compare two databases, you must specified these parameters
 DB_USER_REF="<DB_USER_REF>"
 DB_PASS_REF="<DB_PASS_REF>"
-DB_URL_REF="jdbc:mysql://<DB_URL_REF>:3306/<DB_NAME_REF>?useUnicode=true&characterEncoding=UTF-8"
-SECRETS="<String>"
+DB_URL_REF="<DB_URL_REF>"
+DB_NAME_REF="<DB_NAME_REF>"
 
-Example
+# Optional
+API_KEY="<LIQUIBASE_HUB_API_KEY>"
+PROJECT_ID="<LIQUIBASE_HUB_PROJECT_ID>"
 
-AWS_REGION="us-east-1" LAYER_VERSION="OPTIONAL" yadu --deploy --new-version --alias='published' --profile="not_default"
-AWS_REGION="us-east-1" LAYER_VERSION="OPTIONAL" yadu --package-only
-yadu --region='us-east-1' --deploy --new-version --alias='live' --stage='test' --layers='arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:node_modules_test:1'
-
-node src/index.js --secrets="liquibase-test-dev,devops" --diff --db-url-ref="jdbc:mysql://localhost:3306/tg-qa?useUnicode=true&characterEncoding=UTF-8" --db-user-ref="admin" --db-pass-ref='yQJ*60=f9T3v.$4<' --verbose
+# To override default configuration
+BASE_PATH="./mysql/changelog"
+LIQUIBASE_CONF_PATH="<ABSOLUTE_PATH>/liquibase.properties"
+LIQUIBASE_BASE_PATH="<ABSOLUTE_PATH>/liquibase-4.3.3/./liquibase"
