@@ -1,6 +1,6 @@
 {
   "name": "@halfserious/yadu",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "description": "Package and Deploy our AWS lambdas",
   "main": "src/index.js",
   "bin": {
@@ -8,7 +8,7 @@
   },
   "scripts": {
     "lint": "eslint **/*.js",
-    "postinstall": "bash ./liquibase/scripts/install-liquibase.sh",
+    "postinstall": "bash -c '[[ -z \"$SKIP_POST\" ]] && bash ./liquibase/scripts/install-liquibase.sh || echo \"Skip Post-Installation\"'",
     "prepare": "husky install",
     "pre-commit": "lint-staged",
     "pre-push": "jest"

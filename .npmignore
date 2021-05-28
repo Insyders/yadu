@@ -3,3 +3,7 @@ _test
 *.jar
 __tests__
 **/liquibase-*/
+*.tgz
+*.config.js
+.husky/
+.prettierrc

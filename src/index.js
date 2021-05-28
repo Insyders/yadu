@@ -9,13 +9,14 @@ const colors = require('colors');
 const AWS = require('aws-sdk');
 const { retrieveSecrets } = require('../lib/secretManager');
 const header = require('../lib/header');
+const { logDebug } = require('../liquibase/src/utils');
 
 colors.setTheme({
   silly: 'rainbow',
   input: 'grey',
   verbose: 'cyan',
   prompt: 'grey',
-  info: 'green',
+  info: 'blue',
   data: 'grey',
   help: ['cyan'],
   warn: 'yellow',
@@ -34,7 +35,7 @@ if (args.verbose) {
 }
 
 async function LoadEnv() {
-  console.log('Loading Env. variables'.info);
+  logDebug('Loading Env. variables'.info);
 
   process.env.AWS_PROFILE = args.profile || process.env.AWS_PROFILE || process.env.PROFILE || 'default';
   process.env.AWS_REGION = args.region || process.env.AWS_REGION || process.env.REGION || 'us-east-1';
@@ -57,15 +58,43 @@ async function LoadEnv() {
     path: path.resolve(process.cwd(), process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env'),
   });
 
+  // Build DB URLs
+  if (args['db-url-ref'] || process.env.DB_URL_REF) {
+    console.debug('Build DB_URL_REF');
+    if (!args['db-extra-ref'] && !process.env.DB_EXTRA_REF) {
+      console.error(`${'[WARN]'.warn} --db-extra-ref or DB_EXTRA_REF is not defined, using 'useUnicode=true&characterEncoding=UTF-8'`);
+    }
+    if (!args['db-port-ref'] && !process.env.DB_PORT_REF) {
+      console.error(`${'[WARN]'.warn} --db-port-ref or DB_PORT_REF is not defined, using '3306'`);
+    }
+    if (!args['db-name-ref'] && !process.env.DB_NAME_REF) {
+      console.error(`${'[ERROR]'.error} --db-name-ref or DB_NAME_REF is not defined`);
+      throw new Error('--db-name-ref or DB_NAME_REF is not defined');
+    }
+    process.env.DB_URL_REF = `jdbc:mysql://${args['db-url-ref'] || process.env.DB_URL_REF}:${
+      args['db-port-ref'] || process.env.DB_PORT_REF || 3306
+    }/${args['db-name-ref'] || process.env.DB_NAME_REF || null}?${
+      args['db-extra-ref'] || process.env.DB_EXTRA_REF || 'useUnicode=true&characterEncoding=UTF-8'
+    }`;
+  }
+  if (args['db-url'] || process.env.DB_URL) {
+    console.debug('Build DB_URL');
+    if (!args['db-extra'] && !process.env.DB_EXTRA) {
+      console.error(`${'[WARN]'.warn} --db-extra or DB_EXTRA is not defined, using 'useUnicode=true&characterEncoding=UTF-8'`);
+    }
+    if (!args['db-port'] && !process.env.DB_PORT) {
+      console.error(`${'[WARN]'.warn} --db-port or DB_PORT is not defined, using '3306'`);
+    }
+    if (!args['db-name'] && !process.env.DB_NAME) {
+      console.error(`${'[ERROR]'.error} --db-name or DB_NAME is not defined`);
+      throw new Error('--db-name or DB_NAME is not defined');
+    }
+    process.env.DB_URL = `jdbc:mysql://${args['db-url'] || process.env.DB_URL}:${args['db-port'] || process.env.DB_PORT || 3306}/${
+      args['db-name'] || process.env.DB_NAME || null
+    }?${args['db-extra'] || process.env.DB_EXTRA || 'useUnicode=true&characterEncoding=UTF-8'}`;
+  }
+
   // Override env variables
-  if (args['db-url-ref']) {
-    console.debug('Override DB_URL_REF');
-    process.env.DB_URL_REF = args['db-url-ref'];
-  }
-  if (args['db-url']) {
-    console.debug('Override DB_URL');
-    process.env.DB_URL = args['db-url'];
-  }
   if (args['db-user-ref']) {
     console.debug('Override DB_USER_REF');
     process.env.DB_USER_REF = args['db-user-ref'];
@@ -74,6 +103,7 @@ async function LoadEnv() {
     console.debug('Override DB_USER');
     process.env.DB_USER = args['db-user'];
   }
+
   if (args['db-pass-ref']) {
     console.debug('Override DB_PASS_REF');
     process.env.DB_PASS_REF = args['db-pass-ref'];
@@ -84,6 +114,7 @@ async function LoadEnv() {
   }
 
   if (args.verbose) {
+    // Print the env. variables. Be careful.
     console.debug(process.env);
   }
 }
@@ -94,6 +125,7 @@ async function LoadEnv() {
     await LoadEnv();
 
     // Load everything after setting the appropriate environment variables
+    // Otherwise the process.env isn't configured properly.
     const { version } = require('../package.json');
     const { checkGITCLI, checkZIPCLI } = require('../lib/utils');
     const { publish } = require('../lib/logic');

@@ -1,15 +1,15 @@
 const fs = require('fs');
 const path = require('path');
-
 const convert = require('xml-js');
+const { logDebug } = require('./utils');
 
 function updateXML(name, migrationPath, basePath, main = 'db.changelog-main.xml') {
   const MAIN_PATH = path.resolve(basePath, main);
 
   const json = fs.readFileSync(MAIN_PATH, 'utf8');
-  console.log(json);
+  logDebug(json);
   const converted = convert.xml2js(json, { compact: false, spaces: 4 });
-  console.log(JSON.stringify(converted, null, 2));
+  logDebug(JSON.stringify(converted, null, 2));
   converted.elements[0].elements.push({
     type: 'element',
     name: 'include',

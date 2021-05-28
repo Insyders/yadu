@@ -2,8 +2,10 @@
 
 **THIS IS STILL A WORK IN PROGRESS**
 
-This internal tool is used to deploy, upgrade and package your lambdas.
-It also manage our MySQL migrations using Liquibase CLI.
+This internal tool is used to ***deploy***, ***upgrade*** and ***package*** your lambdas.
+It also manage our ***MySQL migrations*** using ***Liquibase*** CLI.
+
+It is developed using **NodeJS** and **ShellJS** when it is not simple to do it using Javascript.
 
 ## Installation
 
@@ -15,6 +17,13 @@ Using root account or if you have a permission error:
 
 ```bash
 npm install --unsafe-perm -g @halfserious/yadu
+```
+
+To skip the Liquibase Installation:
+
+```bash
+export SKIP_POST=1
+npm install -g @halfserious/yadu
 ```
 
 ## Usage
@@ -58,12 +67,12 @@ alternatives:
 
 It uses the **environment variables**, **AWS Secret Manager**, **Local .env** and **arguments**
 
-| Priority | Description                                             | Command                                     |
-|:--------:|---------------------------------------------------------|---------------------------------------------|
-|    1     | Load data from your environment variables               | `export FOO=BAR`                            |
-|    2     | Load data from AWS secret manager in your `process.env` | `--secret=<String,String,...>`              |
-|    3     | Load data from local `.env.environment` file            | `NODE_ENV="<String>"` or `--env="<String>"` |
-|    4     | Override using the arguments (Check the CLI commands)   | `--help`                                    |
+|     Priority     | Description                                               | Command                                     |
+|:----------------:|-----------------------------------------------------------|---------------------------------------------|
+| 4 (Loaded First) | Load data from your local environment variables           | `export FOO=BAR` or `SetX FOO BAR`          |
+|        3         | Load data from AWS secret manager into your `process.env` | `--secret=<String,String,...>`              |
+|        2         | Load data from local `.env.environment` file              | `NODE_ENV="<String>"` or `--env="<String>"` |
+| 1 (Loaded Last)  | Override using the arguments (Check the CLI commands)     | `--help`                                    |
 
 ## Support
 
