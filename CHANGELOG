@@ -1,3 +1,13 @@
+2021-05-28
+
+- Reviewed changes to create a PR
+- Added warning message for create-version that will be fix later.
+- Improved CLI documentation
+- Added test for secret manager and suffix
+- Moved validation functions
+- improved liquibase installation script (need to test it on Windows)
+- reworked the liquibase parameters, such as DB_URL, DB_EXTRA, DB_PORT, DB_NAME and their equivalent with _REF
+
 2021-05-17
 
 - Working on feature request https://github.com/Insyders/yadu/issues/2
