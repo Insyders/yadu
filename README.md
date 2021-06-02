@@ -1,11 +1,19 @@
 # YaDU (Yet another Deployment Utility)
 
-**THIS IS STILL A WORK IN PROGRESS**
+<p align="center">
+  <img alt="YaDU Logo" width="80%" src="./assets/HS_YaDU_Hor_color.svg">
+</p>
 
-This internal tool is used to ***deploy***, ***upgrade*** and ***package*** your lambdas.
-It also manage our ***MySQL migrations*** using ***Liquibase*** CLI.
+## Introduction
 
-It is developed using **NodeJS** and **ShellJS** when it is not simple to do it using Javascript.
+***THIS IS STILL A WORK IN PROGRESS***
+
+This tool is used to ***deploy***, ***upgrade*** and ***package*** AWS lambdas.
+It also manage our ***MySQL migrations / Online Schema Changes*** using ***Liquibase*** CLI.
+
+It is developed using **NodeJS** and **ShellJS** when it is not simple to use Javascript.
+
+We planned to create a complete and intuitive tool to work alongside with SAM (from AWS)
 
 ## Installation
 
@@ -32,7 +40,6 @@ For specific documentation:
 
 - [Lambda](docs/lambda.md)
 - [MySQL/Migrations/Liquibase](docs/mysql.md)
-
 
 ### Get CLI help
 
@@ -91,3 +98,9 @@ Tested on windows 10 using
 `npm install -g @halfserious/yadu`
 
 
+## Contribution
+
+All contributions are welcome ! 
+We use the issues to track Feature requests, bugs and others.
+
+We are still working on the core of this utility, so it is possible that breaking changes will be published.
