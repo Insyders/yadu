@@ -7,6 +7,7 @@
 - Added base logic and code to load the lambda configuration by reading the SAM cloudformation YAML file
     - It requires the config service to work properly
 - Added tests and fixed the existing ones.
+- Liquibase isn't launched using --dry-run by default
 
 2021-05-28
 

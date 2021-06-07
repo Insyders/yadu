@@ -55,7 +55,10 @@ if (args.verbose) {
     }
 
     // handle liquibase commands
-    await Handler(args);
+    const handled = await Handler(args);
+    if (handled) {
+      process.exit(0);
+    }
 
     if (!REGION && !args['package-only']) {
       console.error(`${'[ERROR]'.error} The \`AWS_REGION\`, \`REGION\` environment variable or \`--region=<string>\` is required`);

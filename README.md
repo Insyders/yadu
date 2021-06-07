@@ -9,7 +9,7 @@
 ***THIS IS STILL A WORK IN PROGRESS***
 
 This tool is used to ***deploy***, ***upgrade*** and ***package*** AWS lambdas.
-It also manage our ***MySQL migrations / Online Schema Changes*** using ***Liquibase*** CLI.
+It also manage our ***MySQL Schema Changes / Online Schema Changes*** using ***Liquibase*** CLI.
 
 It is developed using **NodeJS** and **ShellJS** when it is not simple to use Javascript.
 

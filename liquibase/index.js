@@ -44,15 +44,16 @@ logDebug(liquibaseConfPath);
 
 async function Handler(args) {
   let handled = false;
+  logDebug(args);
+  const dryrun = !!args['dry-run'];
+  process.env.dryrun = dryrun;
+
   if (!Validation(args)) {
-    return;
+    return Promise.resolve(false);
   }
   if (!CheckBasePath(basePath)) {
-    return;
+    return Promise.resolve(false);
   }
-
-  logDebug(args);
-  const dryrun = args['dry-run'] || args['dry-run'] === undefined;
 
   if (args['generate-main']) {
     console.log('Generate main.xml File'.action);
@@ -126,7 +127,7 @@ async function Handler(args) {
 
   if (handled) {
     console.log('Command executed.'.debug);
-    process.exit(0);
+    return Promise.resolve(true);
   }
 
   console.error(`${'[ERROR]'.error} Invalid or Missing Parameters`);
