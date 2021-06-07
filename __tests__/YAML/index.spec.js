@@ -15,6 +15,7 @@ describe('SAM Templates', () => {
         NodeEnv: 'development',
         '${CognitoStackName}:IdentityPoolId': 'super-uuid-for-the-identity-pool-id',
         JwtSecretName: 'my-jwt-aws-secret-name',
+        '${IAMStackName}:GenericLambdaRole': 'arn:aws:iam::${AWS::AccountId}:role/service-role/basic_lambda_execution',
       },
     });
     convert.LoadYaml('./api.yaml');

@@ -16,6 +16,7 @@
     "consistent-return": "off",
     "no-param-reassign": "off",
     "no-restricted-syntax": "off",
+    "no-template-curly-in-string": "off",
     "max-len": [
       2,
       140 // 140 chars

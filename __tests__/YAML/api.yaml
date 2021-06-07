@@ -1,8 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: POC Application using SAM
 
-# FIXME: This is a Proof of concept, so the lambda role is not adapted at all !
-
 Transform: AWS::Serverless-2016-10-31
 
 Globals:
@@ -30,7 +28,12 @@ Parameters:
   CognitoStackName:
     Type: String
     # IdentityPoolId
+  IAMStackName:
+    Type: String
+    # GenericLambdaRole
 
+  NodeModuleLayer:
+    Type: String
   JwtSecretName:
     Type: String
 

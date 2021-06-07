@@ -1,0 +1,7 @@
+{
+    "lambdaBasePath": "./",
+    "stage": "dev",
+    "accountId": "1234567890",
+    "mapping": {},
+    "useServerlessJson": false
+}
