@@ -61,6 +61,12 @@ function sync(liquibaseBasePath, liquibaseConfPath, basePath, classPath, dryrun,
     if (response.stderr.includes('is already registered') || response.stdout.includes('is already registered')) {
       logDebug('It is safe to continue');
       console.log('WARN: Changelog already registred.'.warn);
+    } else if (
+      response.stderr.includes("'hubProjectId' has invalid value 'undefined'") ||
+      response.stdout.includes("'hubProjectId' has invalid value 'undefined'")
+    ) {
+      logDebug('It is safe to continue');
+      console.log('WARN: Liquibase hub not configured.'.warn);
     } else {
       throw new Error(response.stderr || response.stdout);
     }
