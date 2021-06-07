@@ -1,15 +1,15 @@
-const AWS = require("aws-sdk");
+const AWS = require('aws-sdk');
 
 /**
  * Get stack name from environment variable AWS_SAM_STACK_NAME and make an API call to verify the stack exists.
  * throw exception if AWS_SAM_STACK_NAME is not set.
  */
 const getAndVerifyStackName = async () => {
-  const stackName = process.env["AWS_SAM_STACK_NAME"];
+  const stackName = process.env.AWS_SAM_STACK_NAME;
   if (!stackName) {
     throw new Error(
-      "Cannot find env var AWS_SAM_STACK_NAME.\n" +
-        "Please setup this environment variable with the stack name where we are running integration tests."
+      'Cannot find env var AWS_SAM_STACK_NAME.\n' +
+        'Please setup this environment variable with the stack name where we are running integration tests.',
     );
   }
 
@@ -21,10 +21,7 @@ const getAndVerifyStackName = async () => {
       })
       .promise();
   } catch (e) {
-    throw new Error(
-      `Cannot find stack ${stackName}: ${e.message}\n` +
-        `Please make sure stack with the name "${stackName}" exists.`
-    );
+    throw new Error(`Cannot find stack ${stackName}: ${e.message}\n` + `Please make sure stack with the name "${stackName}" exists.`);
   }
 
   return stackName;
@@ -33,7 +30,7 @@ const getAndVerifyStackName = async () => {
 /**
  * Make sure env variable AWS_SAM_STACK_NAME exists with the name of the stack we are going to test.
  */
-describe("Test Function Invoke", function () {
+describe('Test Function Invoke', () => {
   let functionName;
 
   /**
@@ -52,9 +49,7 @@ describe("Test Function Invoke", function () {
 
     const resources = response.StackResourceSummaries;
 
-    const functionResource = resources.find(
-      (resource) => resource.LogicalResourceId === "helloFromLambdaFunction"
-    );
+    const functionResource = resources.find((resource) => resource.LogicalResourceId === 'helloFromLambdaFunction');
     expect(functionResource).not.toBe(undefined);
 
     functionName = functionResource.PhysicalResourceId;
@@ -63,20 +58,18 @@ describe("Test Function Invoke", function () {
   /**
    * Calling the helloFromLambdaFunction using AWS API
    */
-  it("helloFromLambdaFunction should be invokable", async () => {
-    console.info("function name:", functionName);
+  it('helloFromLambdaFunction should be invokable', async () => {
+    console.info('function name:', functionName);
 
     const client = new AWS.Lambda();
     const response = await client
       .invoke({
         FunctionName: functionName,
-        Payload: "{}",
+        Payload: '{}',
       })
       .promise();
 
     expect(response.StatusCode).toBe(200);
-    expect(response.Payload.toString()).toBe(
-      JSON.stringify("Hello from Lambda!")
-    );
+    expect(response.Payload.toString()).toBe(JSON.stringify('Hello from Lambda!'));
   });
 });

@@ -1,6 +1,7 @@
 require('dotenv').config({
   path: `${__dirname}/../.env.${process.env.NODE_ENV}`,
 });
+const path = require('path');
 const YamlConverter = require('../../lib/readYaml');
 
 describe('SAM Templates', () => {
@@ -18,7 +19,7 @@ describe('SAM Templates', () => {
         '${IAMStackName}:GenericLambdaRole': 'arn:aws:iam::${AWS::AccountId}:role/service-role/basic_lambda_execution',
       },
     });
-    convert.LoadYaml('./api.yaml');
+    convert.LoadYaml(path.join(__dirname, 'api.yaml'));
 
     convert.ExtractLambdaInfo();
     expect(convert.GetConverted()).toBeDefined();
