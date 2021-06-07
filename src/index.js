@@ -7,7 +7,7 @@ const fs = require('fs');
 const path = require('path');
 const colors = require('colors');
 const header = require('../lib/header');
-const loadArgs = require('../lib/loadArgs');
+const { loadArgs } = require('../lib/loadArgs');
 
 colors.setTheme({
   silly: 'rainbow',
