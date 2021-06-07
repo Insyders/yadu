@@ -44,10 +44,10 @@ logDebug(liquibaseConfPath);
 
 async function Handler(args) {
   let handled = false;
-  if (!CheckBasePath(basePath)) {
+  if (!Validation(args)) {
     return;
   }
-  if (!Validation(args)) {
+  if (!CheckBasePath(basePath)) {
     return;
   }
 
