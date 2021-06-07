@@ -41,7 +41,6 @@ test('Suffix for secret manager', () => {
         } else {
           expect(process.env.DB_USER).toBeDefined();
         }
-        console.debug(process.env);
       }
     });
   });

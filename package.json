@@ -26,10 +26,12 @@
   "dependencies": {
     "aws-sdk": "2.840.0",
     "colors": "1.4.0",
+    "dotenv": "^8.2.0",
+    "js-yaml": "^4.1.0",
     "minimist": "^1.2.5",
     "shelljs": "^0.8.4",
     "xml-js": "^1.6.11",
-    "dotenv": "^8.2.0"
+    "yaml-cfn": "^0.3.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.1",
