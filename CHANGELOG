@@ -1,3 +1,13 @@
+2021-06-07
+
+- Fixed issues
+    - Unable to override secret manager configuration for the database
+- Added lambda for future notification process
+- Added dummy class for better implementation with service config
+- Added base logic and code to load the lambda configuration by reading the SAM cloudformation YAML file
+    - It requires the config service to work properly
+- Added tests and fixed the existing ones.
+
 2021-05-28
 
 - Reviewed changes to create a PR
