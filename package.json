@@ -11,7 +11,8 @@
     "postinstall": "bash -c '[[ -z \"$SKIP_POST\" ]] && bash ./liquibase/scripts/install-liquibase.sh || echo \"Skip Post-Installation\"'",
     "prepare": "husky install",
     "pre-commit": "lint-staged",
-    "pre-push": "jest"
+    "pre-push": "jest",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -27,7 +28,9 @@
     "aws-sdk": "2.840.0",
     "colors": "1.4.0",
     "dotenv": "^8.2.0",
+    "inquirer": "^8.1.0",
     "js-yaml": "^4.1.0",
+    "json-to-pretty-yaml": "^1.2.2",
     "minimist": "^1.2.5",
     "shelljs": "^0.8.4",
     "xml-js": "^1.6.11",

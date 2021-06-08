@@ -8,6 +8,7 @@ const path = require('path');
 const colors = require('colors');
 const header = require('../lib/header');
 const { loadArgs } = require('../lib/loadArgs');
+const template = require('../lib/template');
 
 colors.setTheme({
   silly: 'rainbow',
@@ -63,6 +64,12 @@ if (args.verbose) {
     // handle liquibase commands
     const handled = await Handler(args);
     if (handled) {
+      process.exit(0);
+    }
+
+    // handle template creation
+    const templateHandled = await template(args);
+    if (templateHandled) {
       process.exit(0);
     }
 

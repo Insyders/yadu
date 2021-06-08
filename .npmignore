@@ -8,3 +8,4 @@ __tests__
 .husky/
 .prettierrc
 mysql/
+lambdas/
