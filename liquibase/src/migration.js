@@ -56,7 +56,7 @@ function deployMigration(name, environment = 'custom', liquibaseBasePath, liquib
     );
 
     if (code !== 0) {
-      throw new Error(stderr || stdout);
+      throw new Error(stderr || stdout.replace(/#.*\n/gm, ''));
     }
 
     console.log(stdout);

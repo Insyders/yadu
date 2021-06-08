@@ -19,6 +19,7 @@ colors.setTheme({
   warn: 'yellow',
   error: 'red',
   debug: 'grey',
+  info: 'blue',
   success: ['green'],
   action: 'cyan',
 });
