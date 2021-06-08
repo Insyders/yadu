@@ -36,6 +36,9 @@ Package and Deploy
     > --new-version                                Publish a new version and attach it to the specified alias, by default 'stage' 
         --alias=<string>
 
+Template
+    > --template                                    Use the interactive shell to generate the lambda (SAM Serverless), alarm and log group YAML configuration
+
 Parameters to override serverless.json values
     --stage=<string>
     --role=<string>
