@@ -1,0 +1,31 @@
+Liquibase Community 4.3.5 by Datical
+####################################################
+##   _     _             _ _                      ##
+##  | |   (_)           (_) |                     ##
+##  | |    _  __ _ _   _ _| |__   __ _ ___  ___   ##
+##  | |   | |/ _` | | | | | '_ \ / _` / __|/ _ \  ##
+##  | |___| | (_| | |_| | | |_) | (_| \__ \  __/  ##
+##  \_____/_|\__, |\__,_|_|_.__/ \__,_|___/\___|  ##
+##              | |                               ##
+##              |_|                               ##
+##                                                ## 
+##  Get documentation at docs.liquibase.com       ##
+##  Get certified courses at learn.liquibase.com  ## 
+##  Free schema change activity reports at        ##
+##      https://hub.liquibase.com                 ##
+##                                                ##
+####################################################
+Starting Liquibase at 20:35:06 (version 4.3.5 #62 built at 2021-04-29 18:31+0000)
+Liquibase History for jdbc:mysql://SANITIZED.IO:3306/SANITIZED?useUnicode=true&characterEncoding=UTF-8
+
+- Database updated at 2021-06-04, 5:51 p.m.. Applied 2 changeSet(s) in 0.0s, DeploymentId: 2829062837
+  mysql/changelog/db.changelog-abc-123.mysql.sql::1622828079250-create-departments::tommygingras
+  mysql/changelog/db.changelog-abc-123.mysql.sql::1622828079250-insert-departments-insert-default::tommygingras
+
+- Database updated at 2021-06-07, 7:10 p.m.. Applied 1 changeSet(s), DeploymentId: 3093033507
+  mysql/changelog/db.changelog-abc-124.mysql.sql::abc-124-insert-departments::tommygingras
+
+- Database updated at 2021-06-07, 7:17 p.m.. Applied 1 changeSet(s), DeploymentId: 3093472978
+  mysql/changelog/db.changelog-abc-125.mysql.sql::abc-125-insert-departments::tommygingras
+
+Liquibase command 'history' was executed successfully.

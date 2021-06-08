@@ -28,7 +28,7 @@ function sync(liquibaseBasePath, liquibaseConfPath, basePath, classPath, dryrun,
     );
 
     if (code && code !== 0) {
-      throw new Error(stderr || stdout);
+      throw new Error(stderr || stdout.replace(/#.*\n/gm, ''));
     }
     console.log(stdout);
     console.log('DRY-RUN : Nothing deployed.'.success);

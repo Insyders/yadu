@@ -31,7 +31,7 @@ function diff(liquibaseBasePath, liquibaseConfPath, classPath) {
   );
 
   if (code && code !== 0) {
-    throw new Error(stderr || stdout);
+    throw new Error(stderr || stdout.replace(/#.*\n/gm, ''));
   }
 
   console.log(stdout);
