@@ -49,8 +49,14 @@ if (args.verbose) {
 
     shell.echo(`WORK IN PROGRESS; Version ${version}; Using AWS_REGION=${REGION} & AWS_PROFILE=${PROFILE}`.data);
 
-    if (args.help || !args || args.length === 1) {
+    if (args.help || !args || Object.keys(args).length === 1) {
+      console.log('\n');
       console.log(fs.readFileSync(path.join(__dirname, '..', 'CLI.txt'), { encoding: 'utf-8' }));
+
+      if (!args || Object.keys(args).length === 1) {
+        console.log(`${'WARN'.warn} no arguments provided.`);
+      }
+
       process.exit(0);
     }
 
