@@ -116,8 +116,7 @@ function sync(liquibaseBasePath, liquibaseConfPath, basePath, classPath, dryrun,
     throw new Error(response.stderr || response.stdout);
   }
 
-  // FIXME: NODE_ENV DOESN'T MAKE SENSE ANYMORE
-  console.log(`Migrations deployed to '${process.env.NODE_ENV}' successfully`.success);
+  console.log(`${'[SUCCESS]'.success}Migrations deployed to '${process.env.NODE_ENV || process.env.DB_NAME}' successfully`);
 }
 
 module.exports = {

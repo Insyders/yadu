@@ -13,7 +13,8 @@ function getCommitId() {
 }
 
 function getBranchName() {
-  const branchName = execSync('git branch --show-current').toString().trim();
+  const branchName = execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
+  logDebug(branchName);
   if (branchName.includes('/')) {
     return branchName.split('/')[1];
   }
