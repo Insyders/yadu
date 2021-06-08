@@ -49,10 +49,21 @@ async function Handler(args) {
   const dryrun = !!args['dry-run'];
   process.env.dryrun = dryrun;
 
-  if (!Validation(args)) {
+  if (!CheckBasePath(basePath)) {
     return Promise.resolve(false);
   }
-  if (!CheckBasePath(basePath)) {
+
+  // This one doesn't required to have access to the actual database
+  if (args['create-migration'] && args.name) {
+    console.log('Create new migration'.action);
+    console.log('>>>');
+    createMigration(args.name, basePath);
+    console.log('<<<');
+    handled = true;
+  }
+
+  // The following commands require a database configuration.
+  if (!handled && !Validation(args)) {
     return Promise.resolve(false);
   }
 
@@ -60,14 +71,6 @@ async function Handler(args) {
     console.log('Generate main.xml File'.action);
     console.log('>>>');
     await generateMainFile(liquibaseBasePath, liquibaseConfPath, basePath, classPath);
-    console.log('<<<');
-    handled = true;
-  }
-
-  if (args['create-migration'] && args.name) {
-    console.log('Create new migration'.action);
-    console.log('>>>');
-    createMigration(args.name, basePath);
     console.log('<<<');
     handled = true;
   }
