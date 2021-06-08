@@ -13,7 +13,7 @@ function getCommitId() {
 }
 
 function getBranchName() {
-  const branchName = execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
+  const branchName = process.env.AWS_BRANCH_NAME || execSync('git branch --show-current').toString().trim();
   logDebug(branchName);
   if (branchName.includes('/')) {
     return branchName.split('/')[1];
