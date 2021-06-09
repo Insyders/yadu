@@ -9,6 +9,7 @@ const colors = require('colors');
 const header = require('../lib/header');
 const { loadArgs } = require('../lib/loadArgs');
 const template = require('../lib/template');
+const config = require('../lib/config');
 
 colors.setTheme({
   silly: 'rainbow',
@@ -36,7 +37,7 @@ if (args.verbose) {
 (async () => {
   try {
     header();
-    await loadArgs(args);
+    const configService = await loadArgs(args);
 
     // Load everything after setting the appropriate environment variables
     // Otherwise the process.env isn't configured properly.
@@ -73,6 +74,12 @@ if (args.verbose) {
       process.exit(0);
     }
 
+    // handle template creation
+    const configHandled = await config(args);
+    if (configHandled) {
+      process.exit(0);
+    }
+
     if (!REGION && !args['package-only']) {
       console.error(`${'[ERROR]'.error} The \`AWS_REGION\`, \`REGION\` environment variable or \`--region=<string>\` is required`);
       process.exit(1);
@@ -81,7 +88,7 @@ if (args.verbose) {
     checkZIPCLI();
     checkGITCLI();
 
-    publish(args)
+    publish(args, configService)
       .then(() => {
         process.exit(0);
       })

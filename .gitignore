@@ -5,3 +5,4 @@ liquibase-*/
 .env*
 *.tgz
 mysql/
+.yadu/

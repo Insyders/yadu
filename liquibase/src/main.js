@@ -1,8 +1,9 @@
 const path = require('path');
 const colors = require('colors');
 const { saveMainFile } = require('./xml');
-const { getAllHistory, logDebug, getLocalMigration, compare } = require('./utils');
+const { getAllHistory, getLocalMigration, compare } = require('./utils');
 const { base } = require('../lib/mainXML');
+const { logDebug } = require('../../globals/utils');
 
 colors.setTheme({
   warn: 'yellow',

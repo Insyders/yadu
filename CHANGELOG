@@ -1,3 +1,7 @@
+2021-06-09
+
+- Added first version of the config service
+
 2021-06-08
 
 - added --template to generate sam YAML including the alarm and the loggroup

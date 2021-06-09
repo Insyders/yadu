@@ -2,11 +2,10 @@ const { execSync } = require('child_process');
 const shell = require('shelljs');
 const fs = require('fs');
 const path = require('path');
+const { logDebug } = require('../../globals/utils');
 
 const CHANGELOG_PATTERN = /^mysql\/changelog\/db.changelog-.*/;
 const CHANGELOG_FILE_PATTERN = /^db.changelog-.*.mysql.sql/;
-
-const logDebug = (message) => (process.env.debug ? console.debug(message) : null);
 
 function getCommitId() {
   return execSync('git rev-parse HEAD').toString().trim();
@@ -110,7 +109,6 @@ module.exports = {
   getAllHistory,
   getLocalMigration,
   compare,
-  logDebug,
   getCommitId,
   getBranchName,
   processHistory,

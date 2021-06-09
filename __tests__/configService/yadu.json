@@ -1,7 +1,16 @@
 {
-    "lambdaBasePath": "./",
-    "stage": "dev",
-    "accountId": "1234567890",
-    "mapping": {},
-    "useServerlessJson": false
-}
+    "debug": true,
+    "region": "us-east-1",
+    "layerVersion": null,
+    "accountId": "123456789012",
+    "lambdaBasePath": "../",
+    "stage": "",
+    "mapping": {
+      "foo": "bar"
+    },
+    "secrets": "db-dev,db-dev-old:ref",
+    "mysqlBasePath": "mysql/changelog/",
+    "liquibaseBasePath": null,
+    "liquibaseConfPath": null,
+    "classPath": null
+  }
