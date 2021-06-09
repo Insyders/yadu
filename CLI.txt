@@ -39,6 +39,10 @@ Package and Deploy
 Template
     > --template                                    Use the interactive shell to generate the lambda (SAM Serverless), alarm and log group YAML configuration
 
+Configuration
+    > --init                                        Generate the empty configuration under ./.yadu/config.json
+        [--interactive]                             Use the interactive shell to generate a YaDU configuration
+
 Parameters to override serverless.json values
     --stage=<string>
     --role=<string>

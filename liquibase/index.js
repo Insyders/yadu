@@ -6,7 +6,7 @@ require('dotenv').config({
   path: path.resolve(process.cwd(), process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env'),
 });
 
-const { logDebug } = require('./src/utils');
+const { logDebug } = require('../globals/utils');
 const { createMigration, deployMigration } = require('./src/migration');
 const { createVersion } = require('./src/version');
 const { sync } = require('./src/sync');
@@ -30,10 +30,10 @@ const { NODE_ENV } = process.env;
 
 const basePath = process.env.BASE_PATH || path.join('.', 'mysql', 'changelog') + path.sep;
 const classPath = process.env.CLASS_PATH || `${path.join(__dirname, 'lib')}${path.sep}mysql-connector-java-8.0.24.jar`;
-let liquibaseBasePath = process.env.LIQUIBASE_BASE_PATH || `${path.join(__dirname, 'lib', 'liquibase-4.3.5')}${path.sep}liquibase`;
-if (process.platform === 'win32') {
-  liquibaseBasePath = process.env.LIQUIBASE_BASE_PATH || `${path.join(__dirname, 'lib', 'liquibase-4.3.5')}${path.sep}liquibase.bat`;
-}
+const liquibaseBasePath =
+  process.platform === 'win32'
+    ? process.env.LIQUIBASE_BASE_PATH || `${path.join(__dirname, 'lib', 'liquibase-4.3.5')}${path.sep}liquibase.bat`
+    : process.env.LIQUIBASE_BASE_PATH || `${path.join(__dirname, 'lib', 'liquibase-4.3.5')}${path.sep}liquibase`;
 const liquibaseConfPath = process.env.LIQUIBASE_CONF_PATH || `${path.join('.')}${path.sep}liquibase.properties`;
 
 // DEBUGGING
@@ -49,6 +49,10 @@ async function Handler(args) {
   const dryrun = !!args['dry-run'];
   process.env.dryrun = dryrun;
 
+  if (!Validation(args)) {
+    return false;
+  }
+
   if (!CheckBasePath(basePath)) {
     return Promise.resolve(false);
   }
@@ -63,7 +67,7 @@ async function Handler(args) {
   }
 
   // The following commands require a database configuration.
-  if (!handled && !Validation(args)) {
+  if (!handled) {
     return Promise.resolve(false);
   }
 

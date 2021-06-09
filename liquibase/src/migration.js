@@ -3,7 +3,8 @@ const fs = require('fs');
 const path = require('path');
 const colors = require('colors');
 const shell = require('shelljs');
-const { getCommitId, getBranchName, logDebug } = require('./utils');
+const { getCommitId, getBranchName } = require('./utils');
+const { logDebug } = require('../../globals/utils');
 
 colors.setTheme({
   warn: 'yellow',

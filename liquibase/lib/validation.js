@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { logDebug } = require('../src/utils');
+const { logDebug } = require('../../globals/utils');
 
 const { DB_USER, DB_PASS, API_KEY, DB_URL, PROJECT_ID } = process.env;
 

@@ -2,7 +2,7 @@ require('dotenv').config({
   path: `${__dirname}/../.env.${process.env.NODE_ENV}`,
 });
 const path = require('path');
-const YamlConverter = require('../../lib/readYaml');
+const YamlConverter = require('../../lib/classes/ReadYaml');
 
 describe('SAM Templates', () => {
   test('Convert SAM Template to JSON', () => {
