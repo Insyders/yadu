@@ -43,16 +43,15 @@ logDebug(classPath);
 // ---
 
 async function Handler(args) {
+  logDebug('[LIQUIBASE HANDLER]');
+
   let handled = false;
   logDebug(args);
   const dryrun = !!args['dry-run'];
   process.env.dryrun = dryrun;
 
-  if (!Validation(args)) {
-    return false;
-  }
-
-  if (!CheckBasePath(basePath)) {
+  // To avoid the missing mysql/changelog path error.
+  if (Validation(args) && !CheckBasePath(basePath)) {
     return Promise.resolve(false);
   }
 
@@ -66,7 +65,7 @@ async function Handler(args) {
   }
 
   // The following commands require a database configuration.
-  if (!handled) {
+  if (!handled && !Validation(args)) {
     return Promise.resolve(false);
   }
 

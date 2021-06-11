@@ -25,7 +25,7 @@ function sync(liquibaseBasePath, liquibaseConfPath, basePath, classPath, dryrun,
         --liquibaseHubApiKey='${process.env.API_KEY}' \
         --hubProjectId='${process.env.PROJECT_ID}' \
         updateSQL`,
-      { silent: !process.env.debug },
+      { silent: !process.env.DEBUG },
     );
 
     if (code && code !== 0) {
@@ -54,7 +54,7 @@ function sync(liquibaseBasePath, liquibaseConfPath, basePath, classPath, dryrun,
     --liquibaseHubApiKey='${process.env.API_KEY}' \
     --hubProjectId='${process.env.PROJECT_ID}' \
     registerChangeLog`,
-    { silent: !process.env.debug },
+    { silent: !process.env.DEBUG },
   );
 
   if (response && response.code !== 0) {
@@ -87,7 +87,7 @@ function sync(liquibaseBasePath, liquibaseConfPath, basePath, classPath, dryrun,
     update`;
 
   logDebug(updateCmd);
-  response = shell.exec(updateCmd, { silent: !process.env.debug });
+  response = shell.exec(updateCmd, { silent: !process.env.DEBUG });
 
   if (response && response.code !== 0) {
     logDebug(`Response code : ${response.code}`);
@@ -108,7 +108,7 @@ function sync(liquibaseBasePath, liquibaseConfPath, basePath, classPath, dryrun,
     --liquibaseHubApiKey='${process.env.API_KEY}' \
     --hubProjectId='${process.env.PROJECT_ID}' \
     tag ${branchName}-${lastCommitId}`,
-    { silent: !process.env.debug },
+    { silent: !process.env.DEBUG },
   );
 
   if (response && response.code !== 0) {

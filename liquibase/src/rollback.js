@@ -27,7 +27,7 @@ function rollback(liquibaseBasePath, liquibaseConfPath, basePath, classPath, nam
         --liquibaseHubApiKey='${process.env.API_KEY}' \
         --hubProjectId='${process.env.PROJECT_ID}' \
         rollbackSQL ${tag}`,
-      { silent: !process.env.debug },
+      { silent: !process.env.DEBUG },
     );
 
     if (code && code !== 0) {
@@ -54,7 +54,7 @@ function rollback(liquibaseBasePath, liquibaseConfPath, basePath, classPath, nam
         --liquibaseHubApiKey='${process.env.API_KEY}' \
         --hubProjectId='${process.env.PROJECT_ID}' \
         rollback ${tag}`,
-    { silent: !process.env.debug },
+    { silent: !process.env.DEBUG },
   );
 
   if (code && code !== 0) {

@@ -204,6 +204,27 @@ Resources:
             Auth:
               Authorizer: AWS_IAM
 
+    # LAMBDA FUNCTIONS
+  yaduLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "yadu-${Stage}"
+      Description: "Who am I Function"
+      CodeUri: ./yadu
+      Timeout: 30
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/service-role/basic_lambda_execution"
+      Layers:
+        - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:node_modules:15"
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Method: post
+            Path: /yadu
+            RestApiId: !Ref RestApi
+            Auth:
+              Authorizer: AWS_IAM
+
 Outputs:
   RestApiId:
     Value: !Ref RestApi

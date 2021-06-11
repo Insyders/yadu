@@ -27,7 +27,7 @@ function diff(liquibaseBasePath, liquibaseConfPath, classPath) {
         --liquibaseHubApiKey='${process.env.API_KEY}' \
         --hubProjectId='${process.env.PROJECT_ID}' \
         diff`,
-    { silent: !process.env.debug },
+    { silent: !process.env.DEBUG },
   );
 
   if (code && code !== 0) {

@@ -10,6 +10,7 @@ const header = require('../lib/header');
 const { loadArgs } = require('../lib/loadArgs');
 const template = require('../lib/template');
 const config = require('../lib/config');
+const { logDebug } = require('../globals/utils');
 
 colors.setTheme({
   silly: 'rainbow',
@@ -27,11 +28,11 @@ colors.setTheme({
 
 if (args.debug) {
   console.log('Enabling Debug Mode'.debug);
-  process.env.debug = 'true';
+  process.env.DEBUG = 'true';
 }
 if (args.verbose) {
   console.log('Enabling Verbose Mode'.verbose);
-  process.env.verbose = 'true';
+  process.env.VERBOSE = 'true';
 }
 
 (async () => {
@@ -93,10 +94,12 @@ if (args.verbose) {
         process.exit(0);
       })
       .catch((e) => {
+        logDebug(e);
         console.error(`${'[ERROR]'.error} ${e.message}`);
         process.exit(1);
       });
   } catch (e) {
+    logDebug(e);
     console.error(`${'[ERROR]'.error} ${e.message}`);
     process.exit(2);
   }
