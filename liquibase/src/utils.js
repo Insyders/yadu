@@ -48,7 +48,7 @@ function getAllHistory(liquibaseBasePath, liquibaseConfPath, classPath, database
         --liquibaseHubApiKey='${process.env.API_KEY}' \
         --hubProjectId='${process.env.PROJECT_ID}' \
         history`,
-      { silent: !process.env.DEBUG },
+      { silent: process.env.DEBUG === 'false' },
     );
 
     if (code && code !== 0) {

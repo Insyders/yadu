@@ -10,18 +10,18 @@ const header = require('../lib/header');
 const { loadArgs } = require('../lib/loadArgs');
 const template = require('../lib/template');
 const config = require('../lib/config');
-const { logDebug } = require('../globals/utils');
+const { logDebug, logVerbose } = require('../globals/utils');
 
 colors.setTheme({
   silly: 'rainbow',
   input: 'grey',
-  verbose: 'cyan',
+  verbose: 'magenta',
   prompt: 'grey',
   info: 'blue',
   data: 'grey',
   help: ['cyan'],
   warn: 'yellow',
-  debug: 'blue',
+  debug: 'grey',
   error: 'red',
   success: ['green', 'underline'],
 });
@@ -38,6 +38,8 @@ if (args.verbose) {
 (async () => {
   try {
     header();
+    logDebug('[DEBUGGING] Enabled');
+    logVerbose('[VERBOSE] Enabled');
     const configService = await loadArgs(args);
 
     // Load everything after setting the appropriate environment variables
@@ -50,7 +52,7 @@ if (args.verbose) {
     const PROFILE = process.env.AWS_PROFILE;
     const REGION = process.env.AWS_REGION;
 
-    shell.echo(`WORK IN PROGRESS; Version ${version}; Using AWS_REGION=${REGION} & AWS_PROFILE=${PROFILE}`.data);
+    shell.echo(`WORK IN PROGRESS; Version ${version}; Using AWS_REGION=${REGION} & AWS_PROFILE=${PROFILE}`.action);
 
     if (args.help || !args || Object.keys(args).length === 1) {
       console.log('\n');
