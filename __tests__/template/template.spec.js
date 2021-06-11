@@ -15,7 +15,7 @@ describe('Generate a lambda template', () => {
     template.GenerateLambdaAlarm();
     template.GenerateLambdaLogGroup();
 
-    expect(template.ConvertToYaml().length).toBe(1727);
+    expect(template.ConvertToYaml().length).toBe(1728);
   });
 
   test('Generate basic template with an sns and using globals', () => {
@@ -32,7 +32,7 @@ describe('Generate a lambda template', () => {
     template.GenerateLambdaAlarm();
     template.GenerateLambdaLogGroup();
 
-    expect(template.ConvertToYaml().length).toBe(1803);
+    expect(template.ConvertToYaml().length).toBe(1804);
   });
 
   test('Generate basic template with no SNS and overriding globals', () => {
@@ -48,6 +48,6 @@ describe('Generate a lambda template', () => {
     template.GenerateLambdaSAM();
     template.GenerateLambdaAlarm();
     template.GenerateLambdaLogGroup();
-    expect(template.ConvertToYaml().length).toBe(1837);
+    expect(template.ConvertToYaml().length).toBe(1838);
   });
 });
