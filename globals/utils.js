@@ -7,8 +7,14 @@ colors.setTheme({
   verbose: 'magenta',
 });
 
-const logDebug = (message) => (process.env.DEBUG === '1' || process.env.DEBUG === 'true' ? console.debug(`${message && typeof message === 'object' ? JSON.stringify(message, null, 2) : message}`.debug) : null);
-const logVerbose = (message) => (process.env.VERBOSE === '1' || process.env.VERBOSE === 'true' ? console.debug(`${message && typeof message === 'object' ? JSON.stringify(message, null, 2) : message}`.verbose) : null);
+const logDebug = (message) =>
+  process.env.DEBUG === '1' || process.env.DEBUG === 'true'
+    ? console.debug(`${message && typeof message === 'object' ? JSON.stringify(message, null, 2) : message}`.debug)
+    : null;
+const logVerbose = (message) =>
+  process.env.VERBOSE === '1' || process.env.VERBOSE === 'true'
+    ? console.debug(`${message && typeof message === 'object' ? JSON.stringify(message, null, 2) : message}`.verbose)
+    : null;
 
 const isHome = (baseDir, iter = 0) => {
   logDebug(`[isHome] #${iter}`);
