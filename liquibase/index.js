@@ -30,16 +30,15 @@ const { NODE_ENV } = process.env;
 
 const basePath = process.env.BASE_PATH || path.join('.', 'mysql', 'changelog') + path.sep;
 const classPath = process.env.CLASS_PATH || `${path.join(__dirname, 'lib')}${path.sep}mysql-connector-java-8.0.24.jar`;
-const liquibaseBasePath =
-  process.platform === 'win32'
-    ? process.env.LIQUIBASE_BASE_PATH || `${path.join(__dirname, 'lib', 'liquibase-4.3.5')}${path.sep}liquibase.bat`
-    : process.env.LIQUIBASE_BASE_PATH || `${path.join(__dirname, 'lib', 'liquibase-4.3.5')}${path.sep}liquibase`;
+// ERRATA : On windows You must use git bash or WSL
+const liquibaseBasePath = process.env.LIQUIBASE_BASE_PATH || `${path.join(__dirname, 'lib', 'liquibase-4.3.5')}${path.sep}liquibase`;
 const liquibaseConfPath = process.env.LIQUIBASE_CONF_PATH || `${path.join('.')}${path.sep}liquibase.properties`;
 
 // DEBUGGING
 logDebug(basePath);
 logDebug(liquibaseBasePath);
 logDebug(liquibaseConfPath);
+logDebug(classPath);
 
 // ---
 
