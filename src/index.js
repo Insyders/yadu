@@ -40,7 +40,20 @@ if (args.verbose) {
     header();
     logDebug('[DEBUGGING] Enabled');
     logVerbose('[VERBOSE] Enabled');
-    const configService = await loadArgs(args);
+    logVerbose(`Shell : ${process.env.comspec}`);
+
+    if (process.env.win32) {
+      console.log('Using Windows');
+      if (process.env.comspec.includes('cmd.exe')) {
+        console.log("Modifying the 'comspec' variable to use : 'C:\\Program Files\\Git\\bin\\bash.exe'");
+        process.env.comspec = 'C:\\Program Files\\Git\\bin\\bash.exe';
+      }
+    }
+
+    let configService;
+    if (args && Object.keys(args).length > 1) {
+      configService = await loadArgs(args);
+    }
 
     // Load everything after setting the appropriate environment variables
     // Otherwise the process.env isn't configured properly.

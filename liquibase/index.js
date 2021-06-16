@@ -28,11 +28,24 @@ colors.setTheme({
 
 const { NODE_ENV } = process.env;
 
-const basePath = process.env.BASE_PATH || path.join('.', 'mysql', 'changelog') + path.sep;
-const classPath = process.env.CLASS_PATH || `${path.join(__dirname, 'lib')}${path.sep}mysql-connector-java-8.0.24.jar`;
+// TODO: NEED REFACTOR it burns my eyes..
+const basePath =
+  process.env.BASE_PATH || process.env.win32
+    ? `${path.join('.', 'mysql', 'changelog')}${path.sep}`.split(path.sep).join(path.posix.sep)
+    : `${path.join('.', 'mysql', 'changelog')}${path.sep}`;
+const classPath =
+  process.env.CLASS_PATH || process.env.win32
+    ? `${path.join(__dirname, 'lib')}${path.sep}mysql-connector-java-8.0.24.jar`.split(path.sep).join(path.posix.sep)
+    : `${path.join(__dirname, 'lib')}${path.sep}mysql-connector-java-8.0.24.jar`;
 // ERRATA : On windows You must use git bash or WSL
-const liquibaseBasePath = process.env.LIQUIBASE_BASE_PATH || `${path.join(__dirname, 'lib', 'liquibase-4.3.5')}${path.sep}liquibase`;
-const liquibaseConfPath = process.env.LIQUIBASE_CONF_PATH || `${path.join('.')}${path.sep}liquibase.properties`;
+const liquibaseBasePath =
+  process.env.LIQUIBASE_BASE_PATH || process.env.win32
+    ? `${path.join(__dirname, 'lib', 'liquibase-4.3.5')}${path.sep}liquibase`.split(path.sep).join(path.posix.sep)
+    : `${path.join(__dirname, 'lib', 'liquibase-4.3.5')}${path.sep}liquibase`;
+const liquibaseConfPath =
+  process.env.LIQUIBASE_CONF_PATH || process.env.win32
+    ? `${path.join('.')}${path.sep}liquibase.properties`.split(path.sep).join(path.posix.sep)
+    : `${path.join('.')}${path.sep}liquibase.properties`;
 
 // DEBUGGING
 logDebug(basePath);

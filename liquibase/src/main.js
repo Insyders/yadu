@@ -13,8 +13,7 @@ colors.setTheme({
 });
 
 async function generateMainFile(liquibaseBasePath, liquibaseConfPath, basePath, classPath) {
-  const databaseToCompare = process.env.DB_URL_REF || process.env.DB_URL;
-  const { historyData } = await getAllHistory(liquibaseBasePath, liquibaseConfPath, classPath, databaseToCompare);
+  const { historyData } = await getAllHistory(liquibaseBasePath, liquibaseConfPath, classPath);
   const localDirectory = getLocalMigration(basePath);
 
   const { valid, warn, count } = compare(localDirectory, historyData);
