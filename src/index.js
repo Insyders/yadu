@@ -43,7 +43,7 @@ if (args.verbose) {
     logVerbose(`Shell (comspec): ${process.env.comspec}`);
     logVerbose(`Shell (COMSPEC): ${process.env.COMSPEC}`);
 
-    if (process.env.win32) {
+    if (process.platform === 'win32') {
       console.log('Using Windows');
       if (process.env.comspec.includes('cmd.exe')) {
         console.log("Modifying the 'comspec' variable to use : 'C:\\Program Files\\Git\\bin\\bash.exe'");

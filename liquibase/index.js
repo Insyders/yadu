@@ -32,20 +32,20 @@ const { NODE_ENV } = process.env;
 
 // TODO: NEED REFACTOR it burns my eyes..
 const basePath =
-  process.env.BASE_PATH || process.env.win32
+  process.env.BASE_PATH || process.platform === 'win32'
     ? `${path.join('.', 'mysql', 'changelog')}${path.sep}`.split(path.sep).join(path.posix.sep)
     : `${path.join('.', 'mysql', 'changelog')}${path.sep}`;
 const classPath =
-  process.env.CLASS_PATH || process.env.win32
+  process.env.CLASS_PATH || process.platform === 'win32'
     ? `${path.join(__dirname, 'lib')}${path.sep}mysql-connector-java-8.0.24.jar`.split(path.sep).join(path.posix.sep)
     : `${path.join(__dirname, 'lib')}${path.sep}mysql-connector-java-8.0.24.jar`;
 // ERRATA : On windows You must use git bash or WSL
 const liquibaseBasePath =
-  process.env.LIQUIBASE_BASE_PATH || process.env.win32
+  process.env.LIQUIBASE_BASE_PATH || process.platform === 'win32'
     ? `${path.join(__dirname, 'lib', 'liquibase-4.3.5')}${path.sep}liquibase`.split(path.sep).join(path.posix.sep)
     : `${path.join(__dirname, 'lib', 'liquibase-4.3.5')}${path.sep}liquibase`;
 const liquibaseConfPath =
-  process.env.LIQUIBASE_CONF_PATH || process.env.win32
+  process.env.LIQUIBASE_CONF_PATH || process.platform === 'win32'
     ? `${path.join('.')}${path.sep}liquibase.properties`.split(path.sep).join(path.posix.sep)
     : `${path.join('.')}${path.sep}liquibase.properties`;
 

@@ -1,3 +1,9 @@
+2021-06-11
+
+- Added find nearest .git
+- Improved console outputs
+- Fixed some bugs
+
 2021-06-09
 
 - Added first version of the config service

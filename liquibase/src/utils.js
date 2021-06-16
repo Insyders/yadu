@@ -2,7 +2,7 @@ const { execSync } = require('child_process');
 const shell = require('shelljs');
 const fs = require('fs');
 const path = require('path');
-const { logDebug } = require('../../globals/utils');
+const { logDebug, logVerbose } = require('../../globals/utils');
 
 const CHANGELOG_PATTERN = /^mysql\/changelog\/db.changelog-.*/;
 const CHANGELOG_FILE_PATTERN = /^db.changelog-.*.mysql.sql/;
@@ -36,19 +36,25 @@ function processHistory(content) {
   return historyData;
 }
 
-function getAllHistory(liquibaseBasePath, liquibaseConfPath, classPath, databaseToCompare) {
+function getAllHistory(liquibaseBasePath, liquibaseConfPath, classPath) {
   return new Promise((resolve, reject) => {
+    logDebug('GetAllHistory');
+    logVerbose(
+      `Using ${process.env.DB_URL_REF || process.env.DB_URL} with ${process.env.DB_USER_REF || process.env.DB_USER} and using the ${
+        process.env.DB_URL_REF ? 'ref' : 'primary'
+      } password`,
+    );
     const { code, stderr, stdout } = shell.exec(
       `${liquibaseBasePath} \
-        --url='${databaseToCompare}' \
+        --url='${process.env.DB_URL_REF || process.env.DB_URL}' \
         --classpath=${classPath} \
         --defaultsFile '${liquibaseConfPath}' \
-        --username='${process.env.DB_USER}' \
-        --password='${process.env.DB_PASS}' \
+        --username='${process.env.DB_USER_REF || process.env.DB_USER}' \
+        --password='${process.env.DB_PASS_REF || process.env.DB_PASS}' \
         --liquibaseHubApiKey='${process.env.API_KEY}' \
         --hubProjectId='${process.env.PROJECT_ID}' \
         history`,
-      { silent: !process.env.debug },
+      { silent: process.env.DEBUG === 'false' },
     );
 
     if (code && code !== 0) {
