@@ -26,6 +26,11 @@ colors.setTheme({
   success: ['green', 'underline'],
 });
 
+if (args['fail-on-load']) {
+  console.log('Enabling fail on load'.debug);
+  process.env.FAIL_ON_LOAD = 'true';
+}
+
 if (args.debug) {
   console.log('Enabling Debug Mode'.debug);
   process.env.DEBUG = 'true';
@@ -44,13 +49,13 @@ if (args.verbose) {
     logVerbose(`Shell (COMSPEC): ${process.env.COMSPEC}`);
 
     if (process.platform === 'win32') {
-      console.log('Using Windows');
+      logDebug('Using Windows');
       if (process.env.comspec.includes('cmd.exe')) {
-        console.log("Modifying the 'comspec' variable to use : 'C:\\Program Files\\Git\\bin\\bash.exe'");
+        console.log(`${'[INFO]'.info} Modifying the 'comspec' environment variable to use : 'C:\\Program Files\\Git\\bin\\bash.exe'`);
         process.env.comspec = 'C:\\Program Files\\Git\\bin\\bash.exe';
       }
     } else {
-      console.log('Using Linux');
+      logDebug('Using Linux');
     }
 
     let configService;
@@ -58,6 +63,8 @@ if (args.verbose) {
       configService = await loadArgs(args).catch((e) => {
         if (process.env.FAIL_ON_LOAD === 'true') {
           throw e;
+        } else {
+          console.log(`${'[WARN]'.warn} Failed to load the configuration`);
         }
       });
     }

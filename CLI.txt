@@ -140,3 +140,4 @@ BASE_PATH="./mysql/changelog"
 LIQUIBASE_CONF_PATH="<ABSOLUTE_PATH>/liquibase.properties"
 LIQUIBASE_BASE_PATH="<ABSOLUTE_PATH>/liquibase-4.3.3/./liquibase"
 MAX_ITER=<Number>
+FAIL_ON_LOAD=<Boolean>
