@@ -1,6 +1,8 @@
 const path = require('path');
 const colors = require('colors');
+const shell = require('shelljs');
 const { generateMainFile } = require('./src/main');
+
 // Load env. variables from .env.NODE_ENV file.
 require('dotenv').config({
   path: path.resolve(process.cwd(), process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env'),
@@ -28,11 +30,24 @@ colors.setTheme({
 
 const { NODE_ENV } = process.env;
 
-const basePath = process.env.BASE_PATH || path.join('.', 'mysql', 'changelog') + path.sep;
-const classPath = process.env.CLASS_PATH || `${path.join(__dirname, 'lib')}${path.sep}mysql-connector-java-8.0.24.jar`;
+// TODO: NEED REFACTOR it burns my eyes..
+const basePath =
+  process.env.BASE_PATH || process.platform === 'win32'
+    ? `${path.join('.', 'mysql', 'changelog')}${path.sep}`.split(path.sep).join(path.posix.sep)
+    : `${path.join('.', 'mysql', 'changelog')}${path.sep}`;
+const classPath =
+  process.env.CLASS_PATH || process.platform === 'win32'
+    ? `${path.join(__dirname, 'lib')}${path.sep}mysql-connector-java-8.0.24.jar`.split(path.sep).join(path.posix.sep)
+    : `${path.join(__dirname, 'lib')}${path.sep}mysql-connector-java-8.0.24.jar`;
 // ERRATA : On windows You must use git bash or WSL
-const liquibaseBasePath = process.env.LIQUIBASE_BASE_PATH || `${path.join(__dirname, 'lib', 'liquibase-4.3.5')}${path.sep}liquibase`;
-const liquibaseConfPath = process.env.LIQUIBASE_CONF_PATH || `${path.join('.')}${path.sep}liquibase.properties`;
+const liquibaseBasePath =
+  process.env.LIQUIBASE_BASE_PATH || process.platform === 'win32'
+    ? `${path.join(__dirname, 'lib', 'liquibase-4.3.5')}${path.sep}liquibase`.split(path.sep).join(path.posix.sep)
+    : `${path.join(__dirname, 'lib', 'liquibase-4.3.5')}${path.sep}liquibase`;
+const liquibaseConfPath =
+  process.env.LIQUIBASE_CONF_PATH || process.platform === 'win32'
+    ? `${path.join('.')}${path.sep}liquibase.properties`.split(path.sep).join(path.posix.sep)
+    : `${path.join('.')}${path.sep}liquibase.properties`;
 
 // DEBUGGING
 logDebug(basePath);
@@ -43,16 +58,25 @@ logDebug(classPath);
 // ---
 
 async function Handler(args) {
+  logDebug('[LIQUIBASE HANDLER]');
+
   let handled = false;
   logDebug(args);
+
+  if (args['liquibase-help']) {
+    console.log('Print Liquibase Help'.action);
+    console.log('>>>');
+    shell.exec(liquibaseBasePath);
+    console.log('<<<');
+    process.exit(0);
+  }
+
   const dryrun = !!args['dry-run'];
   process.env.dryrun = dryrun;
 
-  if (!Validation(args)) {
-    return false;
-  }
-
-  if (!CheckBasePath(basePath)) {
+  // To avoid the missing mysql/changelog path error.
+  if (Validation(args) && !CheckBasePath(basePath)) {
+    console.log('SKIPPING');
     return Promise.resolve(false);
   }
 
@@ -66,7 +90,7 @@ async function Handler(args) {
   }
 
   // The following commands require a database configuration.
-  if (!handled) {
+  if (!handled && !Validation(args)) {
     return Promise.resolve(false);
   }
 

@@ -10,34 +10,64 @@ const header = require('../lib/header');
 const { loadArgs } = require('../lib/loadArgs');
 const template = require('../lib/template');
 const config = require('../lib/config');
+const { logDebug, logVerbose } = require('../globals/utils');
 
 colors.setTheme({
   silly: 'rainbow',
   input: 'grey',
-  verbose: 'cyan',
+  verbose: 'magenta',
   prompt: 'grey',
   info: 'blue',
   data: 'grey',
   help: ['cyan'],
   warn: 'yellow',
-  debug: 'blue',
+  debug: 'grey',
   error: 'red',
   success: ['green', 'underline'],
 });
 
+if (args['fail-on-load']) {
+  console.log('Enabling fail on load'.debug);
+  process.env.FAIL_ON_LOAD = 'true';
+}
+
 if (args.debug) {
   console.log('Enabling Debug Mode'.debug);
-  process.env.debug = 'true';
+  process.env.DEBUG = 'true';
 }
 if (args.verbose) {
   console.log('Enabling Verbose Mode'.verbose);
-  process.env.verbose = 'true';
+  process.env.VERBOSE = 'true';
 }
 
 (async () => {
   try {
     header();
-    const configService = await loadArgs(args);
+    logDebug('[DEBUGGING] Enabled');
+    logVerbose('[VERBOSE] Enabled');
+    logVerbose(`Shell (comspec): ${process.env.comspec}`);
+    logVerbose(`Shell (COMSPEC): ${process.env.COMSPEC}`);
+
+    if (process.platform === 'win32') {
+      logDebug('Using Windows');
+      if (process.env.comspec.includes('cmd.exe')) {
+        console.log(`${'[INFO]'.info} Modifying the 'comspec' environment variable to use : 'C:\\Program Files\\Git\\bin\\bash.exe'`);
+        process.env.comspec = 'C:\\Program Files\\Git\\bin\\bash.exe';
+      }
+    } else {
+      logDebug('Using Linux');
+    }
+
+    let configService;
+    if (args && Object.keys(args).length > 1) {
+      configService = await loadArgs(args).catch((e) => {
+        if (process.env.FAIL_ON_LOAD === 'true') {
+          throw e;
+        } else {
+          console.log(`${'[WARN]'.warn} Failed to load the configuration`);
+        }
+      });
+    }
 
     // Load everything after setting the appropriate environment variables
     // Otherwise the process.env isn't configured properly.
@@ -49,7 +79,7 @@ if (args.verbose) {
     const PROFILE = process.env.AWS_PROFILE;
     const REGION = process.env.AWS_REGION;
 
-    shell.echo(`WORK IN PROGRESS; Version ${version}; Using AWS_REGION=${REGION} & AWS_PROFILE=${PROFILE}`.data);
+    shell.echo(`WORK IN PROGRESS; Version ${version}; Using AWS_REGION=${REGION} & AWS_PROFILE=${PROFILE}`.action);
 
     if (args.help || !args || Object.keys(args).length === 1) {
       console.log('\n');
@@ -93,10 +123,12 @@ if (args.verbose) {
         process.exit(0);
       })
       .catch((e) => {
+        logDebug(e);
         console.error(`${'[ERROR]'.error} ${e.message}`);
         process.exit(1);
       });
   } catch (e) {
+    logDebug(e);
     console.error(`${'[ERROR]'.error} ${e.message}`);
     process.exit(2);
   }

@@ -26,7 +26,7 @@ function clearCheckSums(liquibaseBasePath, liquibaseConfPath, basePath, classPat
         --liquibaseHubApiKey='${process.env.API_KEY}' \
         --hubProjectId='${process.env.PROJECT_ID}' \
         clearCheckSums`,
-    { silent: !process.env.debug },
+    { silent: process.env.DEBUG === 'false' },
   );
 
   if (code && code !== 0) {

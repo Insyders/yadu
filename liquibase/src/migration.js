@@ -53,7 +53,7 @@ function deployMigration(name, environment = 'custom', liquibaseBasePath, liquib
         --liquibaseHubApiKey='${process.env.API_KEY}' \
         --hubProjectId='${process.env.PROJECT_ID}' \
         updateSQL`,
-      { silent: !process.env.debug },
+      { silent: process.env.DEBUG === 'false' },
     );
 
     if (code !== 0) {
@@ -86,7 +86,7 @@ function deployMigration(name, environment = 'custom', liquibaseBasePath, liquib
     --liquibaseHubApiKey='${process.env.API_KEY}' \
     --hubProjectId='${process.env.PROJECT_ID}' \
     registerChangeLog`,
-    { silent: !process.env.debug },
+    { silent: process.env.DEBUG === 'false' },
   );
 
   if (response && response.code !== 0) {
@@ -118,7 +118,7 @@ function deployMigration(name, environment = 'custom', liquibaseBasePath, liquib
     --liquibaseHubApiKey='${process.env.API_KEY}' \
     --hubProjectId='${process.env.PROJECT_ID}' \
     update`,
-    { silent: !process.env.debug },
+    { silent: process.env.DEBUG === 'false' },
   );
 
   if (response && response.code !== 0) {
@@ -140,7 +140,7 @@ function deployMigration(name, environment = 'custom', liquibaseBasePath, liquib
     --liquibaseHubApiKey='${process.env.API_KEY}' \
     --hubProjectId='${process.env.PROJECT_ID}' \
     tag ${branchName}-${lastCommitId}`,
-    { silent: !process.env.debug },
+    { silent: process.env.DEBUG === 'false' },
   );
 
   if (response && response.code !== 0) {
