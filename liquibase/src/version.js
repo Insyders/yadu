@@ -26,7 +26,7 @@ function createVersion(version, liquibaseBasePath, liquibaseConfPath, basePath, 
     --liquibaseHubApiKey='${process.env.API_KEY}' \
     --hubProjectId='${process.env.PROJECT_ID}' \
     generateChangeLog`,
-    { silent: !process.env.debug },
+    { silent: process.env.DEBUG === 'false' },
   );
 
   if (response && response.code !== 0) {

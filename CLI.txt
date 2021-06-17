@@ -55,7 +55,7 @@ Parameters to override serverless.json values
 Attach Latest Version to Alias
     > --attach=<string>                             Specify alias to attach the new version
 
-Environment variables
+Environment variables (See Below for more)
     AWS_REGION, REGION                              To override the AWS Region
     AWS_PROFILE, PROFILE                            To override the AWS Profile
     LAYER_VERSION                                   To override the layer version specified in the serverless.json file
@@ -139,3 +139,5 @@ PROJECT_ID="<LIQUIBASE_HUB_PROJECT_ID>"
 BASE_PATH="./mysql/changelog"
 LIQUIBASE_CONF_PATH="<ABSOLUTE_PATH>/liquibase.properties"
 LIQUIBASE_BASE_PATH="<ABSOLUTE_PATH>/liquibase-4.3.3/./liquibase"
+MAX_ITER=<Number>
+FAIL_ON_LOAD=<Boolean>
