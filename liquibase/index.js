@@ -15,7 +15,7 @@ const { sync } = require('./src/sync');
 const { diff } = require('./src/diff');
 const { clearCheckSums } = require('./src/clear');
 const { rollback } = require('./src/rollback');
-const { Validation, CheckBasePath } = require('./lib/validation');
+const { Validation, CheckBasePath, Triggered } = require('./lib/validation');
 
 colors.setTheme({
   warn: 'yellow',
@@ -75,7 +75,7 @@ async function Handler(args) {
   process.env.dryrun = dryrun;
 
   // To avoid the missing mysql/changelog path error.
-  if (Validation(args) && !CheckBasePath(basePath)) {
+  if (Triggered(args) && !CheckBasePath(basePath)) {
     console.log('SKIPPING');
     return Promise.resolve(false);
   }

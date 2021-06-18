@@ -16,6 +16,15 @@ const commands = [
   'create-version',
 ];
 
+function Triggered(args) {
+  if (Object.keys(args).filter((arg) => commands.includes(arg)).length === 0) {
+    logDebug('Liquibase Handler: Nothing to do...'.debug);
+    return false;
+  }
+
+  return true;
+}
+
 function Validation(args) {
   const errors = [];
 
@@ -61,4 +70,5 @@ function CheckBasePath(basePath) {
 module.exports = {
   Validation,
   CheckBasePath,
+  Triggered,
 };
