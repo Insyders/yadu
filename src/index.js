@@ -63,6 +63,10 @@ if (args.verbose) {
     let configService;
     if (args && Object.keys(args).length > 1) {
       configService = await loadArgs(args).catch((e) => {
+        if (e && e.code === 'CredentialsError') {
+          console.error('[Missing AWS Credentials]\nSolution:\nexport AWS_REGION=us-east-1\nexport AWS_PROFILE=default'.error);
+          throw e;
+        }
         if (process.env.FAIL_ON_LOAD === 'true') {
           throw e;
         } else {

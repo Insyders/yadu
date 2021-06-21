@@ -18,6 +18,12 @@ const logVerbose = (message) =>
 
 const isHome = (baseDir, iter = 0) => {
   logDebug(`[isHome] #${iter}`);
+  logDebug(baseDir);
+
+  if (!baseDir) {
+    throw new Error('[isHome] Missing baseDir');
+  }
+
   if (iter >= (process.env.MAX_ITER || 8)) {
     throw new Error(`Reached the ${process.env.MAX_ITER || 8} iterations, at ${baseDir}`);
   }
