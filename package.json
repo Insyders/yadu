@@ -7,7 +7,7 @@
     "yadu": "src/index.js"
   },
   "scripts": {
-    "lint": "eslint **/*.js",
+    "lint": "eslint --ext js .",
     "postinstall": "bash -c '[[ -z \"$SKIP_POST\" ]] && bash ./liquibase/scripts/install-liquibase.sh || echo \"Skip Post-Installation\"'",
     "prepare": "husky install",
     "pre-commit": "lint-staged",

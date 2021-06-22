@@ -56,7 +56,7 @@ Parameters:
     Default: "Active"
     AllowedValues:
       - "Active"
-      - "Passthrough"
+      - "PassThrough"
   AutoPublishAlias:
     Type: String
     AllowedValues:

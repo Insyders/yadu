@@ -5,6 +5,8 @@ describe('Test mysqlDump', () => {
   test('Should find the appropriate executable path', () => {
     const mysql = new MysqlDump();
 
+    console.log(mysql);
+
     expect(mysql.CheckExecutable()).toBeTruthy();
   });
 
