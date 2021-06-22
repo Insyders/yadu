@@ -11,6 +11,7 @@ const { loadArgs } = require('../lib/loadArgs');
 const template = require('../lib/template');
 const config = require('../lib/config');
 const { logDebug, logVerbose } = require('../globals/utils');
+const { CheckLocalVersion } = require('../lib/currentVersion');
 
 colors.setTheme({
   silly: 'rainbow',
@@ -43,6 +44,7 @@ if (args.verbose) {
 (async () => {
   try {
     header();
+    CheckLocalVersion();
     logDebug('[DEBUGGING] Enabled');
     logVerbose('[VERBOSE] Enabled');
     logVerbose(`Shell (comspec): ${process.env.comspec}`);
@@ -61,6 +63,10 @@ if (args.verbose) {
     let configService;
     if (args && Object.keys(args).length > 1) {
       configService = await loadArgs(args).catch((e) => {
+        if (e && e.code === 'CredentialsError') {
+          console.error('[Missing AWS Credentials]\nSolution:\nexport AWS_REGION=us-east-1\nexport AWS_PROFILE=default'.error);
+          throw e;
+        }
         if (process.env.FAIL_ON_LOAD === 'true') {
           throw e;
         } else {
@@ -69,9 +75,12 @@ if (args.verbose) {
       });
     }
 
+    if (args['show-config']) {
+      console.debug(configService);
+    }
+
     // Load everything after setting the appropriate environment variables
     // Otherwise the process.env isn't configured properly.
-    const { version } = require('../package.json');
     const { checkGITCLI, checkZIPCLI } = require('../lib/utils');
     const { publish } = require('../lib/logic');
     const { Handler } = require('../liquibase');
@@ -79,7 +88,7 @@ if (args.verbose) {
     const PROFILE = process.env.AWS_PROFILE;
     const REGION = process.env.AWS_REGION;
 
-    shell.echo(`WORK IN PROGRESS; Version ${version}; Using AWS_REGION=${REGION} & AWS_PROFILE=${PROFILE}`.action);
+    shell.echo(`Using AWS_REGION=${REGION} & AWS_PROFILE=${PROFILE}`.action);
 
     if (args.help || !args || Object.keys(args).length === 1) {
       console.log('\n');

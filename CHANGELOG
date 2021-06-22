@@ -1,3 +1,12 @@
+2021-06-22
+
+- Added --show-config
+- Added messages
+- Added missing Handler
+- Check if YaDU version is at LATEST
+- Explicitly sowing when missing AWS PROFILE / REGION
+- Tested config service
+
 2021-06-17
 
 - Tested on windows regarding the path issues
