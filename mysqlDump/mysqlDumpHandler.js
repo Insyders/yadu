@@ -1,3 +1,4 @@
+const { logVerbose } = require('../globals/utils');
 const MysqlDump = require('./mysqldump');
 
 module.exports = (args, config) => {
@@ -5,6 +6,8 @@ module.exports = (args, config) => {
   if (!args.mysqldump) {
     return false;
   }
+
+  logVerbose(config);
 
   const md = new MysqlDump({
     executable: config && config.mysqlDump ? config.mysqlDump.executable : null,

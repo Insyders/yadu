@@ -103,7 +103,7 @@ if (args.verbose) {
     }
 
     // Handle MysqlDump
-    const mysqlDumpHandled = mysqlDumpHandler(args, config);
+    const mysqlDumpHandled = mysqlDumpHandler(args, configService);
     if (mysqlDumpHandled) {
       process.exit(0);
     }
