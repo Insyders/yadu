@@ -1,6 +1,6 @@
 {
   "name": "@halfserious/yadu",
-  "version": "2.5.3",
+  "version": "2.5.4-alpha",
   "description": "Package and Deploy our AWS lambdas",
   "main": "src/index.js",
   "bin": {
