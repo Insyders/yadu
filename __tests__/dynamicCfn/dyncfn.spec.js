@@ -1,11 +1,12 @@
+const path = require('path');
 const Cloudformation = require('../../lib/classes/Cloudformation');
 
 describe('Test dynamic CloudFormation', () => {
   test('Scan Directory', () => {
     const cfn = new Cloudformation({
       lambdaRegex: /template.yaml/,
-      sourceDirectory: './application/lambda/',
-      application: './application/cloudformation/api.yaml',
+      sourceDirectory: path.join(__dirname, 'application', 'lambda'),
+      application: `${path.join(__dirname, 'application', 'cloudformation') + path.sep}api.yaml`,
     });
 
     const validTemplates = cfn.ScanDirectory();
@@ -15,9 +16,9 @@ describe('Test dynamic CloudFormation', () => {
   test('Scan Directory & extract yaml', () => {
     const cfn = new Cloudformation({
       lambdaRegex: /template.yaml/,
-      sourceDirectory: './application/lambda/',
-      application: './application/cloudformation/api.yaml',
-      lambdaBasePath: './application/lambda',
+      sourceDirectory: path.join(__dirname, 'application', 'lambda'),
+      application: `${path.join(__dirname, 'application', 'cloudformation') + path.sep}api.yaml`,
+      lambdaBasePath: path.join(__dirname, 'application', 'lambda'),
       stage: 'dev',
       accountId: '123456789012',
       mapping: {
@@ -44,9 +45,9 @@ describe('Test dynamic CloudFormation', () => {
   test('Read Application.yaml for merge', () => {
     const cfn = new Cloudformation({
       lambdaRegex: /template.yaml/,
-      sourceDirectory: './application/lambda/',
-      application: './application/cloudformation/api.yaml',
-      lambdaBasePath: './application/lambda',
+      sourceDirectory: path.join(__dirname, 'application', 'lambda'),
+      application: `${path.join(__dirname, 'application', 'cloudformation') + path.sep}api.yaml`,
+      lambdaBasePath: path.join(__dirname, 'application', 'lambda'),
       stage: 'dev',
       accountId: '123456789012',
       mapping: {
