@@ -6,3 +6,4 @@ liquibase-*/
 *.tgz
 mysql/
 .yadu/
+*.sql

@@ -63,7 +63,7 @@ Environment variables (See Below for more)
     DEBUG                                           To enable Debugging
     AWS_BRANCH_NAME                                 Branch name provided by CodePipeline
 
-Liquibase Commands (SQL Migration)
+Liquibase Commands (SQL Migration / Schema Changes)
     > [--env="<String>"]                            Optional argument to override the NODE_ENV variable 
 
     > --generate-main                               Generate the main.xml file based on the local files and the targetted database
@@ -89,6 +89,9 @@ Liquibase Commands (SQL Migration)
 
     > --sync                                        Sync the targetted database using the main file
         --[no-]dry-run=<Boolean>
+
+MySQL
+    > --mysqldump                                   It wraps the `mysqldump` command, it can be configured using the config service
 
 Override env. variables
     > --db-url-ref=<String>
