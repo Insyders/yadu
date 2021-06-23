@@ -16,7 +16,8 @@ module.exports = class MysqlDump {
   SetDefaultExecutable() {
     logDebug(`[SetDefaultExecutable] for ${process.platform}`);
     if (process.platform === 'win32') {
-      const slash = path.win32.sep;
+      // Requires \\
+      const slash = '\\\\';
       logDebug(`Trying default executable : 'C:${slash}Program Files${slash}MySQL${slash}MySQL Workbench 8.0 CE${slash}mysqldump.exe'`);
       this.SetExecutable(`C:${slash}Program Files${slash}MySQL${slash}MySQL Workbench 8.0 CE${slash}mysqldump.exe`);
       return this.executable;
