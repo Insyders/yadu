@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: POC Application using SAM
+
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  # LAMBDA FUNCTIONS
+  LoginLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'poc-login-${Stage}'
+      Description: 'Login Function'
+      CodeUri: ../lambda/poc-login
+      Timeout: 30
+      Role: !Sub 'arn:aws:iam::${AWS::AccountId}:role/service-role/basic_lambda_execution'
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Method: post
+            Path: /login
+            RestApiId: !Ref RestApi

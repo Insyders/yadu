@@ -1,0 +1,109 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: POC Application using SAM
+
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  # ONLY USED FOR LOCAL SAM TESTING (infra v2)
+  RestApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: 'local-test-only'
+      Description: 'will-never-be-used'
+      StageName: 'live'
+      EndpointConfiguration:
+        Type: 'REGIONAL'
+      TracingEnabled: true
+      Cors:
+        AllowMethods: "'POST,OPTIONS'"
+        AllowHeaders: "'Content-Type,X-Api-Key'"
+        AllowOrigin: "'*'"
+        MaxAge: "'600'"
+        AllowCredentials: 'true'
+
+  yaduLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'yadu-${Stage}'
+      Description: 'Who am I Function'
+      CodeUri: ./yadu
+      Timeout: 30
+      Role: !Sub 'arn:aws:iam::${AWS::AccountId}:role/service-role/basic_lambda_execution'
+      Layers:
+        - !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:node_modules:15'
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Method: post
+            Path: /yadu
+            RestApiId: !Ref RestApi
+            Auth:
+              Authorizer: AWS_IAM
+
+Globals:
+  Function:
+    Runtime: nodejs12.x
+    Timeout: 300
+    Handler: !Ref DefaultHandler
+    DeploymentPreference:
+      Type: !Ref DeploymentPreference
+    Tracing: !Ref TracingMode
+    MemorySize: 1024
+    AutoPublishAlias: !Ref AutoPublishAlias
+    Environment:
+      Variables:
+        NODE_ENV: !Ref NodeEnv
+        COGNITO_IDENTITY_POOL_IDS:
+          Fn::ImportValue: !Sub '${CognitoStackName}:IdentityPoolId'
+        DEV_LOGIN: 'login.skynovation.com'
+        JWT_SECRET_NAME: !Ref JwtSecretName
+
+Parameters:
+  # Stacks
+  CognitoStackName:
+    Type: String
+    # IdentityPoolId
+
+  Stage:
+    Type: String
+  JwtSecretName:
+    Type: String
+
+  # Lambda Functions
+  DeploymentPreference:
+    Type: String
+    Default: 'AllAtOnce'
+    AllowedValues:
+      - 'Canary10Percent30Minutes'
+      - 'Canary10Percent5Minutes'
+      - 'Canary10Percent10Minutes'
+      - 'Canary10Percent15Minutes'
+      - 'Linear10PercentEvery10Minutes'
+      - 'Linear10PercentEvery1Minute'
+      - 'Linear10PercentEvery2Minutes'
+      - 'Linear10PercentEvery3Minutes'
+      - 'AllAtOnce'
+  TracingMode:
+    Type: String
+    Default: 'Active'
+    AllowedValues:
+      - 'Active'
+      - 'PassThrough'
+  AutoPublishAlias:
+    Type: String
+    AllowedValues:
+      - 'dev'
+      - 'qa'
+      - 'stage'
+      - 'preprod'
+      - 'prod'
+  NodeEnv:
+    Type: String
+    AllowedValues:
+      - 'development'
+      - 'production'
+      - 'test'
+  DefaultHandler:
+    Type: String
+    Default: 'src/index.handler'

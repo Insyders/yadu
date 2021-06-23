@@ -1,0 +1,158 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: POC Application using SAM
+
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  # ONLY USED FOR LOCAL SAM TESTING (infra v2)
+  RestApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: 'local-test-only'
+      Description: 'will-never-be-used'
+      StageName: 'live'
+      EndpointConfiguration:
+        Type: 'REGIONAL'
+      TracingEnabled: true
+      Cors:
+        AllowMethods: "'POST,OPTIONS'"
+        AllowHeaders: "'Content-Type,X-Api-Key'"
+        AllowOrigin: "'*'"
+        MaxAge: "'600'"
+        AllowCredentials: 'true'
+
+  ChangeEmailLambdaFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: 'changeemail'
+      Description: 'POST a change of email request in invitation table and send email'
+      CodeUri: '.'
+      Timeout: 20
+      Environment:
+        Variables:
+          PROJECT_LOGO_URL: 'https://s3.amazonaws.com/something.png'
+      Role:
+        Fn::ImportValue:
+          Fn::Sub: '${IAMStackName}:GenericLambdaRole'
+      Events:
+        ApiEventPost:
+          Type: Api
+          Properties:
+            Method: post
+            Path: /changeemail
+            RestApiId: !Ref RestApi
+            Auth:
+              Authorizer: AWS_IAM
+      Tags:
+        Project: PROJECT_NAME
+        Stage: !Ref Stage
+
+  ChangeEmailLogGroup:
+    Type: 'AWS::Logs::LogGroup'
+    Properties:
+      LogGroupName: '/aws/lambda/change-email'
+      RetentionInDays: 180
+
+  ChangeEmailAlarm:
+    Type: 'AWS::CloudWatch::Alarm'
+    Properties:
+      AlarmActions:
+        - Fn::ImportValue:
+            Fn::Sub: '${SNSStackName}:alarmSnsArn'
+      AlarmName: 'change-email-errors'
+      ComparisonOperator: 'GreaterThanOrEqualToThreshold'
+      EvaluationPeriods: 5
+      Threshold: 5
+      Period: 60
+      Statistic: 'Sum'
+      TreatMissingData: 'notBreaching'
+      Namespace: 'AWS/Lambda'
+      MetricName: 'Errors'
+      Dimensions:
+        - Name: 'FunctionName'
+          Value: 'change-email'
+        - Name: 'Resource'
+          Value:
+            Fn::Sub: 'change-email:${AutoPublishAlias}'
+
+Globals:
+  Function:
+    Runtime: nodejs12.x
+    Timeout: 300
+    Handler: !Ref DefaultHandler
+    DeploymentPreference:
+      Type: !Ref DeploymentPreference
+    Tracing: !Ref TracingMode
+    MemorySize: 1024
+    AutoPublishAlias: !Ref AutoPublishAlias
+    Environment:
+      Variables:
+        NODE_ENV: !Ref NodeEnv
+        COGNITO_IDENTITY_POOL_IDS:
+          Fn::ImportValue: !Sub '${CognitoStackName}:IdentityPoolId'
+        DEV_LOGIN: 'login.skynovation.com'
+        JWT_SECRET_NAME: !Ref JwtSecretName
+        CHANGEEMAIL_TEST_ONLY: !Ref changeemailUniqueParameter
+
+Parameters:
+  changeemailUniqueParameter:
+    Type: String
+  # Stacks
+  CognitoStackName:
+    Type: String
+    # IdentityPoolId
+  IAMStackName:
+    Type: String
+    # GenericLambdaRole
+  SNSStackName:
+    Type: String
+
+  Stage:
+    Type: String
+  JwtSecretName:
+    Type: String
+
+  # Lambda Functions
+  DeploymentPreference:
+    Type: String
+    Default: 'AllAtOnce'
+    AllowedValues:
+      - 'Canary10Percent30Minutes'
+      - 'Canary10Percent5Minutes'
+      - 'Canary10Percent10Minutes'
+      - 'Canary10Percent15Minutes'
+      - 'Linear10PercentEvery10Minutes'
+      - 'Linear10PercentEvery1Minute'
+      - 'Linear10PercentEvery2Minutes'
+      - 'Linear10PercentEvery3Minutes'
+      - 'AllAtOnce'
+  TracingMode:
+    Type: String
+    Default: 'Active'
+    AllowedValues:
+      - 'Active'
+      - 'PassThrough'
+  AutoPublishAlias:
+    Type: String
+    AllowedValues:
+      - 'dev'
+      - 'qa'
+      - 'stage'
+      - 'preprod'
+      - 'prod'
+  NodeEnv:
+    Type: String
+    AllowedValues:
+      - 'development'
+      - 'production'
+      - 'test'
+  DefaultHandler:
+    Type: String
+    Default: 'src/index.handler'
+
+Outputs:
+  ChangeEmailArn:
+    Value: !GetAtt ChangeEmailLambdaFunction.Arn
+    Description: Change Email lambda ARN
+    Export:
+      Name: !Sub '${AWS::StackName}:ChangeEmailArn'

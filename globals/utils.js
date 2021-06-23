@@ -37,8 +37,26 @@ const isHome = (baseDir, iter = 0) => {
   return isHome(path.join(baseDir, '..'), iter);
 };
 
+/**
+ * It returns the first character in Upper case
+ * @param {String} t The string to update
+ */
+function FirstLetterUpper(t) {
+  return t[0].toUpperCase() + t.substring(1);
+}
+
+/**
+ *
+ * @param {String} s
+ */
+function Normalize(s) {
+  return s.replace(/_/g, '').replace(/-/g, '');
+}
+
 module.exports = {
   logDebug,
   logVerbose,
   isHome,
+  FirstLetterUpper,
+  Normalize,
 };
