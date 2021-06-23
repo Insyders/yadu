@@ -1,13 +1,13 @@
 {
   "name": "@halfserious/yadu",
-  "version": "2.5.3",
+  "version": "2.6.2",
   "description": "Package and Deploy our AWS lambdas",
   "main": "src/index.js",
   "bin": {
     "yadu": "src/index.js"
   },
   "scripts": {
-    "lint": "eslint **/*.js",
+    "lint": "eslint --ext js .",
     "postinstall": "bash -c '[[ -z \"$SKIP_POST\" ]] && bash ./liquibase/scripts/install-liquibase.sh || echo \"Skip Post-Installation\"'",
     "prepare": "husky install",
     "pre-commit": "lint-staged",
@@ -54,6 +54,8 @@
   },
   "lint-staged": {
     "lib/**/*.js": "eslint",
+    "mysqlDump/**/*.js": "eslint",
+    "globals/**/*.js": "eslint",
     "liquibase/**/*.js": "eslint",
     "src/**/*.js": "eslint"
   }

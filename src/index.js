@@ -12,6 +12,7 @@ const template = require('../lib/template');
 const config = require('../lib/config');
 const { logDebug, logVerbose } = require('../globals/utils');
 const { CheckLocalVersion } = require('../lib/currentVersion');
+const mysqlDumpHandler = require('../mysqlDump/mysqlDumpHandler');
 
 colors.setTheme({
   silly: 'rainbow',
@@ -98,6 +99,12 @@ if (args.verbose) {
         console.log(`${'WARN'.warn} no arguments provided.`);
       }
 
+      process.exit(0);
+    }
+
+    // Handle MysqlDump
+    const mysqlDumpHandled = mysqlDumpHandler(args, configService);
+    if (mysqlDumpHandled) {
       process.exit(0);
     }
 

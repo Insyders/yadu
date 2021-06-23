@@ -28,8 +28,10 @@ test('Suffix for secret manager', () => {
       const tKey = hasSuffix ? `${key}_${secret.split(':')[1]}` : key;
 
       if (hasSuffix) {
+        // eslint-disable-next-line jest/no-conditional-expect
         expect(tKey).toMatch(`${key}_${secret.split(':')[1]}`);
       } else {
+        // eslint-disable-next-line jest/no-conditional-expect
         expect(tKey).toMatch(key);
       }
 
@@ -37,8 +39,10 @@ test('Suffix for secret manager', () => {
         process.env[`DB_USER${hasSuffix ? `_${secret.split(':')[1].toUpperCase()}` : ''}`] = secretParsed[key];
 
         if (hasSuffix) {
+          // eslint-disable-next-line jest/no-conditional-expect
           expect(process.env.DB_USER_REF).toBeDefined();
         } else {
+          // eslint-disable-next-line jest/no-conditional-expect
           expect(process.env.DB_USER).toBeDefined();
         }
       }
