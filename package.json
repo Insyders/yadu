@@ -54,6 +54,8 @@
   },
   "lint-staged": {
     "lib/**/*.js": "eslint",
+    "mysqlDump/**/*.js": "eslint",
+    "globals/**/*.js": "eslint",
     "liquibase/**/*.js": "eslint",
     "src/**/*.js": "eslint"
   }
