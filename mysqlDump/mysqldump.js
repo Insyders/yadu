@@ -1,5 +1,4 @@
 const shell = require('shelljs');
-const path = require('path');
 const { logDebug, logVerbose } = require('../globals/utils');
 
 module.exports = class MysqlDump {
@@ -18,8 +17,8 @@ module.exports = class MysqlDump {
     if (process.platform === 'win32') {
       // Requires \\
       const slash = '\\\\';
-      logDebug(`Trying default executable : 'C:${slash}Program Files${slash}MySQL${slash}MySQL Workbench 8.0 CE${slash}mysqldump.exe'`);
-      this.SetExecutable(`C:${slash}Program Files${slash}MySQL${slash}MySQL Workbench 8.0 CE${slash}mysqldump.exe`);
+      logDebug(`Trying default executable : \`'C:${slash}Program Files${slash}MySQL${slash}MySQL Workbench 8.0 CE${slash}mysqldump.exe'\``);
+      this.SetExecutable(`'C:${slash}Program Files${slash}MySQL${slash}MySQL Workbench 8.0 CE${slash}mysqldump.exe'`);
       return this.executable;
     }
 
