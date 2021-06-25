@@ -38,8 +38,6 @@ describe('Test dynamic CloudFormation', () => {
     expect(validTemplates.length).toBe(4);
 
     cfn.ReadTemplate();
-
-    console.log(cfn.GetLambdas());
   });
 
   test('Read Application.yaml for merge', () => {
@@ -63,12 +61,22 @@ describe('Test dynamic CloudFormation', () => {
       },
     });
 
-    cfn.ScanDirectory();
+    const dirs = cfn.ScanDirectory();
+    expect(dirs.length).toBe(4);
+
     cfn.ReadTemplate();
+
     cfn.ReadApplicationTemplate();
+    expect(Object.keys(cfn.GetApplicationJson()).length).toBe(7);
 
     cfn.MergeTemplate();
+    expect(Object.keys(cfn.GetApplicationJson()).length).toBe(7);
+    expect(Object.keys(cfn.GetApplicationJson().Resources).length).toBe(7);
+    expect(Object.keys(cfn.GetApplicationJson().Outputs).length).toBe(3);
+    expect(Object.keys(cfn.GetApplicationJson().Parameters).length).toBe(20);
+    expect(Object.keys(cfn.GetApplicationJson().Globals.Function).length).toBe(8);
+    expect(cfn.GetApplicationJson().Transform.length).toBe(2);
 
-    console.log(cfn.GetApplicationJson());
+    cfn.SaveMergedTemplate('test.yaml');
   });
 });

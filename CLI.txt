@@ -43,6 +43,10 @@ Configuration
     > --init                                        Generate the empty configuration under ./.yadu/config.json
         [--interactive]                             Use the interactive shell to generate a YaDU configuration
 
+Cloudformation                                      Generate the application.yaml to deploy, it uses the config service
+    > --cloudformation
+        --filename=<string>
+
 Parameters to override serverless.json values
     --stage=<string>
     --role=<string>

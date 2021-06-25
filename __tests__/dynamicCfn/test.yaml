@@ -1,0 +1,285 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform:
+  - "AWS::Serverless-2016-10-31"
+  - "PyPlate"
+Description: "POC Application using SAM"
+Globals:
+  Function:
+    Runtime: "nodejs14.x"
+    Timeout: 300
+    Handler:
+      Ref: "DefaultHandler"
+    DeploymentPreference:
+      Type:
+        Ref: "DeploymentPreference"
+    Tracing:
+      Ref: "TracingMode"
+    MemorySize: 1024
+    AutoPublishAlias:
+      Ref: "AutoPublishAlias"
+    Environment:
+      Variables:
+        NODE_ENV:
+          Ref: "NodeEnv"
+        COGNITO_IDENTITY_POOL_IDS:
+          Fn::ImportValue:
+            Fn::Sub: "${CognitoStackName}:IdentityPoolId"
+        DEV_LOGIN: "login.skynovation.com"
+        JWT_SECRET_NAME:
+          Ref: "JwtSecretName"
+Parameters:
+  changeemailUniqueParameter:
+    Type: "String"
+  CognitoStackName:
+    Type: "String"
+  IAMStackName:
+    Type: "String"
+  SNSStackName:
+    Type: "String"
+  Stage:
+    Type: "String"
+    AllowedValues:
+      - "dev"
+      - "qa"
+      - "stage"
+      - "preprod"
+      - "prod"
+  JwtSecretName:
+    Type: "String"
+  DeploymentPreference:
+    Type: "String"
+    Default: "AllAtOnce"
+    AllowedValues:
+      - "Canary10Percent30Minutes"
+      - "Canary10Percent5Minutes"
+      - "Canary10Percent10Minutes"
+      - "Canary10Percent15Minutes"
+      - "Linear10PercentEvery10Minutes"
+      - "Linear10PercentEvery1Minute"
+      - "Linear10PercentEvery2Minutes"
+      - "Linear10PercentEvery3Minutes"
+      - "AllAtOnce"
+  TracingMode:
+    Type: "String"
+    Default: "Active"
+    AllowedValues:
+      - "Active"
+      - "PassThrough"
+  AutoPublishAlias:
+    Type: "String"
+    AllowedValues:
+      - "dev"
+      - "qa"
+      - "stage"
+      - "preprod"
+      - "prod"
+  NodeEnv:
+    Type: "String"
+    AllowedValues:
+      - "development"
+      - "production"
+      - "test"
+  DefaultHandler:
+    Type: "String"
+    Default: "src/index.handler"
+  Version:
+    Type: "String"
+  RestApiGatewayName:
+    Type: "String"
+  EndpointType:
+    Type: "String"
+    Default: "REGIONAL"
+    AllowedValues:
+      - "REGIONAL"
+      - "EDGE"
+      - "PRIVATE"
+  TracingEnabled:
+    Type: "String"
+    Default: "true"
+    AllowedValues:
+      - "true"
+      - "false"
+  AllowMethods:
+    Type: "String"
+    Default: "'POST,OPTIONS'"
+  AllowHeaders:
+    Type: "String"
+    Default: "'Content-Type,X-Api-Key'"
+  AllowOrigin:
+    Type: "String"
+    Default: "'*'"
+  MaxAge:
+    Type: "String"
+    Default: "'600'"
+  AllowCredentials:
+    Type: "String"
+    Default: "true"
+Resources:
+  RestApi:
+    Type: "AWS::Serverless::Api"
+    Properties:
+      Name:
+        Ref: "RestApiGatewayName"
+      Description:
+        Fn::Sub: "Rest API Gateway (${Stage})"
+      StageName:
+        Ref: "Stage"
+      EndpointConfiguration:
+        Type:
+          Ref: "EndpointType"
+      TracingEnabled:
+        Ref: "TracingEnabled"
+      Cors:
+        AllowMethods:
+          Ref: "AllowMethods"
+        AllowHeaders:
+          Ref: "AllowHeaders"
+        AllowOrigin:
+          Ref: "AllowOrigin"
+        MaxAge:
+          Ref: "MaxAge"
+        AllowCredentials:
+          Ref: "AllowCredentials"
+  ChangeEmailLambdaFunction:
+    Type: "AWS::Serverless::Function"
+    Properties:
+      FunctionName: "changeemail"
+      Description: "POST a change of email request in invitation table and send email"
+      CodeUri: "."
+      Timeout: 20
+      Environment:
+        Variables:
+          PROJECT_LOGO_URL: "https://s3.amazonaws.com/something.png"
+      Role:
+        Fn::ImportValue:
+          Fn::Sub: "${IAMStackName}:GenericLambdaRole"
+      Events:
+        ApiEventPost:
+          Type: "Api"
+          Properties:
+            Method: "post"
+            Path: "/changeemail"
+            RestApiId:
+              Ref: "RestApi"
+            Auth:
+              Authorizer: "AWS_IAM"
+      Tags:
+        Project: "PROJECT_NAME"
+        Stage:
+          Ref: "Stage"
+  ChangeEmailLogGroup:
+    Type: "AWS::Logs::LogGroup"
+    Properties:
+      LogGroupName: "/aws/lambda/change-email"
+      RetentionInDays: 180
+  ChangeEmailAlarm:
+    Type: "AWS::CloudWatch::Alarm"
+    Properties:
+      AlarmActions:
+        - Fn::ImportValue:
+            Fn::Sub: "${SNSStackName}:alarmSnsArn"
+      AlarmName: "change-email-errors"
+      ComparisonOperator: "GreaterThanOrEqualToThreshold"
+      EvaluationPeriods: 5
+      Threshold: 5
+      Period: 60
+      Statistic: "Sum"
+      TreatMissingData: "notBreaching"
+      Namespace: "AWS/Lambda"
+      MetricName: "Errors"
+      Dimensions:
+        - Name: "FunctionName"
+          Value: "change-email"
+        - Name: "Resource"
+          Value:
+            Fn::Sub: "change-email:${AutoPublishAlias}"
+  LoginLambdaFunction:
+    Type: "AWS::Serverless::Function"
+    Properties:
+      FunctionName:
+        Fn::Sub: "poc-login-${Stage}"
+      Description: "Login Function"
+      CodeUri: "../lambda/poc-login"
+      Timeout: 30
+      Role:
+        Fn::Sub: "arn:aws:iam::${AWS::AccountId}:role/service-role/basic_lambda_execution"
+      Events:
+        ApiEvent:
+          Type: "Api"
+          Properties:
+            Method: "post"
+            Path: "/login"
+            RestApiId:
+              Ref: "RestApi"
+  WhoamiLambdaFunction:
+    Type: "AWS::Serverless::Function"
+    Properties:
+      FunctionName:
+        Fn::Sub: "poc-whoami-${Stage}"
+      Description: "Who am I Function"
+      CodeUri: "../lambda/poc-whoami"
+      Timeout: 30
+      Role:
+        Fn::Sub: "arn:aws:iam::${AWS::AccountId}:role/service-role/basic_lambda_execution"
+      Layers:
+        - Fn::Sub: "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:node_modules:15"
+      Events:
+        ApiEvent:
+          Type: "Api"
+          Properties:
+            Method: "post"
+            Path: "/wai"
+            RestApiId:
+              Ref: "RestApi"
+            Auth:
+              Authorizer: "AWS_IAM"
+  yaduLambdaFunction:
+    Type: "AWS::Serverless::Function"
+    Properties:
+      FunctionName:
+        Fn::Sub: "yadu-${Stage}"
+      Description: "Who am I Function"
+      CodeUri: "./yadu"
+      Timeout: 30
+      Role:
+        Fn::Sub: "arn:aws:iam::${AWS::AccountId}:role/service-role/basic_lambda_execution"
+      Layers:
+        - Fn::Sub: "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:node_modules:15"
+      Environment:
+        Variables: "#!PyPlate\noutput = dict()\nfor envVar in params['Version']:\n  key, value = envVar.split('=')\n  output.update({key: value})\n"
+      Events:
+        ApiEvent:
+          Type: "Api"
+          Properties:
+            Method: "post"
+            Path: "/yadu"
+            RestApiId:
+              Ref: "RestApi"
+            Auth:
+              Authorizer: "AWS_IAM"
+Outputs:
+  ChangeEmailArn:
+    Value:
+      Fn::GetAtt:
+        - "ChangeEmailLambdaFunction"
+        - "Arn"
+    Description: "Change Email lambda ARN"
+    Export:
+      Name:
+        Fn::Sub: "${AWS::StackName}:ChangeEmailArn"
+  LoginArn:
+    Value:
+      Fn::GetAtt:
+        - "LoginLambdaFunction"
+        - "Arn"
+    Description: "Login lambda ARN"
+    Export:
+      Name:
+        Fn::Sub: "${AWS::StackName}:LoginArn"
+  RestApiId:
+    Value:
+      Ref: "RestApi"
+    Description: "Rest API Id"
+    Export:
+      Name:
+        Fn::Sub: "${AWS::StackName}:RestApiId"

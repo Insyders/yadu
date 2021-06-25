@@ -13,6 +13,7 @@ const config = require('../lib/config');
 const { logDebug, logVerbose } = require('../globals/utils');
 const { CheckLocalVersion } = require('../lib/currentVersion');
 const mysqlDumpHandler = require('../mysqlDump/mysqlDumpHandler');
+const cloudformationHandler = require('../lib/cloudformationHandler');
 
 colors.setTheme({
   silly: 'rainbow',
@@ -40,6 +41,10 @@ if (args.debug) {
 if (args.verbose) {
   console.log('Enabling Verbose Mode'.verbose);
   process.env.VERBOSE = 'true';
+}
+
+if (!process.env.MAX_DEPTH) {
+  process.env.MAX_DEPTH = 2;
 }
 
 (async () => {
@@ -99,6 +104,11 @@ if (args.verbose) {
         console.log(`${'WARN'.warn} no arguments provided.`);
       }
 
+      process.exit(0);
+    }
+    // Handle Cloudformation
+    const cloudformationHandled = cloudformationHandler(args, configService);
+    if (cloudformationHandled) {
       process.exit(0);
     }
 

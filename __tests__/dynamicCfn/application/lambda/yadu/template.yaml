@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: POC Application using SAM
 
-Transform: AWS::Serverless-2016-10-31
+Transform: ['AWS::Serverless-2016-10-31', 'PyPlate']
 
 Resources:
   # ONLY USED FOR LOCAL SAM TESTING (infra v2)
@@ -31,6 +31,13 @@ Resources:
       Role: !Sub 'arn:aws:iam::${AWS::AccountId}:role/service-role/basic_lambda_execution'
       Layers:
         - !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:node_modules:15'
+      Environment:
+        Variables: |
+          #!PyPlate
+          output = dict()
+          for envVar in params['Version']:
+            key, value = envVar.split('=')
+            output.update({key: value})
       Events:
         ApiEvent:
           Type: Api
@@ -107,3 +114,5 @@ Parameters:
   DefaultHandler:
     Type: String
     Default: 'src/index.handler'
+  Version:
+    Type: String
