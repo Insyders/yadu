@@ -70,7 +70,7 @@ describe('Test dynamic CloudFormation', () => {
     expect(Object.keys(cfn.GetApplicationJson()).length).toBe(7);
 
     cfn.MergeTemplate();
-    expect(Object.keys(cfn.GetApplicationJson()).length).toBe(7);
+    expect(Object.keys(cfn.GetApplicationJson()).length).toBe(8);
     expect(Object.keys(cfn.GetApplicationJson().Resources).length).toBe(7);
     expect(Object.keys(cfn.GetApplicationJson().Outputs).length).toBe(3);
     expect(Object.keys(cfn.GetApplicationJson().Parameters).length).toBe(20);
