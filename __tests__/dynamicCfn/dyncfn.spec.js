@@ -4,7 +4,7 @@ const Cloudformation = require('../../lib/classes/Cloudformation');
 describe('Test dynamic CloudFormation', () => {
   test('Scan Directory', () => {
     const cfn = new Cloudformation({
-      lambdaRegex: /template.yaml/,
+      lambdaRegex: 'template.yaml',
       sourceDirectory: path.join(__dirname, 'application', 'lambda'),
       application: `${path.join(__dirname, 'application', 'cloudformation') + path.sep}api.yaml`,
     });
@@ -15,7 +15,7 @@ describe('Test dynamic CloudFormation', () => {
 
   test('Scan Directory & extract yaml', () => {
     const cfn = new Cloudformation({
-      lambdaRegex: /template.yaml/,
+      lambdaRegex: 'template.yaml',
       sourceDirectory: path.join(__dirname, 'application', 'lambda'),
       application: `${path.join(__dirname, 'application', 'cloudformation') + path.sep}api.yaml`,
       lambdaBasePath: path.join(__dirname, 'application', 'lambda'),
@@ -42,7 +42,7 @@ describe('Test dynamic CloudFormation', () => {
 
   test('Read Application.yaml for merge', () => {
     const cfn = new Cloudformation({
-      lambdaRegex: /template.yaml/,
+      lambdaRegex: 'template.yaml',
       sourceDirectory: path.join(__dirname, 'application', 'lambda'),
       application: `${path.join(__dirname, 'application', 'cloudformation') + path.sep}api.yaml`,
       lambdaBasePath: path.join(__dirname, 'application', 'lambda'),
