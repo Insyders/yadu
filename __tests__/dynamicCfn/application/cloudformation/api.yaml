@@ -1,0 +1,139 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: POC Application using SAM
+
+Transform: AWS::Serverless-2016-10-31
+
+Globals:
+  Function:
+    Runtime: nodejs14.x
+    Timeout: 300
+    Handler: !Ref DefaultHandler
+    DeploymentPreference:
+      Type: !Ref DeploymentPreference
+    Tracing: !Ref TracingMode
+    MemorySize: 1024
+    AutoPublishAlias: !Ref AutoPublishAlias
+    Environment:
+      Variables:
+        NODE_ENV: !Ref NodeEnv
+        COGNITO_IDENTITY_POOL_IDS:
+          Fn::ImportValue: !Sub '${CognitoStackName}:IdentityPoolId'
+        DEV_LOGIN: 'login.skynovation.com'
+        JWT_SECRET_NAME: !Ref JwtSecretName
+
+Parameters:
+  # Stacks
+  CognitoStackName:
+    Type: String
+    # IdentityPoolId
+
+  JwtSecretName:
+    Type: String
+
+  # Lambda Functions
+  DeploymentPreference:
+    Type: String
+    Default: 'AllAtOnce'
+    AllowedValues:
+      - 'Canary10Percent30Minutes'
+      - 'Canary10Percent5Minutes'
+      - 'Canary10Percent10Minutes'
+      - 'Canary10Percent15Minutes'
+      - 'Linear10PercentEvery10Minutes'
+      - 'Linear10PercentEvery1Minute'
+      - 'Linear10PercentEvery2Minutes'
+      - 'Linear10PercentEvery3Minutes'
+      - 'AllAtOnce'
+  TracingMode:
+    Type: String
+    Default: 'Active'
+    AllowedValues:
+      - 'Active'
+      - 'PassThrough'
+  AutoPublishAlias:
+    Type: String
+    AllowedValues:
+      - 'dev'
+      - 'qa'
+      - 'stage'
+      - 'preprod'
+      - 'prod'
+  NodeEnv:
+    Type: String
+    AllowedValues:
+      - 'development'
+      - 'production'
+      - 'test'
+  DefaultHandler:
+    Type: String
+    Default: 'src/index.handler'
+
+  # Rest Api
+  RestApiGatewayName:
+    Type: String
+  EndpointType:
+    Type: String
+    Default: 'REGIONAL'
+    AllowedValues:
+      - 'REGIONAL'
+      - 'EDGE'
+      - 'PRIVATE'
+  TracingEnabled:
+    Type: String
+    Default: 'true'
+    AllowedValues:
+      - 'true'
+      - 'false'
+  # Rest Api Cors
+  AllowMethods:
+    Type: String
+    Default: "'POST,OPTIONS'"
+  AllowHeaders:
+    Type: String
+    Default: "'Content-Type,X-Api-Key'"
+  AllowOrigin:
+    Type: String
+    Default: "'*'"
+  MaxAge:
+    Type: String
+    Default: "'600'"
+  AllowCredentials:
+    Type: String
+    Default: 'true'
+
+  # Global
+  Stage:
+    Type: String
+    AllowedValues:
+      - 'dev'
+      - 'qa'
+      - 'stage'
+      - 'preprod'
+      - 'prod'
+
+Resources:
+  # Rest API
+  RestApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Ref RestApiGatewayName
+      Description: !Sub 'Rest API Gateway (${Stage})'
+      StageName: !Ref Stage
+      EndpointConfiguration:
+        Type: !Ref EndpointType
+      TracingEnabled: !Ref TracingEnabled
+      Cors:
+        AllowMethods: !Ref AllowMethods
+        AllowHeaders: !Ref AllowHeaders
+        AllowOrigin: !Ref AllowOrigin
+        MaxAge: !Ref MaxAge
+        AllowCredentials: !Ref AllowCredentials
+      # Auth:
+      #   DefaultAuthorizer: AWS_IAM
+
+Outputs:
+  RestApiId:
+    Value: !Ref RestApi
+    Description: Rest API Id
+    Export:
+      Name: !Sub '${AWS::StackName}:RestApiId'

@@ -138,10 +138,10 @@ Resources:
       # Auth:
       #   DefaultAuthorizer: AWS_IAM
 
-  A1changeemailLambdaFunction:
+  changeemailLambdaFunction:
     Type: "AWS::Serverless::Function"
     Properties:
-      FunctionName: "a1-changeemail"
+      FunctionName: "changeemail"
       Description: "POST a change of email request in invitation table and send email"
       CodeUri: "../aws/lambda/changeemail"
       Timeout: 20
@@ -149,7 +149,7 @@ Resources:
         - !Ref NodeModuleLayer
       Environment:
         Variables:
-          JAKIBI_LOGO_URL: "https://s3.amazonaws.com/jakibi-public/assets/images/logo_purple.png"
+          PROJECT_LOGO_URL: "https://s3.amazonaws.com/something.png"
       Role:
         Fn::ImportValue:
           Fn::Sub: "${IAMStackName}:GenericLambdaRole"
@@ -163,7 +163,7 @@ Resources:
             Auth:
               Authorizer: AWS_IAM
       Tags:
-        Project: Maestro
+        Project: PROJECT_NAME
         Stage: !Ref Stage
 
   # LAMBDA FUNCTIONS
