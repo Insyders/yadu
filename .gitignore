@@ -7,3 +7,4 @@ liquibase-*/
 mysql/
 .yadu/
 *.sql
+_application.yaml
