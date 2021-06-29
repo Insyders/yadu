@@ -8,3 +8,4 @@ mysql/
 .yadu/
 *.sql
 _application.yaml
+test.yaml
