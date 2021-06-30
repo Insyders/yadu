@@ -9,3 +9,4 @@ mysql/
 *.sql
 _application.yaml
 test.yaml
+schema-*.sql
