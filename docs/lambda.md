@@ -1,157 +1,165 @@
-# Lambda
+# Lambdas
 
-It uses the `serverless.json` file that has been created along with each lambdas.
-That allows you to easily deploy your local code to an AWS account.
+## Prerequisites
 
-## Usage
+- NodeJS >= 12
+- zip Command
+- git Command
+- npm Command 
+- serverless.json file or template.yml/yaml or application.yaml
+- (Optional) configuration service
+- export AWS_SDK_LOAD_CONFIG=1
+- export AWS_PROFILE=custom_profile (or default)
+- export AWS_REGION=us-east-1 (or other)
 
-### Deploy a lambda to $LATEST
+## Commands
 
-```
-yadu --deploy
-```
+| Commands            | Options               | Description                                                                                                                                  |
+|---------------------|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| --deploy            |                       | Deploy your local code to AWS                                                                                                                |
+|                     | --use-yaml            | It reads the local template.yml or template.yaml and if not found it uses the YAML file configured in the config service (`applicationYaml`) |
+|                     | --env=\<String\>      | It specifies which configuration to use (example: `.yadu/dev.json`, `.yadu/qa.json`, `.yadu/etc.json`)                                       |
+|                     | --new-version         | It publishes a new version based on `$LATEST`                                                                                                |
+|                     | --alias=\<String\>    | It attaches the new version to the specified alias                                                                                           |
+| --package-only      |                       | Package the lambda locally and generate an `index.zip` file                                                                                  |
+|                     | --use-yaml            | It reads the local template.yml or template.yaml and if not found it uses the YAML file configured in the config service (`applicationYaml`) |
+| --attach=\<String\> |                       | Attach the `$LATEST` to the specified alias                                                                                                  |
+| --new-version       |                       | Create a new Version based on current `$LATEST` code and configuration                                                                       |
+|                     | --alias=\<String\>    | Alias to attach the new version                                                                                                              |
+| --template          |                       | Create a template.yml for a lambda, it includes an alarm, a log group & a SAM definition                                                     |
+| --init              |                       | Create the `.yadu/` directory and generate an empty configuration file (`.yadu/config.json`)                                                 |
+|                     | \[--interactive\]     | Use an interactive shell to create the default configuration                                                                                 |
+| --cloudformation    |                       | Concatenate all template.yml with the specified application.yaml file.                                                                       |
+|                     | --filename=\<String\> | Output filename                                                                                                                              |
+  
+## Configurations
 
-### Package a lambda
+### Use a serverless.json file
 
-It only creates the zip file and you need to import it manually on AWS console
+This file contains the lambda configuration and some options. It can be use without the config service
 
-```
-yadu --package-only
-```
-
-### Deploy on an infrastructure that uses SAM & CloudFormation
-
-> Don’t forget to replace the `$STAGE` and `$LAYER_ARN` with your information
-
-```
-yadu \
-  --deploy \
-  --region=us-east-1 \
-  --new-version \
-  --alias=live \
-  --stage=$STAGE \
-  --layers=$LAYER_ARN
-```
-
- - This command will package and deploy the lambda code to AWS, then it will create a new version and attach it to the alias named ‘live’.
- - The layers are optionals.
-- In the ***SAM / CloudFormation*** infrastructure, the $LATEST isn’t use anymore. All lambda will exist per stage. This is why we use ‘live’ for the alias name.
-- The best practices, recommend to use a different AWS account per environment.
-
-### Create a new lambda
-
-**Not yet available**
-
-``` bash
-yadu --create
-```
-
-### Attach the newly created version to a specific alias
-
-```bash
-yadu --attach=$STAGE
-```
-
-### Override lambda configurations
-
-You can specify these parameters : 
-
-### Role:
-
-```
---role='IAM_ARN' --update-role
-```
-### Layer:
-
-```
---layer-version='INTEGER'
---layers="LAYER_ARN,LAYER_ARN2,..."
-```
-
-### Account ID:
-
-```
---account-id='AWS_ACCOUNT_ID'
-```
-
-### VPC:
-
-In the Serverless.json file you can define a custom VPC configuration
-
-```
---update-vpc
-```
-
-## Configuration
-
-For the `zipArgs` parameter, noticed the lowercase **z**, this is intended
-
-> Do not add extra parameters, I have to update a script to avoid errors. 
-> So let me know if you need extra params, 
-> It will be my pleasure to update the scripts.
-
-Complete Example:
+<details open>
+  <summary>Basic example:</summary>
+  
 ```json
 {
-    "FunctionName": "integration-template",
-    "Description": "This is a template for devops integration",
-    "Code": "./_integration/index.zip",
-    "Handler": "index.handler",
+    "FunctionName": "yadu-lambda-name",
+    "Description": "lambda description",
+    "Code": "./yadu-lambda-name/index.zip",
+    "Handler": "src/index.handler",
     "Runtime": "nodejs12.x",
-    "MemorySize": 128,
-    "Timeout": 3,
+    "MemorySize": 1024,
+    "Role": {
+        "Fn::Sub": "arn:aws:iam::${AWS::AccountId}:role/service-role/basic_lambda_execution"
+    },
+    "Timeout": 20,
     "Layers": [
-        "LAYER_ARN"
+      "arn:aws:lambda:us-east-1:123456789012:layer:node_modules:1"
     ],
-    "zipArgs": "*.js package.json *.html node_modules",
-    "Environment": {
-        "FOO": "BAR",
-        "BAR": "FOO"
-    },
-    "Role": "LAMBDA_ROLE_ARN",
-    "Events": {
-        "dev": {
-            "EventSourceArn": {
-                "Fn::Sub": "arn:aws:sqs:${AWS::Region}:${AWS::AccountId}:sqs_example_dev"
-            },
-            "BatchSize": 10,
-            "Enabled": true
-        }
-    },
-    "Permissions": {
-        "dev": [
-            {
-                "Type": "AWS::Lambda::Permission",
-                "Properties": {
-                    "Action": "lambda:InvokeFunction",
-                    "FunctionName": {
-                        "Fn::Sub": "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:FUNCTION_NAME:dev"
-                    },
-                    "Principal": "apigateway.amazonaws.com",
-                    "SourceArn": {
-                        "Fn::Sub": "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:*/*"
-                    }
-                }
-            }
-        ]
-    }
+    "zipArgs": "src/*.js package.json node_modules/"
 }
 ```
 
-## Promote a lambda
+</details>
 
-> When using aliases with your lambdas, you might want to promote them from $LATEST to a specific alias.
+### Use a template.yml file (preferred way)
+
+It uses SAM and Cloudformation you can design that part like you usually do.
+
+I'll recommend using the config service to be able to replace all the cloudformation intrinsic functions and references.
+
+### Use an application.yaml file
+
+This file is located at `cloudformation/application.yaml`
+
+It contains all the basic resources, like the *API*, *layers* and *etc*.
+
+you can also define all lambdas in that file, but it might be hard to maintain.
+> YaDU offers a command to concatenate all template.yml from each lambdas with the application.yaml file.
+
+I'll recommend using the config service to be able to replace all the cloudformation intrinsic functions and references.
+
+### Summary
+| Configuration    | Config service required | Description                                                                                                                                                        |
+|------------------|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| serverless.json  | No                      | This configuration is a standalone and not really compatible with SAM/Cloudformation, it requires to duplicate the configuration                                   |
+| template.yml     | Yes                     | This configuration uses SAM/CloudFormation, so no copy/paste are required. YaDU provide a command to concatenate all configurations into the application.yaml file |
+| application.yaml | Yes                     | All configurations are shared in the same file, it becomes hard to manage and maintain.                                                                            |
+
+
+## The configuration service
+
+This JSON configuration is stored in the `.yadu/` directory at the root of your project. 
+Those files contain the configuration of each environment and can be use with `--env=<String>`
+
+<details open>
+  <summary>Example:</summary>
+  
+```json
+{
+  "debug": true,
+  "region": "us-east-1",
+  "layerVersion": null,
+  "accountId": "123456789012",
+  "stage": "dev",
+  "lambdaBasePath": "../aws/lambda/",
+  "layerBasePath": "./layer/node_modules.zip",
+  "lambdaSourcePath": "./aws/lambda/",
+  "lambdaTemplateRegex": "template.yaml|template.yml",
+  "applicationYaml": "./cloudformation/application.yaml",
+  "mapping": {
+    "TracingMode": "Active",
+    "${IAMStackName}:GenericLambdaRole": "arn:aws:iam::123456789012:role/generic-lambdaRole",
+    "TracingMode": "Active",
+    "NodeEnv": "development",
+    "Stage": "dev",
+    "DefaultHandler":"index.handler"
+  },
+  "secrets": "db-qa,db-dev:ref",
+  "mysqlBasePath": "mysql/changelog/",
+  "liquibaseBasePath": null,
+  "liquibaseConfPath": null,
+  "classPath": null,
+  "zipArgs": "node_modules/ *.py *.js package.json *.html src/*.js lib/*.js",
+  "mysqlDump": {
+    "executable": null,
+    "filename": "mysql/baseline/schema-dev-latest.sql",
+    "options": "no-data,triggers,routines,events,all-databases,column-statistics=0"
+  }
+}
+```
+
+</details>
+
+| Option                  | Description                                                                                                                           |
+|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
+| debug                   | To enable or Disable the debug output                                                                                                 |
+| region                  | AWS Region                                                                                                                            |
+| layerVersion            | To override the layer version in the serverless.json file                                                                             |
+| accountId               | AWS Account Id                                                                                                                        |
+| stage                   | The configuration environment                                                                                                         |
+| lambdaBasePath          | A relative path from the application.yaml to find the lambdas                                                                         |
+| layerBasePath           | The layer path                                                                                                                        |
+| lambdaSourcePath        | The lambdas path from the root of the project                                                                                         |
+| lambdaTemplateRegex     | Regex to determine the template.yaml file name                                                                                        |
+| applicationYaml         | The path from the root of the project to the application.yaml file                                                                    |
+| mapping                 | The Key/value mapping to replace the intrinsics and references variables in the cloudformation file                                   |
+| secrets                 | It can have up to 2 values, the first one is the DB to update, and the second one is the reference (:ref), the `:ref` will add `_REF` |
+| mysqlBasePath           | The directory that contains all changelogs (from the root of the project)                                                             |
+| liquibaseBasePath       | To override the default liquibase installation path                                                                                   |
+| liquibaseConfPath       | To override the default liquibase.properties path                                                                                     |
+| classPath               | To override the default mysql connector path                                                                                          |
+| zipArgs                 | Specify which file to archive, it determines the files that will be uploaded to AWS                                                   |
+| mysqlDump               | See below                                                                                                                             |
+| mysqlDump .. executable | To override the mysqlDump executable path                                                                                             |
+| mysqlDump .. filename   | The relative path and filename to store the exported database output                                                                  |
+| mysqlDump .. options    | The mysqlDump options                                                                                                                 |
+
+
+## Examples
+
+To print the configuration without pushing it on AWS:
 
 ```
-yadu \
-  --deploy \
-  --region=<REGION> \
-  --new-version \
-  --alias=<ALIAS_NAME>
+yadu --show-config --use-yaml --env=dev-hs --verbose
 ```
-
-> It uses the `serverless.json` file.
-
-This command will **package** and **deploy** your local changes to the `$LATEST` version.
-Then the `--new-version` will create a version based on what is in `$LATEST`.
-And the `--alias` will attach the new version to the specified alias name.

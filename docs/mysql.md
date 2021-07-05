@@ -259,3 +259,21 @@ LIQUIBASE_CONF_PATH="<ABSOLUTE_PATH>/liquibase.properties"
 LIQUIBASE_BASE_PATH="<ABSOLUTE_PATH>/liquibase-4.3.3/./liquibase"
 BASE_PATH="./mysql/changelog"
 ```
+
+
+## Extra parameters
+
+| Command                   | Default Value                                    |
+|---------------------------|--------------------------------------------------|
+| --db-url-ref=\<String\>   |                                                  |
+| --db-user-ref=\<String\>  |                                                  |
+| --db-pass-ref=\<String\>  |                                                  |
+| --db-name-ref=\<String\>  |                                                  |
+| --db-extra-ref=\<String\> | Default: useUnicode=true&characterEncoding=UTF-8 |
+| --db-port-ref=\<String\>  | Default: 3306                                    |
+| --db-url=\<String\>       |                                                  |
+| --db-user=\<String\>      |                                                  |
+| --db-pass=\<String\>      |                                                  |
+| --db-name=\<String\>      |                                                  |
+| --db-extra=\<String\>     | Default: useUnicode=true&characterEncoding=UTF-8 |
+| --db-port=\<String\>      | Default: 3306                                    |
