@@ -34,11 +34,17 @@ const { NODE_ENV } = process.env;
 // basePath uses the current working directory. But in fact it must use the homeDir defined by our function.
 const home = isHome(process.cwd());
 logVerbose(home);
-const basePath =
+let basePath =
   home.path +
   (process.env.BASE_PATH || process.platform === 'win32'
     ? `${path.join('.', 'mysql', 'changelog')}${path.sep}`.split(path.sep).join(path.posix.sep)
     : `${path.join('.', 'mysql', 'changelog')}${path.sep}`);
+
+if (process.platform !== 'win32') {
+  // If using git bash inside windows..
+  basePath = basePath.split(path.sep).join(path.posix.sep);
+}
+
 const classPath =
   process.env.CLASS_PATH || process.platform === 'win32'
     ? `${path.join(__dirname, 'lib')}${path.sep}mysql-connector-java-8.0.24.jar`.split(path.sep).join(path.posix.sep)
@@ -88,6 +94,9 @@ async function Handler(args) {
   if (args['create-migration'] && args.name) {
     console.log('Create new migration'.action);
     console.log('>>>');
+    if (!args.name) {
+      throw new Error("Missing --name=<String>; e.g --name='ABC-123'");
+    }
     createMigration(args.name, basePath);
     console.log('<<<');
     handled = true;
