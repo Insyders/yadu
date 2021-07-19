@@ -40,7 +40,7 @@ let basePath =
     ? `${path.join('.', 'mysql', 'changelog')}${path.sep}`.split(path.sep).join(path.posix.sep)
     : `${path.join('.', 'mysql', 'changelog')}${path.sep}`);
 
-if (process.platform !== 'win32') {
+if (process.platform === 'win32') {
   // If using git bash inside windows..
   basePath = basePath.split(path.sep).join(path.posix.sep);
 }
