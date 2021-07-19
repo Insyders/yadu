@@ -8,7 +8,7 @@ require('dotenv').config({
   path: path.resolve(process.cwd(), process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env'),
 });
 
-const { logDebug } = require('../globals/utils');
+const { logDebug, isHome, logVerbose } = require('../globals/utils');
 const { createMigration, deployMigration } = require('./src/migration');
 const { createVersion } = require('./src/version');
 const { sync } = require('./src/sync');
@@ -31,10 +31,14 @@ colors.setTheme({
 const { NODE_ENV } = process.env;
 
 // TODO: NEED REFACTOR it burns my eyes..
+// basePath uses the current working directory. But in fact it must use the homeDir defined by our function.
+const home = isHome(process.cwd());
+logVerbose(home);
 const basePath =
-  process.env.BASE_PATH || process.platform === 'win32'
+  home.path +
+  (process.env.BASE_PATH || process.platform === 'win32'
     ? `${path.join('.', 'mysql', 'changelog')}${path.sep}`.split(path.sep).join(path.posix.sep)
-    : `${path.join('.', 'mysql', 'changelog')}${path.sep}`;
+    : `${path.join('.', 'mysql', 'changelog')}${path.sep}`);
 const classPath =
   process.env.CLASS_PATH || process.platform === 'win32'
     ? `${path.join(__dirname, 'lib')}${path.sep}mysql-connector-java-8.0.24.jar`.split(path.sep).join(path.posix.sep)
@@ -50,10 +54,10 @@ const liquibaseConfPath =
     : `${path.join('.')}${path.sep}liquibase.properties`;
 
 // DEBUGGING
-logDebug(basePath);
-logDebug(liquibaseBasePath);
-logDebug(liquibaseConfPath);
-logDebug(classPath);
+logDebug(`Base Path: ${basePath}`);
+logDebug(`Liquibase base Path: ${liquibaseBasePath}`);
+logDebug(`Liquibase Config Path: ${liquibaseConfPath}`);
+logDebug(`Class Path: ${classPath}`);
 
 // ---
 
@@ -76,7 +80,7 @@ async function Handler(args) {
 
   // To avoid the missing mysql/changelog path error.
   if (Triggered(args) && !CheckBasePath(basePath)) {
-    console.log('SKIPPING');
+    logDebug('SKIPPING');
     return Promise.resolve(false);
   }
 
@@ -105,7 +109,7 @@ async function Handler(args) {
   if (args['deploy-migration'] && args.name) {
     const env = args.env || NODE_ENV || null;
     if (!env) {
-      throw new Error("Missing '--env' or 'NODE_ENV'");
+      throw new Error("Missing '--env' or 'NODE_ENV', the `env` value must be one of the filename available in `.yadu/`");
     }
     console.log(`Deploy migration ${args.name}`.action);
     console.log('>>>');

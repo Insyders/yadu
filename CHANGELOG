@@ -1,3 +1,12 @@
+2021-07-19
+
+- Improved console documentation
+- Moved messages to logDebug and logVerbose to offload the console
+- Improved console.log placement
+- --create-migration can be launched anywhere in the project.
+- Replaced the error to warn when no config file is passed with potential solution if needed.
+- Better message to let the user know that --env is required. and where to find the filename to use.
+
 2021-06-25
 
 - Added --cloudformation to read all template.yml files in each lambda, append all that and generate the appropriate application.yaml file.

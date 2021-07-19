@@ -34,19 +34,19 @@ function Validation(args) {
   }
 
   if (!DB_USER || DB_USER === '') {
-    errors.push(`${'[ERROR]'.error} Missing Environment variable 'DB_USER'`);
+    errors.push(`${'[ERROR]'.error} Missing Environment variable 'DB_USER', Please read the documentation or use the --env=<filename>`);
   }
   if (!DB_PASS || DB_PASS === '') {
-    errors.push(`${'[ERROR]'.error} Missing Environment variable 'DB_PASS'`);
+    errors.push(`${'[ERROR]'.error} Missing Environment variable 'DB_PASS', Please read the documentation or use the --env=<filename>`);
   }
   if (!DB_URL || DB_URL === '') {
-    errors.push(`${'[ERROR]'.error} Missing Environment variable 'DB_URL'`);
+    errors.push(`${'[ERROR]'.error} Missing Environment variable 'DB_URL', Please read the documentation or use the --env=<filename>`);
   }
   if (!API_KEY || API_KEY === '') {
-    console.log(`${'[WARN]'.warn} Missing Environment variable 'API_KEY'`);
+    console.log(`${'[WARN]'.warn} Missing Environment variable 'API_KEY', Please read the documentation or use the --env=<filename>`);
   }
   if (!PROJECT_ID || PROJECT_ID === '') {
-    console.log(`${'[WARN]'.warn} Missing Environment variable 'PROJECT_ID'`);
+    console.log(`${'[WARN]'.warn} Missing Environment variable 'PROJECT_ID', Please read the documentation or use the --env=<filename>`);
   }
 
   if (errors && errors.length > 0) {
