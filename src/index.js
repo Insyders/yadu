@@ -14,6 +14,7 @@ const { logDebug, logVerbose } = require('../globals/utils');
 const { CheckLocalVersion } = require('../lib/currentVersion');
 const mysqlDumpHandler = require('../mysqlDump/mysqlDumpHandler');
 const cloudformationHandler = require('../lib/cloudformationHandler');
+const { version } = require('../package.json');
 
 colors.setTheme({
   silly: 'rainbow',
@@ -28,6 +29,11 @@ colors.setTheme({
   error: 'red',
   success: ['green', 'underline'],
 });
+
+if (args.version) {
+  console.log(`YaDU: ${version}`);
+  process.exit(0);
+}
 
 if (args['fail-on-load']) {
   console.log('Enabling fail on load'.debug);

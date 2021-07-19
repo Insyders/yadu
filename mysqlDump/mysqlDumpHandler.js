@@ -2,10 +2,10 @@ const { logVerbose } = require('../globals/utils');
 const MysqlDump = require('./mysqldump');
 
 module.exports = (args, config) => {
-  console.log('> MySQL Dump');
   if (!args.mysqldump) {
     return false;
   }
+  console.log('> MySQL Dump');
 
   logVerbose(config);
 
