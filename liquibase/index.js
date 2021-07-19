@@ -93,10 +93,10 @@ async function Handler(args) {
   // This one doesn't required to have access to the actual database
   if (args['create-migration'] && args.name) {
     console.log('Create new migration'.action);
-    console.log('>>>');
     if (!args.name) {
       throw new Error("Missing --name=<String>; e.g --name='ABC-123'");
     }
+    console.log('>>>');
     createMigration(args.name, basePath);
     console.log('<<<');
     handled = true;
@@ -119,6 +119,9 @@ async function Handler(args) {
     const env = args.env || NODE_ENV || null;
     if (!env) {
       throw new Error("Missing '--env' or 'NODE_ENV', the `env` value must be one of the filename available in `.yadu/`");
+    }
+    if (!args.name) {
+      throw new Error("Missing --name=<String>; e.g --name='ABC-123'");
     }
     console.log(`Deploy migration ${args.name}`.action);
     console.log('>>>');

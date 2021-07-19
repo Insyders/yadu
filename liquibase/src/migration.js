@@ -127,7 +127,7 @@ function deployMigration(name, environment = 'custom', liquibaseBasePath, liquib
       }
     }
   } else {
-    console.log(`${'[SKIP]'.info} Skipping registration.'`);
+    console.log(`${'[SKIP]'.info} Skipping registration.`);
   }
 
   // 2. update the targetted database
