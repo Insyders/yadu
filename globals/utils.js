@@ -30,6 +30,7 @@ const isHome = (baseDir, iter = 0) => {
   const exists = fs.existsSync(path.join(baseDir, '.git'));
 
   if (exists) {
+    logVerbose(`Home Path: ${path.join(baseDir)}${path.sep}`);
     return { path: path.join(baseDir) + path.sep, success: true, iter };
   }
 

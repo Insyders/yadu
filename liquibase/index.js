@@ -8,7 +8,7 @@ require('dotenv').config({
   path: path.resolve(process.cwd(), process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env'),
 });
 
-const { logDebug, isHome, logVerbose } = require('../globals/utils');
+const { logDebug, isHome } = require('../globals/utils');
 const { createMigration, deployMigration } = require('./src/migration');
 const { createVersion } = require('./src/version');
 const { sync } = require('./src/sync');
@@ -33,7 +33,7 @@ const { NODE_ENV } = process.env;
 // TODO: NEED REFACTOR it burns my eyes..
 // basePath uses the current working directory. But in fact it must use the homeDir defined by our function.
 const home = isHome(process.cwd());
-logVerbose(home);
+
 let basePath =
   home.path +
   (process.env.BASE_PATH || process.platform === 'win32'
