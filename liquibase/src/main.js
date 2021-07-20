@@ -33,7 +33,7 @@ async function generateMainFile(liquibaseBasePath, liquibaseConfPath, basePath, 
       type: 'element',
       name: 'include',
       attributes: {
-        file: `mysql/changelog/${file}`,
+        file: `${file}`,
       },
     };
 
