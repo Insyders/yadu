@@ -88,7 +88,7 @@ if (!process.env.MAX_DEPTH) {
     }
 
     if (args['show-config']) {
-      console.debug(configService);
+      console.debug(JSON.stringify(configService, null, 2));
     }
 
     // Load everything after setting the appropriate environment variables
