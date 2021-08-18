@@ -1,4 +1,0 @@
-__tests__
-.aws-sam
-*.yml
-response.json
