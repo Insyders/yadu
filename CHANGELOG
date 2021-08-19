@@ -1,3 +1,9 @@
+2021-08-19
+
+- Added Telemetry with configurable rest api endpoint
+- Fixed npm install to work with npm v7
+- delete all _*_ before packaging the lambda to avoid having multiple commit id in a package
+
 2021-07-23
 
 - Added support of !If when using --use-yaml, it returns the value of the condition only.
