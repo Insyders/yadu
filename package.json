@@ -1,6 +1,6 @@
 {
   "name": "@halfserious/yadu",
-  "version": "2.6.14",
+  "version": "2.7.0",
   "description": "Package and Deploy our AWS lambdas",
   "main": "src/index.js",
   "bin": {
@@ -25,7 +25,9 @@
   },
   "homepage": "https://github.com/Insyders/yadu#readme",
   "dependencies": {
+    "@aws-sdk/client-sns": "^3.26.0",
     "aws-sdk": "2.840.0",
+    "axios": "^0.21.1",
     "colors": "1.4.0",
     "dotenv": "^8.6.0",
     "inquirer": "^8.1.0",
