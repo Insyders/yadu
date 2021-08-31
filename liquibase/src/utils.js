@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { logDebug, logVerbose } = require('../../globals/utils');
 
-const CHANGELOG_PATTERN = /^mysql\/changelog\/db.changelog-.*/;
+const CHANGELOG_PATTERN = /(^mysql\/changelog\/db.changelog-.*)|(^(\.\/)?db.changelog-.*)/;
 const CHANGELOG_FILE_PATTERN = /^db.changelog-.*.mysql.sql/;
 
 function getCommitId() {
@@ -71,6 +71,7 @@ function getAllHistory(liquibaseBasePath, liquibaseConfPath, classPath) {
 
 function getLocalMigration(basePath) {
   const directories = fs.readdirSync(path.resolve(basePath)).filter((dir) => dir.match(CHANGELOG_FILE_PATTERN));
+  logDebug('Get Local Migration:');
   logDebug(directories);
   return directories;
 }

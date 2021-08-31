@@ -1,0 +1,10 @@
+{
+  "callbackWaitsForEmptyEventLoop": true,
+  "functionVersion": "$LATEST",
+  "functionName": "lambda_fn",
+  "memoryLimitInMB": "256",
+  "logGroupName": "/aws/lambda/lambda_fn",
+  "logStreamName": "2019/11/19/[$LATEST]6ad05d5a733344b38447482c880910ed",
+  "invokedFunctionArn": "arn:aws:lambda:us-east-1:123456789012:function:lambda_fn",
+  "awsRequestId": "866554cb-550b-5550-8003-b9566744a28c"
+}
