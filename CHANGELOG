@@ -1,3 +1,8 @@
+2021-08-30
+
+- Added --zip-args to use --package-only without specifying the --use-yaml --env parameters. But you will need to pass the files to zip manually.
+- Added default zip function to use the .npmignore to determine which files and directories to archive
+
 2021-08-19
 
 - Added Telemetry with configurable rest api endpoint

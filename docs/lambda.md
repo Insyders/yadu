@@ -163,3 +163,12 @@ To print the configuration without pushing it on AWS:
 ```
 yadu --show-config --use-yaml --env=dev-hs --verbose
 ```
+
+## Package Only (--package-only) Command
+
+Requires a list of files and directories to archive.
+
+- `--zip-args="index.js package.json etc."`
+- Use `--env` and `--use-yaml` (optional)
+- Use the default handler, behind the scene it fetches the current directory and remove all files and directories that are specified in the `.npmignore` from the list.
+
