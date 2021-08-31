@@ -9,6 +9,7 @@
   "parserOptions": {
     "ecmaVersion": 12
   },
+  "ignorePatterns": ["__tests__/test_data", "__tests__/dynamicCfn/"],
   "rules": {
     "prettier/prettier": "error",
     "no-console": "off",
