@@ -32,8 +32,9 @@ Package and Deploy
     > --package-only                               Generate only the index.zip file for the current lambda
         [--zip-args=<string>]                      list of files and directories to archive
     > --deploy                                     Deploy code to AWS ($LATEST)
-        [--use-yaml=<boolean>]                     Use SAM YAML Template instead of local serverr
+        [--use-yaml=<boolean>]                     Use SAM YAML Template instead of local server
     > --create                                     Create and Deploy the function to AWS
+        --role=<String>                            The Role Arn to use
     > --new-version                                Publish a new version and attach it to the specified alias, by default 'stage' 
         --alias=<string>
 
