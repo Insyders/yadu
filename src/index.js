@@ -2,19 +2,41 @@
 /* eslint-disable global-require */
 
 const args = require('minimist')(process.argv.slice(2));
-const shell = require('shelljs');
+// eslint-disable-next-line import/order
+const { version } = require('../package.json');
 const fs = require('fs');
 const path = require('path');
+const shell = require('shelljs');
 const colors = require('colors');
 const header = require('../lib/header');
+const { logDebug, logVerbose } = require('../globals/utils');
+const { CheckLocalVersion } = require('../lib/currentVersion');
+
+if (args.version) {
+  console.log(`YaDU: ${version}`);
+  process.exit(0);
+}
+
+if (!args || args.length === 1) {
+  args.help = true;
+}
+
+if (args.help || !args || Object.keys(args).length === 1) {
+  console.log('\n');
+  console.log(fs.readFileSync(path.join(__dirname, '..', 'CLI.txt'), { encoding: 'utf-8' }));
+
+  if (!args || Object.keys(args).length === 1) {
+    console.log(`${'WARN'.warn} no arguments provided.`);
+  }
+
+  process.exit(0);
+}
+
 const { loadArgs } = require('../lib/loadArgs');
 const template = require('../lib/template');
 const config = require('../lib/config');
-const { logDebug, logVerbose } = require('../globals/utils');
-const { CheckLocalVersion } = require('../lib/currentVersion');
 const mysqlDumpHandler = require('../mysqlDump/mysqlDumpHandler');
 const cloudformationHandler = require('../lib/cloudformationHandler');
-const { version } = require('../package.json');
 
 colors.setTheme({
   silly: 'rainbow',
@@ -29,11 +51,6 @@ colors.setTheme({
   error: 'red',
   success: ['green', 'underline'],
 });
-
-if (args.version) {
-  console.log(`YaDU: ${version}`);
-  process.exit(0);
-}
 
 if (args['fail-on-load']) {
   console.log('Enabling fail on load'.debug);
@@ -102,16 +119,6 @@ if (!process.env.MAX_DEPTH) {
 
     shell.echo(`Using AWS_REGION=${REGION} & AWS_PROFILE=${PROFILE}`.action);
 
-    if (args.help || !args || Object.keys(args).length === 1) {
-      console.log('\n');
-      console.log(fs.readFileSync(path.join(__dirname, '..', 'CLI.txt'), { encoding: 'utf-8' }));
-
-      if (!args || Object.keys(args).length === 1) {
-        console.log(`${'WARN'.warn} no arguments provided.`);
-      }
-
-      process.exit(0);
-    }
     // Handle Cloudformation
     const cloudformationHandled = cloudformationHandler(args, configService);
     if (cloudformationHandled) {
