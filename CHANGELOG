@@ -1,3 +1,10 @@
+2021-09-22
+
+- Fixed Lambda errors yadu < 2.10.0
+- Fixed bug when using regex and loading templates
+- Added/Reviewed messages print on screen
+
+
 2021-09-21
 
 - Added loadConfig to allow custom nodeJS script to load environment variables from the secrets manager easily

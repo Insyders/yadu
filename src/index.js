@@ -99,12 +99,13 @@ if (!process.env.MAX_DEPTH) {
         if (process.env.FAIL_ON_LOAD === 'true') {
           throw e;
         } else {
-          console.log(`${'[WARN]'.warn} Failed to load the configuration`);
+          console.log(`${'[WARN]'.warn} Failed to load the configuration, it might lead to unwanted behaviours.`);
         }
       });
     }
 
     if (args['show-config']) {
+      console.log('[Action] Show YaDU Configuration');
       console.debug(JSON.stringify(configService, null, 2));
     }
 
