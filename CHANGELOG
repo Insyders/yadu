@@ -1,3 +1,16 @@
+2021-09-21
+
+- Added loadConfig to allow custom nodeJS script to load environment variables from the secrets manager easily
+- Fixes and console.log improvements
+- Worked on the --create for the lambdas (not properly tested though)
+- Tried to replicate the issue with the template.yml files, not able to replicate, added console.log to mention that issues can occur
+- Added Dockerfile to use YaDU and other tools
+- Added POC to test the config package
+- Updated documentation
+- Enabled Jest coverage option
+- added new patterns in the ignore list for the configuration parser
+
+
 2021-08-30
 
 - Added --zip-args to use --package-only without specifying the --use-yaml --env parameters. But you will need to pass the files to zip manually.

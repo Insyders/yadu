@@ -80,3 +80,92 @@ describe('Test dynamic CloudFormation', () => {
     cfn.SaveMergedTemplate('test.yaml');
   });
 });
+
+describe('Test Regex', () => {
+  test('Regex seems to allow too much information', () => {
+    const dirs = [
+      "/Users/user01/Documents/application/lambda/yadu/serverless.yml",
+      "/Users/user01/Documents/application/lambda/yadu/serverless.yaml",
+      "/Users/user01/Documents/application/lambda/yadu/serverless-whatever.yml",
+      "/Users/user01/Documents/application/lambda/yadu/serverless.json",]
+
+    const lambdaRegex = "template.yaml|template.yml"
+    const rgx = new RegExp(lambdaRegex);
+    dirs.forEach(dir => {
+      expect(rgx.exec(dir)).toBeFalsy()
+    })
+  })
+
+  test('Regex should return 2 results', () => {
+    const dirs = [
+      "/Users/user01/Documents/application/lambda/yadu/template.yaml",
+      "/Users/user01/Documents/application/lambda/yadu/template.yml",
+      "/Users/user01/Documents/application/lambda/yadu/serverless.yml",
+      "/Users/user01/Documents/application/lambda/yadu/serverless.yaml",
+      "/Users/user01/Documents/application/lambda/yadu/serverless-whatever.yml",
+      "/Users/user01/Documents/application/lambda/yadu/serverless.json",]
+
+    const lambdaRegex = "template.yaml|template.yml"
+    const rgx = new RegExp(lambdaRegex);
+    expect(dirs.filter(dir => {
+      return rgx.exec(dir)
+    }).length).toBe(2)
+  })
+
+  test('Regex should return 1 result', () => {
+    const dirs = [
+      "/Users/user01/Documents/application/lambda/yadu/template.yaml",
+      "/Users/user01/Documents/application/lambda/yadu/template.yml",
+      "/Users/user01/Documents/application/lambda/yadu/serverless.yml",
+      "/Users/user01/Documents/application/lambda/yadu/serverless.yaml",
+      "/Users/user01/Documents/application/lambda/yadu/serverless-whatever.yml",
+      "/Users/user01/Documents/application/lambda/yadu/serverless.json",
+    ]
+
+    const lambdaRegex = /template.yaml/;
+    const rgx = new RegExp(lambdaRegex);
+    expect(dirs.filter(dir => {
+      return rgx.exec(dir)
+    }).length).toBe(1)
+  })
+
+  test('Regex should return 0 result', () => {
+    const dirs = [
+      "/Users/user01/Documents/application/lambda/yadu/template.yaml",
+      "/Users/user01/Documents/application/lambda/yadu/template.yml",
+      "/Users/user01/Documents/application/lambda/yadu/serverless.yml",
+      "/Users/user01/Documents/application/lambda/yadu/serverless.yaml",
+      "/Users/user01/Documents/application/lambda/yadu/serverless-whatever.yml",
+      "/Users/user01/Documents/application/lambda/yadu/serverless.json",
+    ]
+
+    const lambdaRegex = null;
+    const rgx = new RegExp(lambdaRegex);
+    expect(dirs.filter(dir => {
+      return rgx.exec(dir)
+    }).length).toBe(0)
+  })
+
+  test('Regex should return 6 results', () => {
+    const dirs = [
+      "/Users/user01/Documents/application/lambda/yadu/template.yaml",
+      "/Users/user01/Documents/application/lambda/yadu/template.yml",
+      "/Users/user01/Documents/application/lambda/yadu/serverless.yml",
+      "/Users/user01/Documents/application/lambda/yadu/serverless.yaml",
+      "/Users/user01/Documents/application/lambda/yadu/serverless-whatever.yml",
+      "/Users/user01/Documents/application/lambda/yadu/serverless.json",
+    ]
+
+    const lambdaRegex = "";
+    const rgx = new RegExp(lambdaRegex);
+    expect(dirs.filter(dir => {
+      return rgx.exec(dir)
+    }).length).toBe(6)
+  })
+  test('Regex seems to be empty', () => {
+    const input = {lambdaRegex: ""};
+
+    const lambdaRegex = input.lambdaRegex || "template.yml";
+    expect(lambdaRegex).toBe("template.yml")
+  })
+})

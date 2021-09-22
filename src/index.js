@@ -143,7 +143,7 @@ if (!process.env.MAX_DEPTH) {
       process.exit(0);
     }
 
-    // handle template creation
+    // handle template creation for YaDU configuration
     const configHandled = await config(args);
     if (configHandled) {
       process.exit(0);
