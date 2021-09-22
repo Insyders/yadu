@@ -1,12 +1,26 @@
-node_modules
+# System
 .DS_Store
+
+# NodeJS
+node_modules
+
+# External Deps
 *.jar
 liquibase-*/
-.env*
 *.tgz
-mysql/
+
+# Local
+.env*
+
+# Tests
 .yadu/
 *.sql
+mysql/
+
+# generated Files
 _application.yaml
 test.yaml
 schema-*.sql
+
+# Jest
+coverage/
