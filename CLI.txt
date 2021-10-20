@@ -98,6 +98,14 @@ Liquibase Commands (SQL Migration / Schema Changes)
 
 MySQL
     > --mysqldump                                   It wraps the `mysqldump` command, it can be configured using the config service
+    > --delete-db-instance                          Delete a database instance, Be careful !
+        --target=<String>                           The DB Instance to delete
+    > --create-db-snapshot
+        --target=<String>                           The DB Instance to snapshot
+        --snapshot-name-target=<String>             Snapshot name
+    > --restore-db-from-snapshot 
+        --target=<String>                           The DB Instance to create
+        --snapshot-name-source=<String>             The snapshot name to use
 
 Override env. variables
     > --db-url-ref=<String>

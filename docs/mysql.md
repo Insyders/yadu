@@ -277,3 +277,15 @@ BASE_PATH="./mysql/changelog"
 | --db-name=\<String\>      |                                                  |
 | --db-extra=\<String\>     | Default: useUnicode=true&characterEncoding=UTF-8 |
 | --db-port=\<String\>      | Default: 3306                                    |
+
+## RDS
+
+```bash
+snapshot_date=$(date +"%m-%d-%y")
+
+yadu --delete-db-instance --target=tenant-dev --env=dev &
+yadu --create-db-snapshot --target=tenant-qa --snapshot-name-target=tenant-qa-${snapshot_date} --env=dev
+yadu --restore-db-from-snapshot --target=tenant-dev --snapshot-name-source=tenant-qa-${snapshot_date} --env=dev
+```
+
+> It launches the database deletion and snapshot creation simultaneously. Then it restore the previously deleted databse using the newly created snapshot

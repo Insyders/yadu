@@ -37,6 +37,7 @@ const template = require('../lib/template');
 const config = require('../lib/config');
 const mysqlDumpHandler = require('../mysqlDump/mysqlDumpHandler');
 const cloudformationHandler = require('../lib/cloudformationHandler');
+const databaseHandler = require('../database/databaseHandler');
 
 colors.setTheme({
   silly: 'rainbow',
@@ -147,6 +148,12 @@ if (!process.env.MAX_DEPTH) {
     // handle template creation for YaDU configuration
     const configHandled = await config(args);
     if (configHandled) {
+      process.exit(0);
+    }
+
+    // handle template creation for YaDU configuration
+    const databaseHandled = await databaseHandler(args, configService.rds || {});
+    if (databaseHandled) {
       process.exit(0);
     }
 

@@ -1,0 +1,42 @@
+{
+    "debug": true,
+    "region": "region",
+    "layerVersion": null,
+    "accountId": "account-id",
+    "lambdaBasePath": "../",
+    "lambdaSourcePath": "./aws/lambda/",
+    "lambdaTemplateRegex": "template.yaml|template.yml",
+    "applicationYaml": "./cloudformation/application.yaml",
+    "stage": "dev",
+    "mapping": {
+      "TracingMode": "Active",
+      "${IAMStackName}:GenericLambdaRole": "arn:aws:iam::account-id:role/service-role/lambda-role-name",
+      "NodeEnv": "development",
+      "Stage": "dev",
+      "DefaultHandler": "index.handler"
+    },
+    "secrets": "tenant-rds-stage,tenant-rds-stage:ref",
+    "mysqlBasePath": "mysql/changelog/",
+    "liquibaseBasePath": null,
+    "liquibaseConfPath": null,
+    "classPath": null,
+    "zipArgs": "node_modules/ *.py *.js package.json *.html src/*.js lib/*.js",
+    "mysqlDump": {
+      "executable": null,
+      "filename": "mysql/baseline/schema-stage-latest.sql",
+      "options": "no-data,triggers,routines,events,all-databases,column-statistics=0"
+    },
+    "telemetry": {
+      "endpoint": "https://api-id.execute-api.region.amazonaws.com/prod/telemetry",
+      "apiKey": "",
+      "project": "tenant-stage"
+    },
+    "rds": {
+      "target": "",
+      "snapshotNameTarget": "",
+      "snapshotNameSource": "",
+      "deleteAutomatedBackups": false,
+      "dbInstanceClass": "db.t3.micro",
+      "publiclyAccessible": true
+    }
+  }
