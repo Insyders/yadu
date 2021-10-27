@@ -9,6 +9,6 @@ describe('Test Utils module', () => {
 
     console.log(fileList);
     expect(fileList).toBeDefined();
-    expect(fileList).toEqual('README.md index.js node_modules package.json package-lock.json src');
+    expect(fileList).toEqual('README.md index.js node_modules package-lock.json package.json src');
   });
 });
