@@ -9,7 +9,7 @@ describe('Test telemetry endpoint and data collection', () => {
     // console.log(res);
   });
 
-  test('Send Telemetry to endpoint using real information', async () => {
+  test.skip('Send Telemetry to endpoint using real information', async () => {
     //   TODO: will not work on other machine.
     const config = ConfigService.LoadConfig(`${__dirname}/../.yadu/config-old.json`);
     // console.log(config);
