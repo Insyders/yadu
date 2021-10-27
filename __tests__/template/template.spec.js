@@ -1,4 +1,4 @@
-const Template = require('../../lib/classes/Template');
+const Template = require('../../libs/classes/Template');
 
 describe('Generate a lambda template', () => {
   test('Generate basic template with no SNS and using globals', () => {

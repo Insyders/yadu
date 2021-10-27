@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { logDebug } = require('../../globals/utils');
+const { logDebug } = require('../globals/utils');
 
 /**
  * Config service

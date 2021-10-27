@@ -1,7 +1,7 @@
 const shell = require('shelljs');
 const colors = require('colors');
 const currentVersion = require('../package.json').version;
-const { logDebug } = require('../globals/utils');
+const { logDebug } = require('./globals/utils');
 
 colors.setTheme({
   warn: 'yellow',

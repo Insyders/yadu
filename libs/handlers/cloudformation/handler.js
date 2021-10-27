@@ -1,6 +1,6 @@
 const path = require('path');
-const { logVerbose, isHome, logDebug } = require('../globals/utils');
-const Cloudformation = require('./classes/Cloudformation');
+const { logVerbose, isHome, logDebug } = require('../../globals/utils');
+const Cloudformation = require('../../classes/Cloudformation');
 
 module.exports = (args, config) => {
   if (!args.cloudformation) {

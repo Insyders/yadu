@@ -1,5 +1,5 @@
-const { loadArgs, configureProfileAndRegion, assignVariables } = require('../../lib/loadArgs');
-const { assignSecretValues } = require('../../lib/secretManager');
+const { loadArgs, configureProfileAndRegion, assignVariables } = require('../../libs/loadArgs');
+const { assignSecretValues } = require('../../libs/secretManager');
 
 describe('Test liquibase parameter override', () => {
   test('Load process.env', async () => {

@@ -2,7 +2,7 @@
 const { yamlParse } = require('yaml-cfn');
 const fs = require('fs');
 const path = require('path');
-const { logDebug, logVerbose } = require('../../globals/utils');
+const { logDebug, logVerbose } = require('../globals/utils');
 
 /**
  * Quick fix for nested Object

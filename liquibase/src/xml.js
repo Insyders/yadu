@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const convert = require('xml-js');
-const { logDebug } = require('../../globals/utils');
+const { logDebug } = require('../../libs/globals/utils');
 
 function updateXML(name, migrationPath, basePath, main = 'db.changelog-main.xml') {
   const MAIN_PATH = path.resolve(basePath, main);

@@ -1,4 +1,4 @@
-const Database = require('../lib/classes/Database');
+const Database = require('../../classes/Database');
 
 module.exports = async (args, config = {}) => {
   const client = new Database(config);

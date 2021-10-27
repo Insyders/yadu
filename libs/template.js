@@ -1,5 +1,5 @@
 const { prompt } = require('inquirer');
-const { logDebug } = require('../globals/utils');
+const { logDebug } = require('./globals/utils');
 const Template = require('./classes/Template');
 
 const questions = [

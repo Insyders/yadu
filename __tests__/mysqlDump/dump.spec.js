@@ -1,4 +1,4 @@
-const MysqlDump = require('../../mysqlDump/mysqldump');
+const MysqlDump = require('../../libs/mysqlDump/mysqldump');
 
 describe('Test mysqlDump', () => {
   test('Should find the appropriate executable path', () => {

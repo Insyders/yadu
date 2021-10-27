@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const jsToYaml = require('json-to-pretty-yaml');
 const Converter = require('./ReadYaml');
-const { logDebug, logVerbose } = require('../../globals/utils');
+const { logDebug, logVerbose } = require('../globals/utils');
 
 // eslint-disable-next-line camelcase
 const ignore_patterns = ['.aws-sam', 'node_modules', '.git', '.serverless', 'coverage', '.yadu'];

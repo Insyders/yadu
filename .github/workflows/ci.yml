@@ -34,9 +34,9 @@ jobs:
       - name: Install project dependencies
         run: npm ci
 
-      - name: Run Linter (ignore failure, Feature Push)
+      - name: Run Linter (Feature Push)
         if: github.head_ref == ''
-        continue-on-error: true
+        continue-on-error: false
         run: npm run lint
 
       - name: Run Linter (From Pull Request)

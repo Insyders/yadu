@@ -1,5 +1,5 @@
-const { logVerbose } = require('../globals/utils');
-const MysqlDump = require('./mysqldump');
+const { logVerbose } = require('../../globals/utils');
+const MysqlDump = require('../../mysqlDump/mysqldump');
 
 module.exports = (args, config) => {
   if (!args.mysqldump) {

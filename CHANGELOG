@@ -1,3 +1,9 @@
+2021-10-27 (PRELIM 2.12.x)
+
+- Added codepipeline actions, we are using cloudformation stacks to deploy our pipelines, we were looking for a quick way to let the developers update the branch deployed using those codepipeline. I've added 2 commands, --get-current-parameters and --update-branch-name.
+- Restructure files and directories
+
+
 2021-09-22
 
 - Fixed Lambda errors yadu < 2.10.0

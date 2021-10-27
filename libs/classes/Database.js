@@ -7,7 +7,7 @@ const {
   waitUntilDBSnapshotAvailable,
   waitUntilDBInstanceDeleted,
 } = require('@aws-sdk/client-rds');
-const { logDebug, logVerbose } = require('../../globals/utils');
+const { logDebug, logVerbose } = require('../globals/utils');
 
 const client = new RDSClient();
 

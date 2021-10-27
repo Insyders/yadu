@@ -2,7 +2,7 @@ const AWS = require('aws-sdk');
 const path = require('path');
 const colors = require('colors');
 const { retrieveSecrets } = require('./secretManager');
-const { logDebug, logVerbose, isHome } = require('../globals/utils');
+const { logDebug, logVerbose, isHome } = require('./globals/utils');
 const Config = require('./classes/Config');
 
 colors.setTheme({

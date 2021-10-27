@@ -8,7 +8,7 @@ require('dotenv').config({
   path: path.resolve(process.cwd(), process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env'),
 });
 
-const { logDebug, isHome } = require('../globals/utils');
+const { logDebug, isHome } = require('../libs/globals/utils');
 const { createMigration, deployMigration } = require('./src/migration');
 const { createVersion } = require('./src/version');
 const { sync } = require('./src/sync');

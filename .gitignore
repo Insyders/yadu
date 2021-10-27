@@ -3,6 +3,7 @@
 
 # NodeJS
 node_modules
+.husky/
 
 # External Deps
 *.jar
@@ -15,7 +16,7 @@ liquibase-*/
 # Tests
 .yadu/
 *.sql
-mysql/
+mysql/changelog/
 
 # generated Files
 _application.yaml

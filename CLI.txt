@@ -49,6 +49,15 @@ Cloudformation
     > --cloudformation                              Generate the application.yaml to deploy, it uses the config service
         --filename=<string>                         Output filename
 
+CodePipeline
+    > --update-branch-name
+        --stack-name=<string>                       CloudFormation Stack name used to deploy the pipeline
+        [--key=<string>]                            Parameter Key value of cloudformation for the branch name, Default: 'BranchName'
+        [--value=<string>]                          Parameter Value of cloudformation for the branch name, Defautl: 'main'
+
+    > --get-current-parameters                      Print the current Parameter Key/Values for the stack
+        --stack-name=<string>                       CloudFormation Stack name used to deploy the pipeline
+
 Parameters to override serverless.json values
     --stage=<string>
     --role=<string>

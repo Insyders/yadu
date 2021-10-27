@@ -1,5 +1,5 @@
 const path = require('path');
-const Cloudformation = require('../../lib/classes/Cloudformation');
+const Cloudformation = require('../../libs/classes/Cloudformation');
 
 describe('Test dynamic CloudFormation', () => {
   test('Scan Directory', () => {

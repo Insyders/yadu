@@ -1,4 +1,4 @@
-const { defaultZip } = require('../lib/utils');
+const { defaultZip } = require('../libs/utils');
 
 describe('Test Utils module', () => {
   test('defaultZip function', () => {
@@ -6,6 +6,6 @@ describe('Test Utils module', () => {
 
     console.log(fileList);
     expect(fileList).toBeDefined();
-    expect(fileList).toEqual('README.md index.js node_modules package.json src');
+    expect(fileList).toEqual('README.md index.js package-lock.json package.json src');
   });
 });
