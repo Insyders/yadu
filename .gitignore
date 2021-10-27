@@ -16,7 +16,7 @@ liquibase-*/
 # Tests
 .yadu/
 *.sql
-mysql/
+mysql/changelog/
 
 # generated Files
 _application.yaml
