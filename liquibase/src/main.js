@@ -3,7 +3,7 @@ const colors = require('colors');
 const { saveMainFile } = require('./xml');
 const { getAllHistory, getLocalMigration, compare } = require('./utils');
 const { base } = require('../lib/mainXML');
-const { logDebug } = require('../../globals/utils');
+const { logDebug } = require('../../libs/globals/utils');
 
 colors.setTheme({
   warn: 'yellow',

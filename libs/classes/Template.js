@@ -1,5 +1,5 @@
 const jsToYaml = require('json-to-pretty-yaml');
-const { FirstLetterUpper, Normalize } = require('../../globals/utils');
+const { FirstLetterUpper, Normalize } = require('../globals/utils');
 
 module.exports = class Template {
   constructor(config) {

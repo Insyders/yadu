@@ -3,7 +3,7 @@ const os = require('os');
 const path = require('path');
 const shell = require('shelljs');
 const axios = require('axios').default;
-const { logVerbose } = require('../globals/utils');
+const { logVerbose } = require('./globals/utils');
 
 async function sendTelemetry(endpoint = 'http://127.0.0.1', apiKey = null, project = null) {
   try {

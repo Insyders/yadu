@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk');
 const colors = require('colors');
-const { logDebug } = require('../globals/utils');
+const { logDebug } = require('./globals/utils');
 
 colors.setTheme({
   warn: 'yellow',

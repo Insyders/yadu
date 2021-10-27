@@ -4,7 +4,7 @@ const AWS = require('aws-sdk');
 const shell = require('shelljs');
 const { getAccountId, defaultZip } = require('./utils');
 const Converter = require('./classes/ReadYaml');
-const { logDebug, logVerbose, isHome } = require('../globals/utils');
+const { logDebug, logVerbose, isHome } = require('./globals/utils');
 const { sendTelemetry } = require('./telemetry');
 
 const lambda = new AWS.Lambda();
@@ -494,7 +494,7 @@ async function publish(args, config = {}) {
     await sendTelemetry(config.telemetry.endpoint, config.telemetry.apiKey, config.telemetry.project);
   }
 
-  shell.echo('Voila !'.success);
+  shell.echo('Voila !\n Good Job !'.success);
 }
 
 module.exports = {

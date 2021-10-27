@@ -3,6 +3,7 @@
 
 # NodeJS
 node_modules
+.husky/
 
 # External Deps
 *.jar

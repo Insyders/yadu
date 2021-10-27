@@ -4,7 +4,7 @@ const path = require('path');
 const colors = require('colors');
 const shell = require('shelljs');
 const { getCommitId, getBranchName } = require('./utils');
-const { logDebug, logVerbose } = require('../../globals/utils');
+const { logDebug, logVerbose } = require('../../libs/globals/utils');
 
 colors.setTheme({
   warn: 'yellow',

@@ -8,9 +8,9 @@ const fs = require('fs');
 const path = require('path');
 const shell = require('shelljs');
 const colors = require('colors');
-const header = require('../lib/header');
-const { logDebug, logVerbose } = require('../globals/utils');
-const { CheckLocalVersion } = require('../lib/currentVersion');
+const header = require('../libs/header');
+const { logDebug, logVerbose } = require('../libs/globals/utils');
+const { CheckLocalVersion } = require('../libs/currentVersion');
 
 if (args.version) {
   console.log(`YaDU: ${version}`);
@@ -32,12 +32,13 @@ if (args.help || !args || Object.keys(args).length === 1) {
   process.exit(0);
 }
 
-const { loadArgs } = require('../lib/loadArgs');
-const template = require('../lib/template');
-const config = require('../lib/config');
-const mysqlDumpHandler = require('../mysqlDump/mysqlDumpHandler');
-const cloudformationHandler = require('../lib/cloudformationHandler');
-const databaseHandler = require('../database/databaseHandler');
+const { loadArgs } = require('../libs/loadArgs');
+const template = require('../libs/template');
+const config = require('../libs/config');
+const mysqlDumpHandler = require('../libs/handlers/mysql/handler');
+const cloudformationHandler = require('../libs/handlers/cloudformation/handler');
+const databaseHandler = require('../libs/handlers/database/handler');
+const codePipelineHandler = require('../libs/handlers/codepipeline/handler');
 
 colors.setTheme({
   silly: 'rainbow',
@@ -112,8 +113,8 @@ if (!process.env.MAX_DEPTH) {
 
     // Load everything after setting the appropriate environment variables
     // Otherwise the process.env isn't configured properly.
-    const { checkGITCLI, checkZIPCLI } = require('../lib/utils');
-    const { publish } = require('../lib/logic');
+    const { checkGITCLI, checkZIPCLI } = require('../libs/utils');
+    const { publish } = require('../libs/logic');
     const { Handler } = require('../liquibase');
 
     const PROFILE = process.env.AWS_PROFILE;
@@ -154,6 +155,12 @@ if (!process.env.MAX_DEPTH) {
     // handle template creation for YaDU configuration
     const databaseHandled = await databaseHandler(args, configService.rds || {});
     if (databaseHandled) {
+      process.exit(0);
+    }
+
+    // handle template creation for YaDU configuration
+    const codepipelineHandled = await codePipelineHandler(args, configService.rds || {});
+    if (codepipelineHandled) {
       process.exit(0);
     }
 

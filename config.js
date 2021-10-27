@@ -1,8 +1,8 @@
 // Goal: Use node -r yadu/config
 // It is to load the environment variables based on the secrets values, but the async/await doesn't work with that approach.
 
-const { logDebug } = require('./globals/utils');
-const { loadArgs } = require('./lib/loadArgs');
+const { logDebug } = require('./libs/globals/utils');
+const { loadArgs } = require('./libs/loadArgs');
 
 async function loadEnv() {
   if (!process.env.ENV || process.env.ENV === '') {

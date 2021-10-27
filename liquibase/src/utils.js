@@ -2,7 +2,7 @@ const { execSync } = require('child_process');
 const shell = require('shelljs');
 const fs = require('fs');
 const path = require('path');
-const { logDebug, logVerbose } = require('../../globals/utils');
+const { logDebug, logVerbose } = require('../../libs/globals/utils');
 
 const CHANGELOG_PATTERN = /(^mysql\/changelog\/db.changelog-.*)|(^(\.\/)?db.changelog-.*)/;
 const CHANGELOG_FILE_PATTERN = /^db.changelog-.*.mysql.sql/;

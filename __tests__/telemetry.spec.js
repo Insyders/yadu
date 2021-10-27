@@ -1,5 +1,5 @@
-const ConfigService = require('../lib/classes/Config');
-const { sendTelemetry } = require('../lib/telemetry');
+const ConfigService = require('../libs/classes/Config');
+const { sendTelemetry } = require('../libs/telemetry');
 
 describe('Test telemetry endpoint and data collection', () => {
   test('Send Telemetry to endpoint', async () => {

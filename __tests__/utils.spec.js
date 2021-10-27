@@ -1,4 +1,4 @@
-const { defaultZip } = require('../lib/utils');
+const { defaultZip } = require('../libs/utils');
 
 describe('Test Utils module', () => {
   test('defaultZip function', () => {

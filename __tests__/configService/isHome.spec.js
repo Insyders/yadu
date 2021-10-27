@@ -1,5 +1,5 @@
 const path = require('path');
-const { isHome } = require('../../globals/utils');
+const { isHome } = require('../../libs/globals/utils');
 
 describe('Check isHome vaue', () => {
   test('isHome from test directory', () => {

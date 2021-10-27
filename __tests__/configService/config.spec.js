@@ -1,4 +1,4 @@
-const ConfigService = require('../../lib/classes/Config');
+const ConfigService = require('../../libs/classes/Config');
 
 describe('Test config service methods', () => {
   test('create config', () => {

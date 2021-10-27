@@ -1,6 +1,6 @@
 const { prompt } = require('inquirer');
 const path = require('path');
-const { logDebug } = require('../globals/utils');
+const { logDebug } = require('./globals/utils');
 const Config = require('./classes/Config');
 
 const questions = [
