@@ -115,6 +115,7 @@ MySQL
     > --restore-db-from-snapshot 
         --target=<String>                           The DB Instance to create
         --snapshot-name-source=<String>             The snapshot name to use
+    > --test-db-connection                          Test the primary and/or reference database connection(s)
 
 Override env. variables
     > --db-url-ref=<String>
