@@ -1,6 +1,6 @@
 {
   "name": "@halfserious/yadu",
-  "version": "2.11.0",
+  "version": "2.13.2",
   "description": "Package and Deploy our AWS lambdas",
   "main": "src/index.js",
   "bin": {
@@ -36,6 +36,7 @@
     "js-yaml": "^4.1.0",
     "json-to-pretty-yaml": "^1.2.2",
     "minimist": "^1.2.5",
+    "mysql": "^2.18.1",
     "shelljs": "^0.8.4",
     "xml-js": "^1.6.11",
     "yaml-cfn": "^0.3.0"
@@ -62,6 +63,7 @@
     "mysqlDump/**/*.js": "eslint",
     "globals/**/*.js": "eslint",
     "liquibase/**/*.js": "eslint",
-    "src/**/*.js": "eslint"
+    "src/**/*.js": "eslint",
+    "libs/**/*.js": "eslint"
   }
 }

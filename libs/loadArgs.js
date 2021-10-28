@@ -98,9 +98,9 @@ function configureProfileAndRegion(args = {}) {
   process.env.AWS_REGION = args.region || process.env.AWS_REGION || process.env.REGION || 'us-east-1';
 
   if (args.env) {
-    logDebug(`Override NODE_ENV variable with '${args.env}'`.debug);
+    console.log(`Override NODE_ENV variable with '${args.env}'`.debug);
     process.env.NODE_ENV = args.env;
-    logDebug(`Using : ${path.resolve(process.cwd(), process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env')}`);
+    console.log(`Using : ${path.resolve(process.cwd(), process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env')}`);
   }
 }
 
