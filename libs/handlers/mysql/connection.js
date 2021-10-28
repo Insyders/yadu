@@ -25,11 +25,11 @@ module.exports = async (args, config) => {
     } else {
       throw new Error(
         `Missing Environment Variables for primary database:\n${
-          process.env.DB_HOST && process.env.DB_HOST === '' ? `Missing ${'DB_HOST\n'.warn}` : `Provided ${'DB_HOST\n'.success}`
-        }${process.env.DB_USER && process.env.DB_USER === '' ? `Missing ${'DB_USER\n'.warn}` : `Provided ${'DB_USER\n'.success}`}${
-          process.env.DB_PASS && process.env.DB_PASS === '' ? `Missing ${'DB_PASS\n'.warn}` : `Provided ${'DB_PASS\n'.success}`
-        }${process.env.DB_NAME && process.env.DB_NAME === '' ? `Missing ${'DB_NAME\n'.warn}` : `Provided ${'DB_NAME\n'.success}`}${
-          process.env.DB_PORT && process.env.DB_PORT === '' ? `Missing ${'DB_PORT\n'.warn}` : `Provided ${'DB_PORT\n'.success}`
+          !process.env.DB_HOST ? `Missing ${'DB_HOST\n'.warn}` : `Provided ${'DB_HOST\n'.success}`
+        }${!process.env.DB_USER ? `Missing ${'DB_USER\n'.warn}` : `Provided ${'DB_USER\n'.success}`}${
+          !process.env.DB_PASS ? `Missing ${'DB_PASS\n'.warn}` : `Provided ${'DB_PASS\n'.success}`
+        }${!process.env.DB_NAME ? `Missing ${'DB_NAME\n'.warn}` : `Provided ${'DB_NAME\n'.success}`}${
+          !process.env.DB_PORT ? `Missing ${'DB_PORT\n'.warn}` : `Provided ${'DB_PORT\n'.success}`
         }`,
       );
     }
@@ -56,25 +56,11 @@ module.exports = async (args, config) => {
     } else {
       console.log(
         `${'[WARN]'.warn} Missing Environment Variables for reference database:\n${
-          process.env.DB_HOST_REF && process.env.DB_HOST_REF === ''
-            ? `Missing ${'DB_HOST_REF\n'.warn}`
-            : `Provided ${'DB_HOST_REF\n'.success}`
-        }${
-          process.env.DB_USER_REF && process.env.DB_USER_REF === ''
-            ? `Missing ${'DB_USER_REF\n'.warn}`
-            : `Provided ${'DB_USER_REF\n'.success}`
-        }${
-          process.env.DB_PASS_REF && process.env.DB_PASS_REF === ''
-            ? `Missing ${'DB_PASS_REF\n'.warn}`
-            : `Provided ${'DB_PASS_REF\n'.success}`
-        }${
-          process.env.DB_NAME_REF && process.env.DB_NAME_REF === ''
-            ? `Missing ${'DB_NAME_REF\n'.warn}`
-            : `Provided ${'DB_NAME_REF\n'.success}`
-        }${
-          process.env.DB_PORT_REF && process.env.DB_PORT_REF === ''
-            ? `Missing ${'DB_PORT_REF\n'.warn}`
-            : `Provided ${'DB_PORT_REF\n'.success}`
+          !process.env.DB_HOST_REF ? `Missing ${'DB_HOST_REF\n'.warn}` : `Provided ${'DB_HOST_REF\n'.success}`
+        }${!process.env.DB_USER_REF ? `Missing ${'DB_USER_REF\n'.warn}` : `Provided ${'DB_USER_REF\n'.success}`}${
+          !process.env.DB_PASS_REF ? `Missing ${'DB_PASS_REF\n'.warn}` : `Provided ${'DB_PASS_REF\n'.success}`
+        }${!process.env.DB_NAME_REF ? `Missing ${'DB_NAME_REF\n'.warn}` : `Provided ${'DB_NAME_REF\n'.success}`}${
+          !process.env.DB_PORT_REF ? `Missing ${'DB_PORT_REF\n'.warn}` : `Provided ${'DB_PORT_REF\n'.success}`
         }`,
       );
     }
