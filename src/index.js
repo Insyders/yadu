@@ -36,6 +36,7 @@ const { loadArgs } = require('../libs/loadArgs');
 const template = require('../libs/template');
 const config = require('../libs/config');
 const mysqlDumpHandler = require('../libs/handlers/mysql/handler');
+const mysqlHandler = require('../libs/handlers/mysql/connection');
 const cloudformationHandler = require('../libs/handlers/cloudformation/handler');
 const databaseHandler = require('../libs/handlers/database/handler');
 const codePipelineHandler = require('../libs/handlers/codepipeline/handler');
@@ -161,6 +162,12 @@ if (!process.env.MAX_DEPTH) {
     // handle template creation for YaDU configuration
     const codepipelineHandled = await codePipelineHandler(args, configService.rds || {});
     if (codepipelineHandled) {
+      process.exit(0);
+    }
+
+    // handle template creation for YaDU configuration
+    const mysqlHandled = await mysqlHandler(args, configService.rds || {});
+    if (mysqlHandled) {
       process.exit(0);
     }
 
