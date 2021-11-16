@@ -1,25 +1,49 @@
 FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
-
 WORKDIR /usr/app
 
-RUN apt-get update && \
-    apt-get install -y \
+# Dependencies
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        curl \
+        git \
         python3 \
         python-is-python3 \
         python3-pip \
         zip \
-        git
+        software-properties-common \
+        build-essential \
+        ruby-full \
+    && pip install \
+        awscli \
+        boto3 \
+        cfn-lint \
+        poetry \
+    && ln -s /usr/bin/python3 /usr/local/bin/python \
+    && rm -rf /var/lib/apt/lists/*
 
+# Ansible
+RUN add-apt-repository --yes --update ppa:ansible/ansible \
+    && apt-get install -y --no-install-recommends ansible
+
+# NodeJS 14
 RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt-get install -y nodejs npm build-essential
+RUN apt-get install -y nodejs
 
-RUN rm -rf /var/lib/apt/lists/*
+# NodeJS CLI
+RUN npm install -g \
+    @halfserious/yadu \
+    @angular/cli \
+    @ionic/cli \
+    serverless \
+    lerna \
+    jest \
+    eslint \
+    prettier
 
-RUN pip install poetry
-RUN npm install -g @halfserious/yadu
+# cfn-nag
+RUN gem install cfn-nag
 
-ENV AWS_PROFILE='default'
-ENV AWS_REGION='us-east-1'
-ENV AWS_SDK_LOAD_CONFIG=1
+COPY ./print-version.sh /print-version.sh
+RUN chmod +x /print-version.sh

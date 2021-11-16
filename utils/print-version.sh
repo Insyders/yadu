@@ -1,0 +1,26 @@
+#!/bin/bash
+
+echo "Required:"
+echo "git: $(git --version)"
+echo "zip: $(zip --version | grep 'This is Zip')"
+echo "python3: $(python3 --version)"
+echo "python: $(python --version)"
+echo "node: $(node --version)"
+echo "npm: $(npm --version)"
+echo "ng: $(ng --version | grep '^Angular CLI\|^@')"
+echo "yadu: $(yadu --version)"
+echo "ansible: $(ansible --version | grep ^ansible)"
+echo "aws: $(aws --version)"
+echo "serverless: $(serverless --version)"
+
+
+echo "Misc:"
+echo "curl: $(curl --version | grep curl)"
+echo "lerna: $(lerna --version)"
+echo "jest: $(jest --version)"
+echo "eslint: $(eslint --version)"
+echo "prettier: $(prettier --version)"
+echo "ionic: $(ionic --version)"
+echo "poetry: $(poetry --version)"
+echo "cfn-lint: $(cfn-lint --version)"
+echo "ruby: $(ruby --version)"

@@ -289,3 +289,28 @@ yadu --restore-db-from-snapshot --target=tenant-dev --snapshot-name-source=tenan
 ```
 
 > It launches the database deletion and snapshot creation simultaneously. Then it restore the previously deleted databse using the newly created snapshot
+
+## Troubleshooting
+
+### Error 'Communications link failure'
+
+Output:
+
+```text
+Starting Liquibase at XX:XX:XX:XX (version 4.3.5 #62 built at 2021-04-29 18:31+0000)
+Unexpected error running Liquibase: liquibase.exception.DatabaseException: liquibase.exception.DatabaseException: Connection could not be created to jdbc:mysql://XYZ.XYZ.XYZ.XYZ:3306/XYZ?useUnicode=true&characterEncoding=UTF-8 with driver com.mysql.cj.jdbc.Driver.  Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+For more information, please use the --logLevel flag
+
+[ERROR] Liquibase Community 4.3.5 by Datical
+Starting Liquibase at XX:XX:XX:XX (version 4.3.5 Unexpected error running Liquibase: liquibase.exception.DatabaseException: liquibase.exception.DatabaseException: Connection could not be created to jdbc:mysql://XYZ.XYZ.XYZ.XYZ:3306/XYZ?useUnicode=true&characterEncoding=UTF-8 with driver com.mysql.cj.jdbc.Driver.  Communications link failure
+```
+
+Solution:
+
+> Add this parameter to resolve this error,
+
+```bash
+--db-extra useUnicode=true&characterEncoding=UTF-8&autoconnect=true&useSSL=false
+```
