@@ -18,6 +18,7 @@ RUN apt-get update \
     && pip install \
         awscli \
         boto3 \
+        boto \
         cfn-lint \
         poetry \
     && ln -s /usr/bin/python3 /usr/local/bin/python \
@@ -44,6 +45,8 @@ RUN npm install -g \
 
 # cfn-nag
 RUN gem install cfn-nag
+
+ENV AWS_SDK_LOAD_CONFIG=1
 
 COPY ./print-version.sh /print-version.sh
 RUN chmod +x /print-version.sh
