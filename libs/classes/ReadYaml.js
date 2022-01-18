@@ -37,8 +37,14 @@ function parseJson(content, mapping = {}) {
       logDebug(mapping);
       Object.keys(mapping).forEach((mappingKey) => {
         logDebug(`Processing mappingKey : ${mappingKey}`);
-        content = content.replace(mappingKey, mapping[mappingKey]);
+
+        console.log(mapping);
+        console.log(mappingKey);
+        content = content.replace(mappingKey, mapping[mappingKey] || '');
       });
+    } else {
+      console.log(`WARNING Missing Key Mapping: ${content}`);
+      return '';
     }
     logDebug(`content: ${content}`);
     return content;
@@ -49,7 +55,9 @@ function parseJson(content, mapping = {}) {
     if (content[key] && (typeof content[key] === 'string' || typeof content[key] === 'number')) {
       if (typeof content[key] === 'string') {
         Object.keys(mapping).forEach((mappingKey) => {
-          content[key] = content[key].replace(mappingKey, mapping[mappingKey]);
+          console.log(content[key]);
+          console.log(content);
+          content[key] = content[key].replace(mappingKey, mapping[mappingKey] || '');
         });
       }
     }
@@ -80,6 +88,7 @@ function parseJson(content, mapping = {}) {
       });
 
       const recursivlyParsed = parseJson(content[key], mapping);
+      console.debug(recursivlyParsed);
       content[key] = recursivlyParsed;
     }
   });
@@ -100,6 +109,7 @@ class Converter {
     this.outputs = {};
     this.transform = {};
     this.conditions = {};
+    this.environments = {};
 
     this.config = {
       lambdaBasePath: config.lambdaBasePath || './',
@@ -142,8 +152,17 @@ class Converter {
     return this.conditions;
   }
 
+  GetEnvironments() {
+    return this.environments;
+  }
+
   GetFormatVersion() {
     return this.AWSTemplateFormatVersion;
+  }
+
+  VerifyEnvVars() {
+    console.log(this.environments);
+    console.log(this.config.mapping);
   }
 
   /**
@@ -224,6 +243,8 @@ class Converter {
         },
       };
 
+      this.environments = env;
+
       const lambdaExtracted = {
         FunctionName: lambda.Properties.FunctionName,
         Description: lambda.Properties.Description,
@@ -249,6 +270,9 @@ class Converter {
 
       return parseJson(lambdaExtracted, this.config.mapping);
     });
+
+    console.log('DONE !');
+    this.VerifyEnvVars();
   }
 }
 
