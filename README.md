@@ -1,5 +1,7 @@
 # YaDU (Yet another Deployment Utility)
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=yadu-test-analysis&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=yadu-test-analysis)
+
 <p align="center">
   <img alt="YaDU Logo" width="80%" src="./assets/HS_YaDU_Hor_color.svg">
 </p>
