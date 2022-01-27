@@ -11,13 +11,15 @@ build:
 run:
 	docker run -it ${IMAGE} /bin/bash
 
-deploy:
+connect:
 	AWS_PROFILE=${PROFILE} AWS_REGION=${REGION} aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ACCOUNT}.dkr.ecr.${REGION}.amazonaws.com
+
+
+deploy: connect
 	docker tag ${IMAGE}:latest ${ACCOUNT}.dkr.ecr.${REGION}.amazonaws.com/${IMAGE}:latest
 	docker push ${ACCOUNT}.dkr.ecr.${REGION}.amazonaws.com/${IMAGE}:latest
 
-pull:
-	AWS_PROFILE=${PROFILE} AWS_REGION=${REGION} aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ACCOUNT}.dkr.ecr.${REGION}.amazonaws.com
+pull: connect
 	docker pull ${ACCOUNT}.dkr.ecr.${REGION}.amazonaws.com/${IMAGE}:latest
 
 version:
