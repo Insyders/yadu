@@ -90,7 +90,7 @@ class MySql {
       await query(`CREATE DATABASE \`${dbInfo.name}\`;`);
       this.closeConnection();
 
-      console.log(`${`Database`.success} ${dbInfo.name} created on ${this.config.mySqlHost}`);
+      console.log(`${`Database`.success} '${dbInfo.name}' created on '${this.config.mySqlHost}'`);
       return Promise.resolve(dbInfo.name);
     } catch (e) {
       console.error(e);
@@ -116,7 +116,7 @@ class MySql {
         throw e;
       });
       this.closeConnection();
-      console.log(`${`User`.success} ${credentials.username} created on ${this.config.mySqlHost}`);
+      console.log(`${`User`.success} '${credentials.username}' created on '${this.config.mySqlHost}'`);
 
       return Promise.resolve(credentials.username);
     } catch (e) {

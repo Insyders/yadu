@@ -40,6 +40,7 @@ const mysqlHandler = require('../libs/handlers/mysql/connection');
 const cloudformationHandler = require('../libs/handlers/cloudformation/handler');
 const databaseHandler = require('../libs/handlers/database/handler');
 const codePipelineHandler = require('../libs/handlers/codepipeline/handler');
+const mysqlOperationsHandler = require('../libs/handlers/mysql/operations');
 
 colors.setTheme({
   silly: 'rainbow',
@@ -147,27 +148,29 @@ if (!process.env.MAX_DEPTH) {
       process.exit(0);
     }
 
-    // handle template creation for YaDU configuration
     const configHandled = await config(args);
     if (configHandled) {
       process.exit(0);
     }
 
-    // handle template creation for YaDU configuration
     const databaseHandled = await databaseHandler(args, configService.rds || {});
     if (databaseHandled) {
       process.exit(0);
     }
 
-    // handle template creation for YaDU configuration
     const codepipelineHandled = await codePipelineHandler(args, configService.rds || {});
     if (codepipelineHandled) {
       process.exit(0);
     }
 
-    // handle template creation for YaDU configuration
     const mysqlHandled = await mysqlHandler(args, configService.rds || {});
     if (mysqlHandled) {
+      process.exit(0);
+    }
+
+    // Handle Mysql Operations commands
+    const mysqlOperationsHandled = await mysqlOperationsHandler(args, configService.rds || {});
+    if (mysqlOperationsHandled) {
       process.exit(0);
     }
 
