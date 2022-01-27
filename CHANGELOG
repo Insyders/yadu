@@ -1,3 +1,7 @@
+2022-01-27 (2.14.0)
+
+- Added new command to initialize database with a user within an existing instance
+
 2021-10-28 (PRELIM 2.13.x)
 
 - Added new command --test-db-connection it tests the mysql connection for the primary and reference DB.
