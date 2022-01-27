@@ -1,35 +1,37 @@
 Usage: yadu [--help] <command> [<args>]
 
 Dislaimer:
-- USE THESE COMMANDS CAREFULLY ! SOME OF THEM CAN BREAK THINGS IN AWS
+> USE THESE COMMANDS CAREFULLY ! SOME OF THEM CAN BREAK THINGS IN YOUR ENVIRONMENT <
 
 Prerequisites:
-- zip Command
-- git Command
-- npm Command 
-- serverless.json file
-- export AWS_SDK_LOAD_CONFIG=1
+- `zip` Command
+- `git` Command
+- `npm` Command 
+- `serverless.json|template.[yml,yaml]` file
+- `export AWS_SDK_LOAD_CONFIG=1`
 
 Compatibility
 - Git Bash on Windows
 - MacOS
 - Linux
 
+---
+
 Serious DevOps Toolkit - YaDU Commands:
 
 Documentation : https://github.com/Insyders/yadu/tree/main/docs
 
 Common
-    > --help                                       Print this help
+    > --help                                       Print this help
     > --region                                     The AWS region
     > --profile                                    The AWS profile (By default : default)
     > --debug                                      Print more info
     > --verbose                                    Print the environment variables
-    > --env                                        .env path to load the environement variables
+    > --env                                        .env path to load the environement variables
     > --secrets                                    Secret Keys to retrieve the database information. ex. 'db1,db2:ref'
 
 Package and Deploy
-    > --package-only                               Generate only the index.zip file for the current lambda
+    > --package-only                               Generate only the index.zip file for the current lambda
         [--zip-args=<string>]                      list of files and directories to archive
     > --deploy                                     Deploy code to AWS ($LATEST)
         [--use-yaml=<boolean>]                     Use SAM YAML Template instead of local server
@@ -95,9 +97,9 @@ Liquibase Commands (SQL Migration / Schema Changes)
 
     > --diff                                        Compare 2 databases and print the differences
 
-    > --clear                                       Remove all checksums in the liquibase table
+    > --clear                                       Remove all checksums in the liquibase table
 
-    > --rollback                                    Rollback to a tag, it uses the changelog sepcified
+    > --rollback                                    Rollback to a tag, it uses the changelog sepcified
         --name=<String>
         --tag=<String>
         --[no-]dry-run=<Boolean>
@@ -107,7 +109,7 @@ Liquibase Commands (SQL Migration / Schema Changes)
 
 MySQL
     > --mysqldump                                   It wraps the `mysqldump` command, it can be configured using the config service
-    > --delete-db-instance                          Delete a database instance, Be careful !
+    > --delete-db-instance                          Delete a database instance, Be careful !
         --target=<String>                           The DB Instance to delete
     > --create-db-snapshot
         --target=<String>                           The DB Instance to snapshot
@@ -115,22 +117,28 @@ MySQL
     > --restore-db-from-snapshot 
         --target=<String>                           The DB Instance to create
         --snapshot-name-source=<String>             The snapshot name to use
-    > --test-db-connection                          Test the primary and/or reference database connection(s)
+    > --test-db-connection                          Test the primary and/or reference database connection(s)
+    > --init-env                                    Create a new database and new user within an exiting instance
+        --db-user-pass=<String>                     The password for the new MySQL User
 
 Override env. variables
+    Secondary:
     > --db-url-ref=<String>
     > --db-user-ref=<String>
     > --db-pass-ref=<String>
     > --db-name-ref=<String>
-    > --db-extra-ref=<String>           Default: useUnicode=true&characterEncoding=UTF-8
+    > --db-extra-ref=<String>           Default: useUnicode=true&characterEncoding=UTF-8
     > --db-port-ref=<String>            Default: 3306
 
+    Primary:
     > --db-url=<String>
     > --db-user=<String>
     > --db-pass=<String>
     > --db-name=<String>
-    > --db-extra=<String>               Default: useUnicode=true&characterEncoding=UTF-8
+    > --db-extra=<String>               Default: useUnicode=true&characterEncoding=UTF-8
     > --db-port=<String>                Default: 3306
+    > --db-user-pass=<String>           The password for the new MySQL User
+
 
 Environment Variables:
 
@@ -148,6 +156,7 @@ DB_PORT="<DB_PORT>"
 DB_EXTRA="<DB_EXTRA>"
 DB_PORT_REF="<DB_PORT_REF>"
 DB_EXTRA_REF="<DB_EXTRA_REF>"
+DB_USER_PASS="<DB_USER_PASS>"
 
 # OR use the AWS secret manager
 SECRETS="<CommaDelimitedString>"

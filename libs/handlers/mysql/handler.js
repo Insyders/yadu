@@ -21,7 +21,7 @@ module.exports = (args, config) => {
     filename: config && config.mysqlDump ? config.mysqlDump.filename : null,
   });
 
-  console.log('> Launch mysqldump');
+  console.log('> Launch mysqldump');
   md.DumpDatabase();
 
   return true;

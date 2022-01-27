@@ -50,13 +50,15 @@ function assignVariables(args = {}) {
     }
     if (!args['db-port'] && !process.env.DB_PORT) {
       console.log(`${'[INFO]'.warn} --db-port or DB_PORT is not defined, using '3306'`);
+    } else {
+      process.env.DB_PORT = args['db-port'] || 3306;
     }
     if (!args['db-name'] && !process.env.DB_NAME) {
       console.error(`${'[ERROR]'.error} --db-name or DB_NAME is not defined`);
       throw new Error('--db-name or DB_NAME is not defined');
     }
     process.env.DB_HOST = args['db-url'] || process.env.DB_URL;
-    process.env.DB_URL = `jdbc:mysql://${args['db-url'] || process.env.DB_URL}:${args['db-port'] || process.env.DB_PORT || 3306}/${
+    process.env.DB_URL = `jdbc:mysql://${args['db-url'] || process.env.DB_URL}:${args['db-port'] || process.env.DB_PORT}/${
       args['db-name'] || process.env.DB_NAME || null
     }?${args['db-extra'] || process.env.DB_EXTRA || 'useUnicode=true&characterEncoding=UTF-8'}`;
   }
@@ -86,6 +88,12 @@ function assignVariables(args = {}) {
   if (args['db-name-ref']) {
     logDebug('Override DB_NAME_REF');
     process.env.DB_NAME_REF = args['db-name-ref'];
+  }
+
+  // Password to use when creating a new user in MySQL
+  if (args['db-user-pass']) {
+    logDebug('Override DB_USER_PASS');
+    process.env.DB_USER_PASS = args['db-user-pass'];
   }
 }
 
