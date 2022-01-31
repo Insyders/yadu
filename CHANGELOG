@@ -1,3 +1,13 @@
+2022-01-31 (2.14.1 & 2.14.2)
+
+- Fixed very old bug thanks to m-a ! 
+  - The zip files generated have the same checksum when nothing has changed
+- Improved messages
+- Added new arguments to override the zip filename
+  - `--zip-filename-from-parent`
+  - `--zip-filename="whatever.zip"`
+  - Default: 'index.zip'
+
 2022-01-27 (2.14.0)
 
 - Added new command to initialize database with a user within an existing instance
