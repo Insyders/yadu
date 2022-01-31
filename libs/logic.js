@@ -238,7 +238,7 @@ async function publish(args, config = {}) {
     Runtime: info.Runtime,
     Timeout: info.Timeout,
   };
-  logDebug('> Collected function configuration');
+  logDebug('> Collected function configuration');
 
   // Environment Variables
   if (info.Environment) {
@@ -304,13 +304,14 @@ async function publish(args, config = {}) {
     }
   }
 
+  // Show config to be deployed then exit
   if (args['show-config']) {
     shell.echo('> Show Lambda Configuration');
     console.log(JSON.stringify(updateCreateFnParams, null, 2));
     process.exit(0);
   }
 
-  shell.echo("> Delete existing 'index.zip' file (if any)".info);
+  shell.echo("> Delete existing 'index.zip' file (if any)".info);
   shell.rm('-f', 'index.zip');
 
   // This condition is in place to support nodejs only.
@@ -322,25 +323,28 @@ async function publish(args, config = {}) {
     // added --legacy-peer-deps to support NPM 7, in our case the peerDeps are provided by the layer in AWS
     shell.exec('npm install --silent --production --legacy-peer-deps');
   } else {
-    // Replaced to console.error instead of throwing an error to avoid failing deploying other runtime than nodejs
-    // throw new Error(
-    console.error(
-      `[WARNING] Not using NodeJS, no other runtime implemented yet.
-      It is triggered because the directory \`node_modules/\` is not specified in your YaDU configuration, key: \`zipArgs\` or 
-      not using the --zip-args argument or 
-      hasn't been loaded correctly.
-      You can safely ignore only if you know what you are doing.`,
+    console.log(`${'----------'.warn}`);
+    console.error(`${'[WARN]'.warn}YaDU is missing the zip source directories and files`);
+    console.log(
+      `${'[INFORMATION]'.info} Your lambda seems not using NodeJS, no other runtime implemented yet. (It might not work)
+      It is triggered because the directory \`node_modules/\` is not specified in your YaDU configuration, 
+      within the key \`zipArgs\` or
+      you are not using the argument \`--zip-args\` or 
+      it hasn't been loaded correctly.
+      ${'You can safely ignore this, only if you know what you are doing.'.info}`,
     );
+    console.log(`${'----------'.warn}\n`);
   }
 
   shell.echo('> Create Tag File'.info);
   // Delete old/existing commit id files
-  shell.rm(`_*_`);
-  shell.touch(`_${lastCommitId.replace('\n', '')}_`);
+  shell.rm('-f', `_*_`);
+  shell.touch({ '-d': new Date('2022-01-31') }, `_${lastCommitId.replace('\n', '')}_`);
 
   shell.echo('> Packaging lambda'.info);
+
   // The _*_ add the commit id to the lambda payload
-  const zipCmd = `zip -X ${VERBOSE ? '-vvv' : '-q'} -r index.zip ${args['zip-args'] || info.zipArgs || defaultZip(process.cwd())} _*_`;
+  const zipCmd = `zip -X -D ${VERBOSE ? '-vvv' : '-q'} -r index.zip ${args['zip-args'] || info.zipArgs || defaultZip(process.cwd())} _*_`;
   logDebug(zipCmd);
   shell.exec(zipCmd);
 
@@ -369,15 +373,19 @@ async function publish(args, config = {}) {
 
     logDebug(dataUpdateFunctionCode);
 
-    shell.echo('> Deploy the lambda configuration');
-    logDebug('Update Function Configuration');
-    const dataUpdateFunctionConfiguration = await lambda
-      .updateFunctionConfiguration(updateCreateFnParams)
-      .promise()
-      .catch((e) => {
-        throw e;
-      });
-    logDebug(args, dataUpdateFunctionConfiguration);
+    if (!args['skip-update-config']) {
+      shell.echo('> Deploy the lambda configuration');
+      logDebug('Update Function Configuration');
+      const dataUpdateFunctionConfiguration = await lambda
+        .updateFunctionConfiguration(updateCreateFnParams)
+        .promise()
+        .catch((e) => {
+          throw e;
+        });
+      logDebug(args, dataUpdateFunctionConfiguration);
+    } else {
+      logDebug(`Skipping updating configuration for ${info.FunctionName}`);
+    }
   }
 
   if (args.create && args.role) {
