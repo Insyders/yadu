@@ -10,6 +10,13 @@ const { sendTelemetry } = require('./telemetry');
 const lambda = new AWS.Lambda();
 const sts = new AWS.STS();
 
+function getZipFileName(args) {
+  if (args['zip-filename-from-parent']) {
+    return process.cwd().split(path.sep).reverse()[0];
+  }
+  return args['zip-filename'] ? args['zip-filename'] : 'index.zip';
+}
+
 function waitFor(functionName, interval = 3000) {
   return new Promise((resolve) => {
     logVerbose(`[Action] Wait For ${interval / 1000} seconds`);
@@ -30,7 +37,7 @@ function waitFor(functionName, interval = 3000) {
   });
 }
 
-function loadConfig(config) {
+function loadConfig(config, args = {}) {
   console.log('[Action] Load Config');
   if (!config) {
     throw new Error('Missing configuration object, unable to load the options.');
@@ -87,7 +94,10 @@ function loadConfig(config) {
     if (!converted.Code) {
       throw new Error('Code not found in configuration.');
     }
-    return converted.Code.includes(`${path.sep}${configPath}${path.sep}`) || (local && converted.Code.includes(`.${path.sep}index.zip`));
+    return (
+      converted.Code.includes(`${path.sep}${configPath}${path.sep}`) ||
+      (local && converted.Code.includes(`.${path.sep}${getZipFileName(args)}`))
+    );
   })[0];
 
   if (!info) {
@@ -194,7 +204,7 @@ async function publish(args, config = {}) {
   if (args['use-yaml']) {
     logDebug('[Action] Use YAML');
     try {
-      info = loadConfig(config);
+      info = loadConfig(config, args);
       logVerbose(info);
     } catch (e) {
       logDebug(e);
@@ -311,8 +321,8 @@ async function publish(args, config = {}) {
     process.exit(0);
   }
 
-  shell.echo("> Delete existing 'index.zip' file (if any)".info);
-  shell.rm('-f', 'index.zip');
+  shell.echo(`> Delete existing '${getZipFileName(args)}' file (if any)`.info);
+  shell.rm('-f', getZipFileName(args));
 
   // This condition is in place to support nodejs only.
   // Yadu supports Python but we did a dirty fix, the configuration is the same for all runtime, this is why it works in our setup.
@@ -344,7 +354,9 @@ async function publish(args, config = {}) {
   shell.echo('> Packaging lambda'.info);
 
   // The _*_ add the commit id to the lambda payload
-  const zipCmd = `zip -X -D ${VERBOSE ? '-vvv' : '-q'} -r index.zip ${args['zip-args'] || info.zipArgs || defaultZip(process.cwd())} _*_`;
+  const zipCmd = `zip -X -D ${VERBOSE ? '-vvv' : '-q'} -r ${getZipFileName(args)} ${
+    args['zip-args'] || info.zipArgs || defaultZip(process.cwd())
+  } _*_`;
   logDebug(zipCmd);
   shell.exec(zipCmd);
 
@@ -359,7 +371,7 @@ async function publish(args, config = {}) {
       .updateFunctionCode({
         FunctionName: functionName,
         Publish: args.publish || false,
-        ZipFile: fs.readFileSync(path.resolve(process.cwd(), 'index.zip')),
+        ZipFile: fs.readFileSync(path.resolve(process.cwd(), getZipFileName(args))),
       })
       .promise()
       .catch((e) => {
@@ -391,13 +403,13 @@ async function publish(args, config = {}) {
   if (args.create && args.role) {
     shell.echo('> Create the lambda function');
     logDebug(`Using this Role: ${args.role}`);
-    logDebug(`Using this zip file: ${path.resolve(process.cwd(), 'index.zip')}`);
+    logDebug(`Using this zip file: ${path.resolve(process.cwd(), getZipFileName(args))}`);
     const createNewFunction = await lambda
       .createFunction({
         ...updateCreateFnParams,
         Role: args.role,
         Code: {
-          ZipFile: fs.readFileSync(path.resolve(process.cwd(), 'index.zip')),
+          ZipFile: fs.readFileSync(path.resolve(process.cwd(), getZipFileName(args))),
         },
       })
       .promise()
