@@ -102,7 +102,11 @@ function assignVariables(args = {}) {
  * @param {Object} args
  */
 function configureProfileAndRegion(args = {}) {
-  process.env.AWS_PROFILE = args.profile || process.env.AWS_PROFILE || process.env.PROFILE || 'default';
+  if (args.profile || process.env.AWS_PROFILE || process.env.PROFILE) {
+    process.env.AWS_PROFILE = args.profile || process.env.AWS_PROFILE || process.env.PROFILE;
+  } else {
+    console.error(`${'[WARN]'.warn} AWS_PROFILE IS NOT SET`);
+  }
   process.env.AWS_REGION = args.region || process.env.AWS_REGION || process.env.REGION || 'us-east-1';
 
   if (args.env) {
@@ -125,8 +129,10 @@ const loadArgs = async (args = {}) => {
   const config = Config.LoadConfig(`${BASE_PATH + (process.env.NODE_ENV || 'config')}.json`);
 
   // Configure AWS SDK using the process.env variables
-  const credentials = new AWS.SharedIniFileCredentials({ profile: process.env.AWS_PROFILE });
-  AWS.config.credentials = credentials;
+  if (process.env.AWS_PROFILE) {
+    const credentials = new AWS.SharedIniFileCredentials({ profile: process.env.AWS_PROFILE });
+    AWS.config.credentials = credentials;
+  }
   AWS.config.region = process.env.AWS_REGION;
 
   try {

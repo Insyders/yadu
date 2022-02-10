@@ -38,8 +38,8 @@ function parseJson(content, mapping = {}) {
       Object.keys(mapping).forEach((mappingKey) => {
         logDebug(`Processing mappingKey : ${mappingKey}`);
 
-        console.log(mapping);
-        console.log(mappingKey);
+        logVerbose(mapping);
+        logVerbose(mappingKey);
         content = content.replace(mappingKey, mapping[mappingKey] || '');
       });
     } else {
@@ -55,8 +55,8 @@ function parseJson(content, mapping = {}) {
     if (content[key] && (typeof content[key] === 'string' || typeof content[key] === 'number')) {
       if (typeof content[key] === 'string') {
         Object.keys(mapping).forEach((mappingKey) => {
-          console.log(content[key]);
-          console.log(content);
+          logVerbose(content[key]);
+          logVerbose(content);
           content[key] = content[key].replace(mappingKey, mapping[mappingKey] || '');
         });
       }
@@ -88,7 +88,7 @@ function parseJson(content, mapping = {}) {
       });
 
       const recursivlyParsed = parseJson(content[key], mapping);
-      console.debug(recursivlyParsed);
+      logVerbose(recursivlyParsed);
       content[key] = recursivlyParsed;
     }
   });
