@@ -16,3 +16,10 @@ _application.yaml
 test.yaml
 schema-*.sql
 .github/
+coverage/
+utils/
+assets/
+*.config.js
+*config.json
+*.properties
+
