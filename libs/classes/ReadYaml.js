@@ -161,8 +161,8 @@ class Converter {
   }
 
   VerifyEnvVars() {
-    console.log(this.environments);
-    console.log(this.config.mapping);
+    logVerbose(this.environments);
+    logVerbose(this.config.mapping);
   }
 
   /**
