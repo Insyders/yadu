@@ -106,6 +106,9 @@ function configureProfileAndRegion(args = {}) {
     process.env.AWS_PROFILE = args.profile || process.env.AWS_PROFILE || process.env.PROFILE;
   } else {
     console.error(`${'[WARN]'.warn} AWS_PROFILE IS NOT SET`);
+    if (args['use-default']) {
+      process.env.AWS_PROFILE = 'default';
+    }
   }
   process.env.AWS_REGION = args.region || process.env.AWS_REGION || process.env.REGION || 'us-east-1';
 

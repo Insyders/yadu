@@ -1,3 +1,7 @@
+2022-02-10 (2.14.4)
+
+- added `--use-default` to avoid breaking the MFA login
+
 2022-02-10 (2.14.3)
 
 - Added support to skip the AWS_PROFILE and use the local exported environment variables (mostly required when using MFA login)
