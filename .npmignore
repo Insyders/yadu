@@ -22,4 +22,5 @@ assets/
 *.config.js
 *config.json
 *.properties
-
+docs/
+CHANGELOG

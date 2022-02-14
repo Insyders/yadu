@@ -9,6 +9,12 @@ module.exports = (args, config) => {
 
   logVerbose(config);
 
+  // Load options from yady config file and override is the argument is defined
+  let options = config && config.mysqlDump ? config.mysqlDump.options : null;
+  options = args && args.options ? args.options : options;
+
+  logVerbose(options);
+
   const md = new MysqlDump({
     executable: config && config.mysqlDump ? config.mysqlDump.executable : null,
     credentials: {
@@ -17,7 +23,7 @@ module.exports = (args, config) => {
       user: process.env.DB_USER,
       password: process.env.DB_PASS,
     },
-    options: config && config.mysqlDump ? config.mysqlDump.options : null,
+    options,
     filename: config && config.mysqlDump ? config.mysqlDump.filename : null,
   });
 

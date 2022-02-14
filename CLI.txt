@@ -24,7 +24,8 @@ Documentation : https://github.com/Insyders/yadu/tree/main/docs
 Common
     > --help                                       Print this help
     > --region                                     The AWS region
-    > --profile                                    The AWS profile (By default : default)
+    > --profile                                    The AWS profile (By default : omitted)
+        [--use-default]                            Use the AWS profile named 'default'
     > --debug                                      Print more info
     > --verbose                                    Print the environment variables
     > --env                                        .env path to load the environement variables
@@ -33,6 +34,8 @@ Common
 Package and Deploy
     > --package-only                               Generate only the index.zip file for the current lambda
         [--zip-args=<string>]                      list of files and directories to archive
+        [--zip-filename-from-parent]               Override the Zip filename to use the parent directory name instead of the default `index.zip`
+        [--zip-filename=<String>]                  Override Zip Filename when packaging the lambda with a custom name
     > --deploy                                     Deploy code to AWS ($LATEST)
         [--use-yaml=<boolean>]                     Use SAM YAML Template instead of local server
     > --create                                     Create and Deploy the function to AWS
@@ -108,7 +111,12 @@ Liquibase Commands (SQL Migration / Schema Changes)
         --[no-]dry-run=<Boolean>
 
 MySQL
-    > --mysqldump                                   It wraps the `mysqldump` command, it can be configured using the config service
+    > --mysqldump                                   It wraps the `mysqldump` command, it can be configured using the config service or the arguments
+        [--options=<String>]                        Coma-delimited string with mysqldump options, Default: `no-data,all-databases,triggers,routines,events,column-statistics=0`
+        [--db-name=<String>]
+        [--db-url=<String>]
+        [--db-user=<String>]
+        [--db-port=<String>]
     > --delete-db-instance                          Delete a database instance, Be careful !
         --target=<String>                           The DB Instance to delete
     > --create-db-snapshot
