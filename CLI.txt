@@ -113,6 +113,8 @@ Liquibase Commands (SQL Migration / Schema Changes)
 MySQL
     > --mysqldump                                   It wraps the `mysqldump` command, it can be configured using the config service or the arguments
         [--options=<String>]                        Coma-delimited string with mysqldump options, Default: `no-data,all-databases,triggers,routines,events,column-statistics=0`
+        [--executable=<String>]                     To override the mysqldump executable path
+        [--filename=<String>]                       To override the default behaviour. Default `schema-{month}-{day}-{year}.sql`
         [--db-name=<String>]
         [--db-url=<String>]
         [--db-user=<String>]

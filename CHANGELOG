@@ -1,3 +1,7 @@
+2022-02-15 (2.14.6)
+
+- Added argument `--filename` and `--executable` for mysqldump
+
 2022-02-14 (2.14.5)
 
 - Added argument `--options` for mysqldump
