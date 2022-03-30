@@ -505,7 +505,7 @@ async function publish(args, config = {}) {
   }
 
   // allows to test locally without reinstalling the dependencies manually.
-  if (process.env.NODE_ENV !== 'CI') {
+  if (process.env.CI === 'true') {
     shell.echo('> Restore the devDependencies'.info);
     shell.exec('npm install');
   }
