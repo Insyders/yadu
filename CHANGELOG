@@ -1,3 +1,7 @@
+2022-03-30
+
+- Updated environment variable to use CI instead of NODE_ENV to avoid reinstalling the devDeps in the pipeline.
+
 2022-02-15 (2.14.6)
 
 - Added argument `--filename` and `--executable` for mysqldump
