@@ -192,7 +192,7 @@ async function publish(args, config = {}) {
   }
   const currentBranchName = gitResponse.stdout || 'Unknown-branch';
 
-  gitResponse = shell.exec('git rev-parse --short HEAD', { silent: !DEBUG });
+  gitResponse = shell.exec('git rev-parse HEAD | cut -c1-8', { silent: !DEBUG });
   if (gitResponse.code !== 0) {
     console.error(gitResponse.stderr);
     throw new Error('You must upgrade your git version.');
