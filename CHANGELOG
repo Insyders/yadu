@@ -1,3 +1,10 @@
+2022-06-28 (2.15.0)
+- Added flags to control npm verbosity
+  - DEBUG=1 or TIMING=1 or NO_NPM_LOG=1
+  - by default it uses no flags `npm install ${verbosity} ${timing} --production --legacy-peer-deps`
+  - The command is print on the screen before launching it for troubleshooting
+
+
 2022-03-30
 
 - Updated environment variable to use CI instead of NODE_ENV to avoid reinstalling the devDeps in the pipeline.
