@@ -253,6 +253,11 @@ async function publish(args, config = {}) {
   // Environment Variables
   if (info.Environment) {
     console.log('[Config] Update lambda Environment Configuration');
+
+    // versioning
+    info.Environment.Variables.VERSION = `${currentBranchName}_${lastCommitId}`;
+    info.Environment.Variables.DD_VERSION = `${currentBranchName.split('/')[1] ?? currentBranchName}_${lastCommitId}`;
+
     updateCreateFnParams.Environment = {
       Variables: info.Environment.Variables || info.Environment,
     };
