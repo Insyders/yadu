@@ -1,3 +1,7 @@
+2022-07-26 (2.16.0)
+- Added versioning env variable based on current branch
+  - It will update automatically the lambda environment variables:  VERSION and DD_VERSION 
+
 2022-06-28 (2.15.0)
 - Added flags to control npm verbosity
   - DEBUG=1 or TIMING=1 or NO_NPM_LOG=1
