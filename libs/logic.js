@@ -190,14 +190,14 @@ async function publish(args, config = {}) {
     console.error(gitResponse.stderr);
     throw new Error('You must upgrade your git version.');
   }
-  const currentBranchName = gitResponse.stdout || 'Unknown-branch';
+  const currentBranchName = (gitResponse.stdout || 'Unknown-branch').trim();
 
   gitResponse = shell.exec('git rev-parse HEAD | cut -c1-8', { silent: !DEBUG });
   if (gitResponse.code !== 0) {
     console.error(gitResponse.stderr);
     throw new Error('You must upgrade your git version.');
   }
-  const lastCommitId = gitResponse.stdout || process.env.USER || 'unknown-commit-id';
+  const lastCommitId = (gitResponse.stdout || process.env.USER || 'unknown-commit-id').trim();
 
   shell.echo('Check if serverless.json exists or use the cloudformation as source of configuration...'.info);
   let info = {};
