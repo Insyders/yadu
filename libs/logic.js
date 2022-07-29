@@ -255,7 +255,6 @@ async function publish(args, config = {}) {
     console.log('[Config] Update lambda Environment Configuration');
 
     // versioning
-    const env_version=
     info.Environment.Variables.VERSION = `${process.env.AWS_BRANCH_NAME || currentBranchName.replace('\n', '')}_${lastCommitId}`;
     info.Environment.Variables.DD_VERSION = `${(process.env.AWS_BRANCH_NAME || currentBranchName).split('/')[1] ?? (process.env.AWS_BRANCH_NAME || currentBranchName)}_${lastCommitId}`;
 
