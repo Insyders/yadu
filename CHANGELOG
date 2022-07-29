@@ -1,5 +1,6 @@
 2022-07-29 (2.16.2)
 - Fixes a bug introduced in 2.16.0, AWS pipelines weren't able to get the branch name of the repository.
+- Add override for lambda version
 
 2022-07-28 (2.16.1)
 - Added trim function to handle invalid characters
