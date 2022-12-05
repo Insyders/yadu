@@ -1,3 +1,7 @@
+2022-12-05 (2.16.3)
+- Renamed `vpcConfig` to `VpcConfig`
+- Renamed `SecurityGroupsIds` to `SecurityGroupIds` 
+
 2022-07-29 (2.16.2)
 - Fixes a bug introduced in 2.16.0, AWS pipelines weren't able to get the branch name of the repository.
 - Add override for lambda version
