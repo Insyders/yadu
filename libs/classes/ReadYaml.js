@@ -262,7 +262,7 @@ class Converter {
         TracingConfig: { Mode: lambda.Properties.TracingConfig || this.globals.Tracing },
         VpcConfig: lambda.Properties.VpcConfig
           ? {
-              SecurityGroupIds: lambda.Properties.VpcConfig.SecurityGroupsIds,
+              SecurityGroupIds: lambda.Properties.VpcConfig.SecurityGroupIds,
               SubnetIds: lambda.Properties.VpcConfig.SubnetIds,
             }
           : {},

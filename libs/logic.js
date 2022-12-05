@@ -272,8 +272,8 @@ async function publish(args, config = {}) {
   if (args.updateVpc || args['update-vpc']) {
     console.log('[Config] Update lambda VPC Configuration');
     updateCreateFnParams.VpcConfig = {
-      SecurityGroupIds: info.vpcConfig.SecurityGroupsIds,
-      SubnetIds: info.vpcConfig.SubnetIds,
+      SecurityGroupIds: info.VpcConfig.SecurityGroupIds,
+      SubnetIds: info.VpcConfig.SubnetIds,
     };
   }
 
